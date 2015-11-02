@@ -131,10 +131,10 @@ gchar *dxf_header_print(DxfHeader *h)
 static void header_get_point(Dxfile *f, DxfPointData *p)
 {
     gint code = 0;
-    glong offset = 0;
+    glong pos = 0;
     gboolean flag = TRUE;
     while( flag ) {
-        offset = dxfile_get_offset(f);
+        pos = dxfile_get_pos(f);
         dxfile_get_code(f, &code);
         switch( code ) {
         case 10:
@@ -151,7 +151,7 @@ static void header_get_point(Dxfile *f, DxfPointData *p)
             break;
         }
     }
-    dxfile_seek(f, offset, SEEK_SET);
+    dxfile_set_pos(f, pos);
 }
 
 static inline void header_get_line(Dxfile *f, gchar **str)
