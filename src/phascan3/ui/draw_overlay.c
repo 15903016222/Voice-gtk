@@ -446,8 +446,7 @@ void DrawCursorBSCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 
 //测量线
 	//um线
-	cairo_set_source_rgba(cr,0.5,1.0,0.5,1.0);/*绿色cursor*/
-//cairo_set_source_rgba(cr,0.5,1.0,0.5,1.0);/*绿色cursor*/
+	cairo_set_source_rgba(cr,0,0,1,1.0);/*蓝色cursor*/
 	/* 当前值除以最大值再乘以窗口宽度 */
 	_nTmpX = (u_measure-sample_start)/(sample_range)  ;
 	gTofdS.um = _nTmpX;
@@ -462,7 +461,6 @@ void DrawCursorBSCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 	cairo_stroke (cr);
 
 	//um线指示框
-	cairo_set_source_rgba(cr,0,0,1,1.0);/*蓝色cursor*/
 	cairo_set_source_rgba(cr,0.0,0.0,0.0,1.0);/*当前值*/
 	cairo_move_to(cr , _nTmpX + 3 , 10);
 
@@ -485,7 +483,6 @@ void DrawCursorBSCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 	_nTmpY = (1 - _nTmpY) * (h - 20) ;
 	_nTmpY = (int)_nTmpY + 0.5 ;
 	cairo_set_source_rgba(cr,0,0,1,1.0);/*蓝色cursor*/
-//cairo_set_source_rgba(cr,0.5,1.0,0.5,1.0);/*绿色cursor*/
 	cairo_set_line_width(cr, 0.5);
 	cairo_move_to (cr, 20 , _nTmpY  );
 	cairo_line_to (cr, 20 + w , _nTmpY  );
