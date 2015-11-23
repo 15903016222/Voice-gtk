@@ -386,17 +386,21 @@ int fileCopyProgressBar(GtkWidget* fatherWidget,
     }
     if (strcmp(cmd, "cp") == 0) {
         note = getDictString(_STRING_Copy);
+        strcat(command, "\"");
         strcat(command, fileName);
-        strcat(command, " ");
+        strcat(command, "\" ");
         strcat(command, path);
     } else if (strcmp(cmd, "mv") == 0) {
         note = getDictString(_STRING_Move);
+        strcat(command, "\"");
         strcat(command, fileName);
-        strcat(command, " ");
+        strcat(command, "\" ");
         strcat(command, path);
     } else if (strcmp(cmd, "rm") == 0) {
         note = getDictString(_STRING_Delete);
+        strcat(command, "\"");
         strcat(command, fileName);
+        strcat(command, "\"");
     }
     args[0] = parData;
     args[1] = command;
