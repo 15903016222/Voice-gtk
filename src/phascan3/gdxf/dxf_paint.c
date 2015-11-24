@@ -132,34 +132,35 @@ static void _paint_ellipse(cairo_t *cr, const DxfEllipse *e)
 
     cairo_translate(cr, e->centerPoint.x, -e->centerPoint.y);
     pi = dxf_ellipse_calc_endpoint_pi(e);
+
     /* dxf 与 gtk 计算角度的方向是相反的，dxf是逆时针， gtk是顺时针*/
     /* 转换dxf的起始和终止角度为gtk格式, dxf起始和终止角度是相对于长轴端点开始计算的 */
+    if (e->extrDir.z >= 0.999999) {
+        startAngle = 2*M_PI-e->endAngle;
+        endAngle = 2*M_PI-e->startAngle;
+    } else {
+        startAngle = e->startAngle;
+        endAngle = e->endAngle;
+    }
 
-    startAngle = M_PI/2-(e->endAngle-M_PI);
-    endAngle = M_PI/2-(e->startAngle-M_PI);
-    cairo_rotate(cr, M_PI/2 - pi);                   //该函数要在cairo_scale函数前调用
+    c_debug("\nendPointMajorAxis(%g, %g, %g) extrDir(%.20f, %.20f, %.20f) angle(%g, %g) pi(%g)",
+            e->endPointMajorAxis.x, e->endPointMajorAxis.y, e->endPointMajorAxis.z,
+            e->extrDir.x, e->extrDir.y, e->extrDir.z,
+            e->startAngle, e->endAngle, pi);
+
+    cairo_rotate(cr, 2*M_PI - pi);                   //该函数要在cairo_scale函数前调用
 
     if (endAngle < startAngle) {
         endAngle += 2*M_PI;
     }
 
-    cairo_scale(cr, e->ration, 1);
-
-    c_debug("转换成GTK数据 **\n"
-              "相对X轴弧/角度\t: %g\t%g\n"
-              "起始弧/角度\t: %g\t%g\n"
-              "结束弧/角度\t: %g\t%g\n",
-              M_PI/2-pi,
-              180*(M_PI/2-pi)/M_PI,
-              startAngle,
-              180*startAngle/M_PI,
-              endAngle,
-              180*endAngle/M_PI);
+    cairo_scale(cr, 1, e->ration);
 
     cairo_arc(cr, 0, 0,
               radius,
               startAngle,
               endAngle);
+
 
     cairo_stroke(cr);
 }
@@ -170,7 +171,7 @@ static void _paint_lwpolyline(cairo_t *cr, const DxfLWPolyline *l)
     int i;
 
     for (i = 0; i < l->vertexNum; ++i) {
-        cairo_line_to(cr, l->vertexes[i].x, -l->vertexes[i].y);
+        cairo_line_to(cr, l->vertexes[i].x * l->extrDir.z, -l->vertexes[i].y);
     }
 
     if (l->flag == LWPOLYLINE_CLOSE && l->vertexNum > 0) {
@@ -178,7 +179,7 @@ static void _paint_lwpolyline(cairo_t *cr, const DxfLWPolyline *l)
                       l->vertexes[0].x * l->extrDir.z,
                       -l->vertexes[0].y);
         cairo_line_to(cr,
-                      l->vertexes[l->vertexNum-1].x,
+                      l->vertexes[l->vertexNum-1].x * l->extrDir.z,
                       -l->vertexes[l->vertexNum-1].y);
     }
 

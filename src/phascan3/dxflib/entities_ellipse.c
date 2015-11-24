@@ -72,7 +72,7 @@ gchar *dxf_ellipse_print(const DxfEllipse *e)
 }
 
 /**
- * @brief dxf_ellipse_calc_endpoint_pi 计算长轴端点相对于x轴的角度
+ * @brief dxf_ellipse_calc_endpoint_pi 以dxf坐标轴计算长轴端点相对于x轴的角度，角度方向为逆时针,比X轴开始算起
  * @param e     指向椭圆
  * @return      成功返回相对于x轴的角度
  */
@@ -83,23 +83,34 @@ gdouble dxf_ellipse_calc_endpoint_pi(const DxfEllipse *e)
     const DxfPointData *p = &e->endPointMajorAxis;
     gdouble pi = 0;
 
-    if ( fabs(p->x) < 1e-15
-         && p->y < 0) {
-        pi = -M_PI/2;
-    } else {
-        pi = atan(fabs(p->y/p->x));
-        if (p->x > 1e-15
-                && p->y < -1e-15) {
-            pi = -pi;
-        } else if (p->x < -1e-15) {
-            if (p->y > 1e-15) {
-                pi = M_PI - pi;
-            } else if (p->y < -1e-15) {
-                pi = pi - M_PI;
-            } else {
-                pi = M_PI;
-            }
+    if ( fabs(p->x) < 1e-15 ) {
+        if ( p->y < -(1e-15) ) {
+            pi = 3*M_PI/2;
+        } else if ( p->y > 1e-15 ) {
+            pi = M_PI/2;
+        }
+        return pi;
+    }
+
+    pi = atan(fabs(p->y/p->x));
+
+    if ( p->x > 1e-15 ) {
+        if (p->y > 1e-15) {
+            /*第一象区*/
+            pi = pi;
+        } else if ( p->y < -1e-15 ) {
+            /*第四象区*/
+            pi = 2*M_PI - pi;
+        }
+    } else if (p->x < -1e-15) {
+        if (p->y > 1e-15) {
+            /*第二象区*/
+            pi = M_PI - pi;
+        } else if (p->y < -1e-15) {
+            /*第三象区*/
+            pi = M_PI + pi;
         }
     }
+
     return pi;
 }
