@@ -74,6 +74,10 @@ DxfTables *dxf_tables_parse(Dxfile *f)
 
     g_return_val_if_fail( f != NULL, NULL );
 
+    if( !dxfile_lseek_section(f, DXF_SECTION_TABLES) ) {
+        return NULL;
+    }
+
     while (!dxfile_is_end(f)) {
         dxfile_get_section(f, &s);
         if (section_is_end(&s)) {
