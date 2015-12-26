@@ -52,14 +52,14 @@ extern GtkWidget *gtk_dxf_new();
  * @param dxfile                dxf文件
  * @return                      成功返回GtkDxf对象，失败返回NULL
  */
-extern GtkWidget *gtk_dxf_new_with_file(const gchar *dxfile, const DxfParseFlag flag);
+extern GtkWidget *gtk_dxf_new_with_file(const gchar *dxfile, const DxfSectionFlag flag);
 
 /**
  * @brief gtk_dxf_load_file 加载dxf文件
  * @param dxf               dxf对象
  * @param file              dxf文件
  */
-extern void gtk_dxf_load_file(GtkDxf *dxf, const gchar *file, const DxfParseFlag flag);
+extern void gtk_dxf_load_file(GtkDxf *dxf, const gchar *file, const DxfSectionFlag flag);
 
 /**
  * @brief gtk_dxf_set_basepoint 设置原点坐标

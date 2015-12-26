@@ -68,7 +68,12 @@ DxfHeader *dxf_header_parse(Dxfile *f)
 
     g_return_val_if_fail( f != NULL, NULL );
 
+    if ( !dxfile_lseek_section(f, DXF_SECTION_HEADER) ) {
+        return NULL;
+    }
+
     h = dxf_header_new_item();
+
 
     SWITCH_CODE_BEGIN(f);
     SWITCH_CODE_DO( 9 ) {

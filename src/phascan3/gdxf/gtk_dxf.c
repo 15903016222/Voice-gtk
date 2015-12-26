@@ -44,7 +44,7 @@ GtkWidget *gtk_dxf_new()
     return GTK_WIDGET(gtk_type_new(gtk_dxf_get_type()));
 }
 
-GtkWidget *gtk_dxf_new_with_file(const gchar *file, const DxfParseFlag flag)
+GtkWidget *gtk_dxf_new_with_file(const gchar *file, const DxfSectionFlag flag)
 {
     GtkWidget *widget;
 
@@ -315,7 +315,7 @@ static void _paint_ucs_axis(cairo_t *cr, GtkDxf *dxf)
     cairo_restore(cr);
 }
 
-void gtk_dxf_load_file(GtkDxf *dxf, const gchar *file, const DxfParseFlag flag)
+void gtk_dxf_load_file(GtkDxf *dxf, const gchar *file, const DxfSectionFlag flag)
 {
     g_return_if_fail(dxf != NULL);
     g_return_if_fail(file != NULL);

@@ -47,19 +47,6 @@ static inline gboolean section_check(const Section *s, gint code,
     section_check(s, 0, SECTION_END)        /*判断为段结束*/
 #define section_is_eof(s) \
     section_check(s, 0, SECTION_EOF)        /*判断为文件结束*/
-/* sections */
-#define section_is_header(s) \
-    section_check(s, 2, SECTION_HEADER)     /*判断为 HEADER 段*/
-#define section_is_classes(s) \
-    section_check(s, 2, SECTION_CLASSES)    /*判断为 CLASSES 段*/
-#define section_is_tables(s) \
-    section_check(s, 2, SECTION_TABLES)     /*判断为 TABLES 段*/
-#define section_is_blocks(s) \
-    section_check(s, 2, SECTION_BLOCKS)     /*判断为 BLOCKS 段*/
-#define section_is_entities(s) \
-    section_check(s, 2, SECTION_ENTITIES)   /*判断为 ENTITIES 段*/
-#define section_is_objects(s) \
-    section_check(s, 2, SECTION_OBJECTS)    /*判断为 OBJECTS 段*/
 #define section_clean(s) \
     memset(s, 0, sizeof(Section))
 

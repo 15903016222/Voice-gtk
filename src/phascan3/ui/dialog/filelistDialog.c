@@ -320,7 +320,7 @@ static gboolean time_handle(gpointer data)
                     (gchar*)g_object_get_data(G_OBJECT(treeview) ,"path"));
     g_string_append(fullname, filename);
 
-    gtk_dxf_load_file(gdxf, fullname->str, DXF_PARSE_HEADER|DXF_PARSE_ENTITIES);
+    gtk_dxf_load_file(gdxf, fullname->str, DXF_SECTION_HEADER|DXF_SECTION_ENTITIES);
 
     g_free(filename);
     g_string_free(fullname, TRUE);

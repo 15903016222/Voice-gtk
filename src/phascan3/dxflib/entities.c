@@ -129,6 +129,10 @@ DxfEntities *dxf_entities_parse(Dxfile *f)
 
     g_return_val_if_fail(f != NULL, NULL);
 
+    if ( !dxfile_lseek_section(f, DXF_SECTION_ENTITIES) ) {
+        return NULL;
+    }
+
     while (TRUE) {
 
         dxfile_get_section(f, &s);

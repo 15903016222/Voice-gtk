@@ -58,7 +58,7 @@ gboolean workpiece_load_file(const gchar *filename, guint grp)
     g_return_val_if_fail( filename != NULL, FALSE );
     g_return_val_if_fail( grp < WORKPIECE_NUM, FALSE );
 
-    Dxf *d = dxf_new_for_file(filename, DXF_PARSE_HEADER | DXF_PARSE_ENTITIES);
+    Dxf *d = dxf_new_for_file(filename, DXF_SECTION_HEADER | DXF_SECTION_ENTITIES);
 
     g_bit_lock(&bitLock, grp);
     if (NULL != workPieceInfo[grp].dxf) {
