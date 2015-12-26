@@ -506,7 +506,29 @@ void SetupReload()
 
 	pp->bRefreshDraw = TRUE ;
 	FreezeScreen(FALSE) ;
+    {
+        gint encType = get_inspec_source(pp->p_config);
+        guchar currentEcoderType = 0;
+        if(encType == 0 ) {
+             /*timer is no need to changed encoder parameters*/
+            return ;
+        }
+        encType -= 1 ;
+        currentEcoderType  = get_enc_type (pp->p_config,  encType );
 
+        currentEcoderType &= 11 ;
+
+        set_enc_type (pp->p_config,  currentEcoderType , encType );
+        if(encType == 0)
+        {
+             output_set_parameter(0 ,OUTPUT_OTHER_COMMAND_ENCODE_X , currentEcoderType , 0);
+        }
+        if(encType == 1)
+        {
+             output_set_parameter(0 ,OUTPUT_OTHER_COMMAND_ENCODE_Y , currentEcoderType , 0);
+        }
+        output_write_one_reg_to_spi(0,OUTPUT_OTHER_COMMAND_ENCODE_Y);
+    }
 }
 
 void ResponseForPrf()
