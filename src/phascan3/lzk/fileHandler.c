@@ -562,7 +562,7 @@ int saveInspectData(const char* filename)
 		fileHead.version = fileHead.size + fileHead.reserved + 1;
 
 		_DrawInfor.nScanStart      =  0     ;
-		_DrawInfor.nScanEnd        =  0     ;
+		_DrawInfor.nScanEnd        =  pp->p_config->inspection_scan_end;
 		_DrawInfor.nScanResolution =  1000  ;
 		_DrawInfor.bScanMark[0]    =  0xff  ;
 

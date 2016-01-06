@@ -490,7 +490,7 @@ int handler_key(int keyval, void* data)
 			}
 			pp->pos = 2;
 			pp->pos1[pp->pos] = 0;
-			CUR_POS = 0;
+			CUR_POS = 2;
 			pp->pos_pos = MENU3_PRESSED;
 			draw_menu1();
 			draw_menu2(0);

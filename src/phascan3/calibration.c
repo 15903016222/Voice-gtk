@@ -460,6 +460,7 @@ void UtTOFDCalicbration(int nGroupId_)
 
 void esc_calibration()
 {
+	int	grp = get_current_group (pp->p_config);
 	if(!pp->ctype_pos)//当位Encoder时无需更新扫描
 	{
 		pp->clb_encoder = 0;
@@ -476,6 +477,12 @@ void esc_calibration()
 	gtk_widget_set_sensitive(pp->menubar,TRUE);
 	gtk_widget_queue_draw (pp->status_area);
 	GROUP_VAL_POS(get_current_group(pp->p_config) , ascan_envelope)  = FALSE;
+	if(pp->echotype_pos == 0)
+	{
+		GROUP_VAL_POS(grp , ut_unit) = UT_UNIT_TRUE_DEPTH;
+		UpdateGateForSpiSending(grp) ;
+		send_focal_spi (grp , SPI_RESET_NO);		
+	}
 	request_refresh(REFRESH_DRAW_AREA_ALL);
 	//draw_area_all();
 	//pp->bRefreshDraw = TRUE ;
