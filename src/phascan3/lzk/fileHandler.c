@@ -729,6 +729,7 @@ int ReadDataFileData(const char* dataFile)
 			memcpy((void*)ScanDataMark ,(void*)_DrawInfor.bScanMark ,  _nTmpValue);
 			memcpy((void*)TMP(dma_data_add) ,(void*)TMP(StoreBuffAddr) ,fileHead.reserved /_nTmpValue);
 			retVar = 0;
+            TMP(loadData) = 1;
 		}
 		else
 		{

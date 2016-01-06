@@ -327,6 +327,7 @@ typedef struct tmp_config
 
 	gboolean	freeze;
 	int         dataRecalling;
+    int loadData;
 	int         nDataSavePlace;
 	CALIBRATION     wizard_calibration;
 	int 	beam_delay[setup_MAX_GROUP_QTY][setup_MAX_GROUP_LAW_QTY] ;

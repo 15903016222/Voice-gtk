@@ -230,28 +230,57 @@ void KeyResponseForEsc(int data)
 	}
 }
 
+#include "../lzk/output_spi.h"
 void StartPause()
 {
-	TMP(freeze) = !TMP(freeze);
-	if(TMP(freeze))
-	{
-		FreezingFPGA(TRUE) ;
-		update_widget_bg(pp->event[19], /*backpic[12]*/ 15);
-	}
-	else
-	{
-		if(TMP(dataRecalling))
-		{// if is recalling data , set recalling end
-			setKeyInvalidateWhenDataRecalling(TRUE);
-			RefreshScanInfor();
-			draw_area_all();
-			pp->bRefreshDraw = TRUE ;
-		}
-		update_widget_bg(pp->event[19], /*backpic[12]*/ 16);
-		FreezingFPGA(FALSE) ;
-	}
-	if((pp->pos == 7 && pp->pos1[7] == 3)|| (pp->pos == 9 && pp->pos1[7] == 4))
-	{
+    gint enc;
+    guchar encType;
+
+    TMP(freeze) = !TMP(freeze);
+
+    if(TMP(freeze))
+    {
+        FreezingFPGA(TRUE) ;
+        update_widget_bg(pp->event[19], /*backpic[12]*/ 15);
+        setKeyInvalidateWhenDataRecalling(FALSE);
+    }
+    else
+    {
+        if(TMP(dataRecalling))
+        {// if is recalling data , set recalling end
+            setKeyInvalidateWhenDataRecalling(TRUE);
+            if (TMP(loadData)) {
+                TMP(loadData) = 0;
+                RefreshScanInfor();
+                draw_area_all();
+                pp->bRefreshDraw = TRUE ;
+            }
+        }
+        update_widget_bg(pp->event[19], /*backpic[12]*/ 16);
+        FreezingFPGA(FALSE) ;
+    }
+
+
+    enc = (gint)get_inspec_source(pp->p_config);
+    if (enc != 0) {
+        encType = get_enc_type(pp->p_config, enc-1);
+        if (TMP(freeze)) {
+            encType |= 4;
+        } else {
+            encType &= 11;
+        }
+        set_enc_type(pp->p_config, encType, enc);
+        if (enc == 1) {
+            output_set_parameter(0, OUTPUT_OTHER_COMMAND_ENCODE_X, encType, 0);
+        } else if ( enc == 2) {
+            output_set_parameter(0, OUTPUT_OTHER_COMMAND_ENCODE_Y, encType, 0);
+        }
+        output_write_one_reg_to_spi(0, OUTPUT_OTHER_COMMAND_ENCODE_Y);
+    }
+
+
+    if((pp->pos == 7 && pp->pos1[7] == 3)|| (pp->pos == 9 && pp->pos1[7] == 4)
+            || (pp->pos == 3 && pp->pos1[3] == 1)) {
 		draw_menu3(0 , NULL) ;
 	}
 }
