@@ -269,7 +269,7 @@ void StartPause()
         } else {
             encType &= 11;
         }
-        set_enc_type(pp->p_config, encType, enc);
+        set_enc_type(pp->p_config, encType, enc-1);
         if (enc == 1) {
             output_set_parameter(0, OUTPUT_OTHER_COMMAND_ENCODE_X, encType, 0);
         } else if ( enc == 2) {
