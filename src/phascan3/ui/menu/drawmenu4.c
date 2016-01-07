@@ -224,8 +224,8 @@ void DrawMenu024UltrasoundVelocityStep2()
 void DrawMenu024UltrasoundVelocityStep3()
 {
 	double tmpf = 0.0;
-	double cur_value, lower, upper, step;
-	int digit, pos, unit;
+	double cur_value=0.0, lower = 0, upper = 0, step = 0;
+	int digit = 0, pos, unit = 0;
 
 	if(pp->echotype_pos == 0)
 	{
@@ -238,7 +238,7 @@ void DrawMenu024UltrasoundVelocityStep3()
 		}
 		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 4))
 		{
-			cur_value = pp->radius2 / 1000.0;
+			cur_value = pp->radius1 / 1000.0;
 			lower = 0.0;
 			upper = 1000.0;
 			step = tmpf;
@@ -254,11 +254,11 @@ void DrawMenu024UltrasoundVelocityStep3()
 				digit = 3;
 				unit = UNIT_INCH;
 			}
-			draw3_digit_pressed (data_024, units[unit], cur_value , lower, upper, step, digit, NULL, pos, 14);
+			draw3_digit_pressed (data_0232, units[unit], cur_value , lower, upper, step, digit, pp, pos, 13);
 		}
 		else
 		{
-			cur_value = pp->radius2 / 1000.0;
+			cur_value = pp->radius1 / 1000.0;
 			digit = 2;
 			pos = 4;
 			unit = UNIT_MM;
@@ -268,8 +268,9 @@ void DrawMenu024UltrasoundVelocityStep3()
 				digit = 3;
 				unit = UNIT_INCH;
 			}
-			draw3_digit_stop (cur_value, units[unit], digit, pos, 14);
+			draw3_digit_stop (cur_value, units[unit], digit, pos, 13);
 		}
+
 	}
 	else if(pp->echotype_pos == 1)
 	{
@@ -282,7 +283,7 @@ void DrawMenu024UltrasoundVelocityStep3()
 		}
 		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 4))
 		{
-			cur_value = pp->depth2 / 1000.0;
+			cur_value = pp->depth1 / 1000.0;
 			lower = 0.0;
 			upper = 1000.0;
 			step = tmpf;
@@ -298,11 +299,11 @@ void DrawMenu024UltrasoundVelocityStep3()
 				digit = 3;
 				unit = UNIT_INCH;
 			}
-			draw3_digit_pressed (data_0241, units[unit], cur_value , lower, upper, step, digit, NULL, pos, 16);
+			draw3_digit_pressed (data_0233, units[unit], cur_value , lower, upper, step, digit, pp, pos, 15);
 		}
 		else
 		{
-			cur_value = pp->depth2 / 1000.0;
+			cur_value = pp->depth1 / 1000.0;
 			digit = 2;
 			pos = 4;
 			unit = UNIT_MM;
@@ -312,7 +313,7 @@ void DrawMenu024UltrasoundVelocityStep3()
 				digit = 3;
 				unit = UNIT_INCH;
 			}
-			draw3_digit_stop (cur_value, units[unit], digit, pos, 16);
+			draw3_digit_stop (cur_value, units[unit], digit, pos, 15);
 		}
 	}
 	else
@@ -326,7 +327,7 @@ void DrawMenu024UltrasoundVelocityStep3()
 		}
 		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 4))
 		{
-			cur_value = pp->thickness2 / 1000.0;
+			cur_value = pp->thickness1 / 1000.0;
 			lower = 0.0;
 			upper = 1000.0;
 			step = tmpf;
@@ -342,11 +343,11 @@ void DrawMenu024UltrasoundVelocityStep3()
 				digit = 3;
 				unit = UNIT_INCH;
 			}
-			draw3_digit_pressed (data_0242, units[unit], cur_value , lower, upper, step, digit, NULL, pos, 18);
+			draw3_digit_pressed (data_0234, units[unit], cur_value , lower, upper, step, digit, pp, pos, 17);
 		}
 		else
 		{
-			cur_value = pp->thickness2 / 1000.0;
+			cur_value = pp->thickness1 / 1000.0;
 			digit = 2;
 			pos = 4;
 			unit = UNIT_MM;
@@ -356,8 +357,9 @@ void DrawMenu024UltrasoundVelocityStep3()
 				digit = 3;
 				unit = UNIT_INCH;
 			}
-			draw3_digit_stop (cur_value, units[unit], digit, pos, 18);
+			draw3_digit_stop (cur_value, units[unit], digit, pos, 17);
 		}
+
 	}
 }
 

@@ -74,11 +74,11 @@ void set_config (unsigned int nGroupId_)
 	set_voltage (pp->p_config, nGroupId_, VOLTAGE_LOW);
 	/* UT settings */
 	set_group_val (p_grp, GROUP_WEDGE_DELAY, 0);
-	set_group_val (p_grp, GROUP_RANGE, 12100);
+	set_group_val (p_grp, GROUP_RANGE, 57022);
 	set_group_val (p_grp, GROUP_START, 0);
-	set_group_val (p_grp, GROUP_GAIN, 0);
+	set_group_val (p_grp, GROUP_GAIN, 2000);
 	set_group_val (p_grp, GROUP_GAINR, 0);
-	set_group_val (p_grp, GROUP_VELOCITY, 592000);
+	set_group_val (p_grp, GROUP_VELOCITY, 324000);
 	set_group_db_ref (pp->p_config, nGroupId_, NORMAL_OFF);
 
 	set_group_val (p_grp, GROUP_PULSER, 1);
@@ -88,7 +88,7 @@ void set_config (unsigned int nGroupId_)
 	//set_group_val (p_grp, GROUP_FILTER, FILTER_AUTO);
 	set_group_val (p_grp, GROUP_RECTIFIER, FULL_WAVE);
 	set_group_val (p_grp, GROUP_AVERAGING, 0);
-	set_group_val (p_grp, GROUP_VIDEO_FILTER, NORMAL_OFF);
+	set_group_val (p_grp, GROUP_VIDEO_FILTER, NORMAL_ON);
 	set_group_val (p_grp, GROUP_TX_RX_MODE, PULSE_ECHO);
 	set_group_val (p_grp, GROUP_FREQ_POS, 12);		/* 0是1Mhz 12AUserdef */
 	set_group_val (p_grp, GROUP_FREQ_VAL, 5000);
@@ -192,7 +192,7 @@ void set_config (unsigned int nGroupId_)
 	set_overlay_sizing_curves (pp->p_config, NORMAL_OFF);
 	set_overlay_gate (pp->p_config, NORMAL_ON);
 	set_overlay_cursor (pp->p_config, NORMAL_OFF);
-	set_overlay_overlay (pp->p_config, NORMAL_OFF);
+	set_overlay_overlay (pp->p_config, NORMAL_ON);
 	/**/
 	GROUP_VAL_POS(nGroupId_ , col_select_pos)=0;  /*0 Amplitude*/
 	GROUP_VAL_POS(nGroupId_ , col_start)   = 0.0;
@@ -232,7 +232,7 @@ void set_config (unsigned int nGroupId_)
 	LAW_VAL_POS (nGroupId_ , Elem_qty)	    = 16;
 	LAW_VAL_POS (nGroupId_ , Wave_type)		=	LONGITUDINAL_WAVE;
 	LAW_VAL_POS (nGroupId_ , Angle_min)		=   3000;
-	LAW_VAL_POS (nGroupId_ , Angle_max)		=	5000;
+	LAW_VAL_POS (nGroupId_ , Angle_max)		=	6000;
 	LAW_VAL_POS (nGroupId_ , Angle_step)	=	100;
 	LAW_VAL_POS (nGroupId_ , Angle_beam_skew_min)		=	0;
 	LAW_VAL_POS (nGroupId_ , Angle_beam_skew_max)		=	0;
@@ -346,11 +346,11 @@ void SettingGroupConfigure (int nGroupId_)
 	set_voltage (pp->p_config, nGroupId_, VOLTAGE_LOW);
 	/* UT settings */
 	set_group_val (p_grp, GROUP_WEDGE_DELAY, 0);
-	set_group_val (p_grp, GROUP_RANGE, 12100);
+	set_group_val (p_grp, GROUP_RANGE, 57022);
 	set_group_val (p_grp, GROUP_START, 0);
-	set_group_val (p_grp, GROUP_GAIN, 0);
+	set_group_val (p_grp, GROUP_GAIN, 2000);
 	set_group_val (p_grp, GROUP_GAINR, 0);
-	set_group_val (p_grp, GROUP_VELOCITY, 592000);
+	set_group_val (p_grp, GROUP_VELOCITY, 324000);
 	set_group_db_ref (pp->p_config, nGroupId_, NORMAL_OFF);
 	set_group_val (p_grp, GROUP_PULSER, 1);
 	set_group_val (p_grp, GROUP_RECEIVER, 1);
@@ -358,7 +358,7 @@ void SettingGroupConfigure (int nGroupId_)
 
 	set_group_val (p_grp, GROUP_RECTIFIER, FULL_WAVE);
 	set_group_val (p_grp, GROUP_AVERAGING, 0);
-	set_group_val (p_grp, GROUP_VIDEO_FILTER, NORMAL_OFF);
+	set_group_val (p_grp, GROUP_VIDEO_FILTER, NORMAL_ON);
 	set_group_val (p_grp, GROUP_TX_RX_MODE, PULSE_ECHO);
 	set_group_val (p_grp, GROUP_FREQ_POS, 12);		/* 0是1Mhz 12AUserdef */
 	set_group_val (p_grp, GROUP_FREQ_VAL, 5000);

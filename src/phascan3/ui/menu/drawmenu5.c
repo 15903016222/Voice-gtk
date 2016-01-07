@@ -282,6 +282,145 @@ void DrawMenu025UltrasoundVelocityStep3()
 {
 	if(pp->cstart_qty == 4)
 	     draw3_popdown_offset(NULL, 5,1,31);
+	else if(pp->cstart_qty == 3)
+	{
+	double tmpf = 0.0;
+	double cur_value, lower, upper, step;
+	int digit, pos, unit;
+
+	if(pp->echotype_pos == 0)
+	{
+		switch (TMP(clb_reg))
+		{
+			case 0:	tmpf = 1; break;
+			case 1:	tmpf = 10; break;
+			case 2:	tmpf = 0.1; break;
+			default:break;
+		}
+		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 5))
+		{
+			cur_value = pp->radius2 / 1000.0;
+			lower = 0.0;
+			upper = 1000.0;
+			step = tmpf;
+			digit = 2;
+			pos = 5;
+			unit = UNIT_MM;
+			if(get_unit(pp->p_config) == UNIT_INCH)
+			{
+				cur_value *= 0.03937;
+				lower *= 0.03937    ;
+				upper *= 0.03937    ;
+				step  *= 0.03937    ;
+				digit = 3;
+				unit = UNIT_INCH;
+			}
+			draw3_digit_pressed (data_024, units[unit], cur_value , lower, upper, step, digit, NULL, pos, 14);
+		}
+		else
+		{
+			cur_value = pp->radius2 / 1000.0;
+			digit = 2;
+			pos = 5;
+			unit = UNIT_MM;
+			if(get_unit(pp->p_config) == UNIT_INCH)
+			{
+				cur_value *= 0.03937;
+				digit = 3;
+				unit = UNIT_INCH;
+			}
+			draw3_digit_stop (cur_value, units[unit], digit, pos, 14);
+		}
+	}
+	else if(pp->echotype_pos == 1)
+	{
+		switch (TMP(clb_reg))
+		{
+			case 0:	tmpf = 1; break;
+			case 1:	tmpf = 10; break;
+			case 2:	tmpf = 0.1; break;
+			default:break;
+		}
+		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 5))
+		{
+			cur_value = pp->depth2 / 1000.0;
+			lower = 0.0;
+			upper = 1000.0;
+			step = tmpf;
+			digit = 2;
+			pos = 5;
+			unit = UNIT_MM;
+			if(get_unit(pp->p_config) == UNIT_INCH)
+			{
+				cur_value *= 0.03937;
+				lower *= 0.03937    ;
+				upper *= 0.03937    ;
+				step  *= 0.03937    ;
+				digit = 3;
+				unit = UNIT_INCH;
+			}
+			draw3_digit_pressed (data_0241, units[unit], cur_value , lower, upper, step, digit, NULL, pos, 16);
+		}
+		else
+		{
+			cur_value = pp->depth2 / 1000.0;
+			digit = 2;
+			pos = 5;
+			unit = UNIT_MM;
+			if(get_unit(pp->p_config) == UNIT_INCH)
+			{
+				cur_value *= 0.03937;
+				digit = 3;
+				unit = UNIT_INCH;
+			}
+			draw3_digit_stop (cur_value, units[unit], digit, pos, 16);
+		}
+	}
+	else
+	{
+		switch (TMP(clb_reg))
+		{
+			case 0:	tmpf = 1; break;
+			case 1:	tmpf = 10; break;
+			case 2:	tmpf = 0.1; break;
+			default:break;
+		}
+		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 5))
+		{
+			cur_value = pp->thickness2 / 1000.0;
+			lower = 0.0;
+			upper = 1000.0;
+			step = tmpf;
+			digit = 2;
+			pos = 5;
+			unit = UNIT_MM;
+			if(get_unit(pp->p_config) == UNIT_INCH)
+			{
+				cur_value *= 0.03937;
+				lower *= 0.03937    ;
+				upper *= 0.03937    ;
+				step  *= 0.03937    ;
+				digit = 3;
+				unit = UNIT_INCH;
+			}
+			draw3_digit_pressed (data_0242, units[unit], cur_value , lower, upper, step, digit, NULL, pos, 18);
+		}
+		else
+		{
+			cur_value = pp->thickness2 / 1000.0;
+			digit = 2;
+			pos = 5;
+			unit = UNIT_MM;
+			if(get_unit(pp->p_config) == UNIT_INCH)
+			{
+				cur_value *= 0.03937;
+				digit = 3;
+				unit = UNIT_INCH;
+			}
+			draw3_digit_stop (cur_value, units[unit], digit, pos, 18);
+		}
+	}
+	}
 	else
 	{
 		gtk_widget_hide (pp->eventbox30[5]);
