@@ -742,7 +742,19 @@ void draw3_pop_tt (void (*fun)(GtkMenuItem*, gpointer),
 			0,
 			gtk_get_current_event_time());
 
+	if (x == 0 && y == 2 && z == 3 & pp->cstart_qty == 3 && pp->cmode_pos == 0 &&pp->ctype_pos ==1)
+	{
+		x = 4;
+		y = 3;
+		z = 2;	
+	}
 	str = g_strdup_printf ("%s", con2_p[x][y][z]);	
+	if (x == 4 && y == 3 && z == 2 & pp->cstart_qty == 3 && pp->cmode_pos == 0&&pp->ctype_pos == 1)
+	{
+	        x = pp->pos;
+       		y = pp->pos1[x];
+        	z = pos;		
+	}	
 	gtk_label_set_text (GTK_LABEL (pp->data3[pos]), cur_value);
 	gtk_label_set_text (GTK_LABEL (pp->label3[pos]), str);
 	if (str) {
@@ -810,12 +822,24 @@ void draw3_popdown (const gchar *cur_value, guint pos, guint big_menu)
 	y = pp->pos1[x];
 	z = pos;
 
+	if (x == 0 && y == 2 && z == 3 & pp->cstart_qty == 3 && pp->cmode_pos == 0&&pp->ctype_pos ==1)
+	{
+		x = 4;
+		y = 3;
+		z = 2;	
+	}
 	//	gtk_menu_popdown( GTK_MENU (pp->menu3));
 	gtk_menu_popdown( GTK_MENU (pp->menu33[pos]));
 	if (big_menu)
 		str = g_strdup_printf ("\n\n%s", con2_p[x][y][z]);	
 	else
-		str = g_strdup_printf ("%s", con2_p[x][y][z]);	
+		str = g_strdup_printf ("%s", con2_p[x][y][z]);
+	if (x == 4 && y == 3 && z == 2 & pp->cstart_qty == 3 && pp->cmode_pos == 0&&pp->ctype_pos == 1)
+	{
+	        x = pp->pos;
+       		y = pp->pos1[x];
+        	z = pos;		
+	}	
 	gtk_label_set_text (GTK_LABEL (pp->label3[z]), str);
 	g_free(str);
 

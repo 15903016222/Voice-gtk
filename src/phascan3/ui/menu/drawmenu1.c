@@ -135,6 +135,8 @@ void DrawMenu021UltraSound()
 				draw3_popdown_offset (NULL, 1, 1, 47 );//
 			else if (pp->cmode_pos == 3)
 				draw3_popdown_offset (NULL, 1, 1, 37 );
+			else if(pp->cmode_pos ==1)
+				draw3_popdown_offset (NULL, 1, 1, 19 );
 		}
 		else if (pp->cstart_qty == 5)
 		{
@@ -246,7 +248,7 @@ void DrawMenu021()
 			gtk_widget_set_sensitive(pp->eventbox2[1],FALSE);
 			gtk_widget_set_sensitive(pp->eventbox2[3],FALSE);
 			gtk_widget_set_sensitive(pp->menubar,FALSE);
-			set_overlay_gate(pp->p_config,1);
+			//set_overlay_gate(pp->p_config,1);
 		}
 	}
 	draw3_popdown (NULL, 1, 1);

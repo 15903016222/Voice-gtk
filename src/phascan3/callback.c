@@ -1854,6 +1854,7 @@ void StepSlection022()
             } else if (pp->cmode_pos == 3) {
                     data_process(&(TMP(db_reg)), 4);
             }
+		data_process(&(TMP(cstart_reg)), 2);
         }
 		else
 		{
@@ -2713,6 +2714,7 @@ void b3_fun5(gpointer p)
 						else if(pp->cstart_qty == 2 || pp->cstart_qty == 3)
 						{
 							data_process(&(pp->p_tmp_config->range_reg), 2);
+							data_process(&(TMP(clb_reg)) , 2);
 						}
 						break;
 					case 3:break;
