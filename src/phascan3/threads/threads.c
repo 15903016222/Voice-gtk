@@ -34,7 +34,9 @@ gboolean time_handler1 (GtkWidget *widget)
 	strftime (buffer, 32, "%F %T", loctime);
 
 	markup = g_markup_printf_escaped ("<span foreground='white' font_desc='10'>%s</span>", buffer);
+    gdk_threads_lock();
 	gtk_label_set_markup (GTK_LABEL(pp->label[4]),markup);
+    gdk_threads_leave();
 	g_free (markup);
 	return TRUE;
 }
