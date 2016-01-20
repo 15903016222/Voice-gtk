@@ -500,6 +500,7 @@ static void save_cal_law(int group, PARAMETER_P p)
 	for (i = 0; i < TMP(beam_qty[group]); i++)
 	{
 		//***************************************
+        g_message("%s[%d]", __func__, __LINE__);
 		GROUP_VAL_POS(group , field_distance[i]) = p->field_distance[i];//每束 中心正元到出射点的距离 单位mm
 		TMP(beam_delay[group][i]) = p->G_delay[i]  ;
 		//***************************************

@@ -38,8 +38,7 @@ void draw_field_value ()
 	for(i = 0 ; i < 4 ; i++)
 	{
 		cur_value = TMP(field[0][i] ) ;
-		if(cur_value >= MEASURE_DATA_BASE )
-		{
+        if(cur_value >= MEASURE_DATA_BASE ) {
 			if(cur_value == MEASURE_DATA_ND )
 				markup[i] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>ND</span>");
 			else if(cur_value == MEASURE_DATA_NS )
@@ -55,9 +54,9 @@ void draw_field_value ()
 			else //if(cur_value == MEASURE_DATA_NULL )
 				markup[i] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>---</span>");
 
-		}
-		else
-		    markup[i] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>%.1f</span>", cur_value);
+        } else {
+            markup[i] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>%.1f</span>", cur_value);
+        }
 	}
 
 	if(pp->nEncoderType)
