@@ -631,11 +631,13 @@ void ResponseForDataLoad()
 	for(i = 0 ; i < get_group_qty(pp->p_config) ; ++i)
 	{
 		generate_focallaw (i);
-		if(	!GROUP_VAL_POS(i , WedgeDelayCalibrated) )
+        if(	!GROUP_VAL_POS(i , WedgeDelayCalibrated) ) {
 			RefreshBeamDelay(i);
-		if(	!GROUP_VAL_POS(i , SensationCalibrated) )
+        } else if (	!GROUP_VAL_POS(i , SensationCalibrated) ) {
 			RefreshGainOffset(i);
+        }
 	}
+
 	output_init(GetChannelEnable()) ;
 	MultiGroupSendFocalSpi();
 	MultiGroupSendGroupSpi();
