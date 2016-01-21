@@ -7353,7 +7353,12 @@ void UpdateGateForSpiSending(int nGroupId_)
 	{
 		for ( k = 0; k < _nBeamQty ; k++)//k:每个beam
 		{
-			delay = GROUP_VAL_POS(nGroupId_ , beam_delay[k]) / 10 + _nWedgeDelay ;
+            if ( GROUP_VAL_POS(nGroupId_, group_mode) == PA_SCAN ) {
+                delay = GROUP_VAL_POS(nGroupId_ , beam_delay[k]) / 10 + _nWedgeDelay;
+            } else {
+                delay = _nWedgeDelay;
+            }
+
 			if(GROUP_VAL_POS(nGroupId_ , ut_unit)  == UT_UNIT_TRUE_DEPTH )
 			{
 				_nAngleCos = LAW_VAL_POS(nGroupId_ , Angle_min)/100.0 + k * LAW_VAL_POS(nGroupId_ , Angle_step) / 100.0 ;

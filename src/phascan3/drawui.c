@@ -2693,10 +2693,8 @@ void DrawWeldShapeDoubleV(GtkWidget* widget , gpointer data , cairo_t* cr)
     cairo_set_source_rgba( cr, 0.8 , 0.8 , 0.8 , 1.0 );
     if(current_pos >= 20 && current_pos <= w + 20)
     {
-        printf("_nSymmetry = %d\n",_nSymmetry);
         if(!_nSymmetry)
         {
-                        printf("if(!_nSymmetry)\n");
                         cairo_set_dash (cr, dashed1, 3, 0);
                         cairo_move_to (cr, current_pos  , 0  );
                         cairo_line_to (cr, current_pos  , h  );

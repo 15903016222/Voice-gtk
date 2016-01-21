@@ -633,8 +633,6 @@ int ReadDataFileSetup(const char* dataFile)
 	}
 	else
 	{
-
-
 		fileHeadStruct fileHead;
 		DRAW_INFO_PACK _DrawInfor ;
 		lseek( fd, 0 , SEEK_SET );

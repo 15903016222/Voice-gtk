@@ -28,11 +28,12 @@ int HandlerOpenDataFile(const char* filename)
 {
 	int retvar;
 
-	if(0 == (retvar = ReadDataFileSetup(filename)))
-	{
+
+    retvar = ReadDataFileSetup(filename);
+    if(0 ==  retvar) {
 		retvar = ReadDataFileData(filename);
 	}
-	//debugging//////
+
 	return retvar;
 }
 
