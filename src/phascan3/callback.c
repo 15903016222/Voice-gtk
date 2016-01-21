@@ -362,7 +362,11 @@ void RefreshBeamDelay(int grp)
 {
 	char* pTempDelay = (char*)(TMP(beam_delay[grp]));
 	char* pGroupDelay = (char*)(GROUP_VAL_POS(grp , beam_delay));
-	memcpy(pGroupDelay , pTempDelay , sizeof(int) * setup_MAX_GROUP_LAW_QTY) ;
+    if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
+        memset(pGroupDelay, 0, sizeof(int)*setup_MAX_GROUP_LAW_QTY);
+    } else {
+        memcpy(pGroupDelay , pTempDelay , sizeof(int) * setup_MAX_GROUP_LAW_QTY) ;
+    }
 }
 
 
