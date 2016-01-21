@@ -504,7 +504,6 @@ static void save_cal_law(int group, PARAMETER_P p)
 	for (i = 0; i < TMP(beam_qty[group]); i++)
 	{
 		//***************************************
-        g_message("%s[%d]", __func__, __LINE__);
 		GROUP_VAL_POS(group , field_distance[i]) = p->field_distance[i];//每束 中心正元到出射点的距离 单位mm
 		TMP(beam_delay[group][i]) = p->G_delay[i]  ;
 		//***************************************
@@ -7357,12 +7356,7 @@ void UpdateGateForSpiSending(int nGroupId_)
 	{
 		for ( k = 0; k < _nBeamQty ; k++)//k:每个beam
 		{
-            if ( GROUP_VAL_POS(nGroupId_, group_mode) == PA_SCAN ) {
-                delay = GROUP_VAL_POS(nGroupId_ , beam_delay[k]) / 10 + _nWedgeDelay;
-            } else {
-                delay = _nWedgeDelay;
-            }
-
+			delay = GROUP_VAL_POS(nGroupId_ , beam_delay[k]) / 10 + _nWedgeDelay ;
 			if(GROUP_VAL_POS(nGroupId_ , ut_unit)  == UT_UNIT_TRUE_DEPTH )
 			{
 				_nAngleCos = LAW_VAL_POS(nGroupId_ , Angle_min)/100.0 + k * LAW_VAL_POS(nGroupId_ , Angle_step) / 100.0 ;

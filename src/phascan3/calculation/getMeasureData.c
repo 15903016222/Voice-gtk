@@ -425,12 +425,8 @@ double getMeasureData_aThickness(int grp , int _nIndex)
 		_nAngle = TMP(current_angle[grp]);
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
-        _nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
+		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)(_nData & 0xfffff)   - _nWedgeDelay   ;
@@ -479,11 +475,7 @@ double getMeasureData_ML(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)(_nData & 0xfffff)  -_nWedgeDelay ;
@@ -529,11 +521,7 @@ double getMeasureData_RA(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)(_nData & 0xfffff) - _nWedgeDelay  ;
@@ -581,11 +569,7 @@ double getMeasureData_RB(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)(_nData & 0xfffff) - _nWedgeDelay  ;
@@ -638,12 +622,8 @@ double getMeasureData_PA(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
-        _nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
+		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 		_nMeasureData = _nMeasureData * _nVelocity / 200000 ;
 
@@ -678,12 +658,8 @@ double getMeasureData_PA(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
-        _nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
+		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 		_nMeasureData = _nMeasureData * _nVelocity / 200000 ;
 
@@ -711,11 +687,7 @@ double getMeasureData_PA(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)(_nData & 0xfffff) - _nWedgeDelay  ;
@@ -762,11 +734,7 @@ double getMeasureData_PB(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)(_nData & 0xfffff) - _nWedgeDelay  ;
@@ -817,12 +785,7 @@ double getMeasureData_DA(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
-
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 		_nMeasureData = _nMeasureData * _nVelocity / 200000 ;
@@ -863,12 +826,7 @@ double getMeasureData_DA(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
-
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 		_nMeasureData = _nMeasureData * _nVelocity / 200000 ;
@@ -899,11 +857,7 @@ double getMeasureData_DA(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth;
-        }
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 		_nMeasureData = _nMeasureData * _nVelocity * cos(_nAngle) / 200000 ;
@@ -956,12 +910,7 @@ double getMeasureData_DB(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
-
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 		_nMeasureData = _nMeasureData * _nVelocity * cos(_nAngle) / 200000 ;
@@ -1011,11 +960,7 @@ double getMeasureData_SA(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 		_nMeasureData = _nMeasureData * _nVelocity  / 200000 ;
@@ -1060,12 +1005,7 @@ double getMeasureData_SB(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
-
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 		_nMeasureData = _nMeasureData * _nVelocity  / 200000 ;
@@ -1111,12 +1051,7 @@ double getMeasureData_ViA(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
-
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 		_nMeasureData = _nMeasureData * _nVelocity * sin(_nAngle) / 200000 + GROUP_VAL_POS(grp , field_distance[_nBeamNo]) ; //TMP(field_distance[grp][_nBeamNo]);
@@ -1177,12 +1112,7 @@ double getMeasureData_ViB(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
-
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 		_nMeasureData = _nMeasureData * _nVelocity * sin(_nAngle) / 200000 + GROUP_VAL_POS(grp , field_distance[_nBeamNo]) ;//TMP(field_distance[grp][_nBeamNo]);
@@ -1243,12 +1173,7 @@ double getMeasureData_VsA(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
-
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 		_nMeasureData = _nMeasureData * _nVelocity * sin(_nAngle) / 200000 + GROUP_VAL_POS(grp , field_distance[_nBeamNo]) ;//TMP(field_distance[grp][_nBeamNo]);
@@ -1309,12 +1234,7 @@ double getMeasureData_VsB(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
-
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 		_nMeasureData = _nMeasureData * _nVelocity * sin(_nAngle) / 200000 + GROUP_VAL_POS(grp , field_distance[_nBeamNo]) ; //TMP(field_distance[grp][_nBeamNo]);
@@ -1379,12 +1299,7 @@ double getMeasureData_LA(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
-
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 		_nMeasureData = _nMeasureData * _nVelocity * cos(_nAngle) / 200000 ;
@@ -1430,12 +1345,7 @@ double getMeasureData_LB(int grp , int _nIndex)
 		_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 		_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 		_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-        if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-            _nWedgeDelay += _nPulseWidth;
-        } else {
-            _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-        }
-
+		_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 		_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 		_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 		_nMeasureData = _nMeasureData * _nVelocity * cos(_nAngle) / 200000 ;
@@ -1525,12 +1435,7 @@ double getMeasureData_AWSD_C(int grp , int _nIndex)
 			_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 			_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 			_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-            if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-                _nWedgeDelay += _nPulseWidth;
-            } else {
-                _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-            }
-
+			_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 			_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 			_nMeasureData = (double)((_nData & 0xfffff) - _nWedgeDelay);
 			_nMeasureData = _nMeasureData * _nVelocity  / 200000 ;
@@ -1577,12 +1482,7 @@ double getMeasureData_AWSD_D(int fieldIndex , int grp , int _nIndex)
 			_nPulseWidth  = GROUP_VAL_POS(grp , pulser_width1) / (10 * PW_DIV);
 			_nWedgeDelay  = GROUP_VAL_POS(grp , wedge_delay) / 10;
 			_nBeamDelay = GROUP_VAL_POS(grp , beam_delay[_nBeamNo]) / 10;    // 10ns
-            if ( GROUP_VAL_POS(grp, group_mode) != PA_SCAN ) {
-                _nWedgeDelay += _nPulseWidth;
-            } else {
-                _nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
-            }
-
+			_nWedgeDelay += _nBeamDelay + _nPulseWidth  ;
 			_nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 			_nTmpValue = (double)((_nData & 0xfffff) - _nWedgeDelay);
 			_nTmpValue = _nTmpValue * _nVelocity  / 200000 ;
