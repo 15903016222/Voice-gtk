@@ -72,7 +72,9 @@ static void openDataFile(GtkWidget* dialog ,const char* filename)
 {
 	if(dialogWarning(dialog ,getDictString(_STRING_read_data_file_)))
 	{
-		if(checkDataFile(filename)) return ;
+        if(checkDataFile(filename)) {
+            return ;
+        }
 		request_refresh(REFRESH_SCANDATA_LOAD) ;
 		HandlerOpenDataFile(filename);
 		pp->pos_pos = MENU3_STOP;
