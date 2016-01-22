@@ -375,11 +375,13 @@ void MultiGroupSendAllFocalSpi()
 	output_set_parameter(0 ,OUTPUT_OTHER_COMMAND_LAW_QTY ,GPOINTER_TO_UINT (_nBeamQty - 1) ,0);
 	output_write_one_reg_to_spi(0 ,OUTPUT_OTHER_COMMAND_LAW_QTY);
 
-    if (!TMP(loadData)) {
-        for(i = 0 ; i < _nBeamQty ; i++ )
-        {
-            write_focal_data (&TMP(focal_spi[i]), i , SPI_RESET_YES);
-        }
+    for(i = 0 ; i < _nBeamQty ; i++ )
+    {
+        write_focal_data (&TMP(focal_spi[i]), i , SPI_RESET_YES);
+    }
+
+    if (TMP(loadData)) {
+        FreezingFPGA(TRUE);
     }
 }
 
