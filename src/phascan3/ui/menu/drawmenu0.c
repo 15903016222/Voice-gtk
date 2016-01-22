@@ -908,8 +908,8 @@ void DrawMenu720()
 			{
 				cur_value = get_area_scanstart (pp->p_config)/1000.0;
 				lower = -9999.0;
-				upper  = get_area_scanend (pp->p_config)/1000.0;
-				step = tmpf;
+                upper  = get_area_scanend (pp->p_config)/1000.0-1;
+                step = tmpf;
 				digit = 2;
 				pos = 0;
 				unit = UNIT_MM;
@@ -918,8 +918,8 @@ void DrawMenu720()
 			{
 				cur_value = get_area_scanstart (pp->p_config)/1000.0*0.03937;
 				lower = -9999.0*0.03937;
-				upper  = get_area_scanend (pp->p_config)/1000.0 * 0.03937;
-				step = tmpf*0.03937;
+                upper  = get_area_scanend (pp->p_config)/1000.0 * 0.03937-0.03937;
+                step = tmpf*0.03937;
 				digit = 3;
 				pos = 0;
 				unit = UNIT_INCH;

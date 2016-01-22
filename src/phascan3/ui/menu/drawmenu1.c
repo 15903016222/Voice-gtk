@@ -2036,9 +2036,9 @@ void DrawMenu721()
 			if(get_unit(pp->p_config) == UNIT_MM)
 			{
 				cur_value = get_area_scanend (pp->p_config)/1000.0;
-				lower  = get_area_scanstart (pp->p_config)/1000.0;
 				upper  = 9999.0;
 				step   = tmpf;
+                lower  = get_area_scanstart (pp->p_config)/1000.0+1;
 				digit  = 2;
 				pos    = 1;
 				unit   = UNIT_MM;
@@ -2046,9 +2046,10 @@ void DrawMenu721()
 			else
 			{
 				cur_value = get_area_scanend (pp->p_config)/1000.0 * 0.03937;
-				lower     = get_area_scanstart (pp->p_config)/1000.0 * 0.03937;
 				upper     = 9999.0;
 				step      = tmpf*0.03937;
+                lower     = get_area_scanstart (pp->p_config)/1000.0 * 0.03937+0.03937;
+
 				digit     = 3;
 				pos = 1;
 				unit = UNIT_INCH;

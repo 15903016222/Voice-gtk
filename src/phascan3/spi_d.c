@@ -382,6 +382,7 @@ void MultiGroupSendAllFocalSpi()
 
     if (TMP(loadData)) {
         FreezingFPGA(TRUE);
+        memcpy((void*)TMP(dma_data_add) ,(void*)TMP(StoreBuffAddr) , getDataBlockSize());
     }
 }
 
