@@ -16,6 +16,7 @@
 #include <sys/mman.h>
 #include <linux/fb.h>
 #include <gtk/gtk.h>
+#include <pthread.h>
 #include "globalData.h"
 #include "lzk/Ascan.h"
 #include "calibration.h"
@@ -3705,10 +3706,26 @@ void BscanRefreshScanRuler(int nWinIndex_)
 	_nCounter++ ;
 }
 
+static pthread_mutex_t bscanRefeshDrawMutex = PTHREAD_MUTEX_INITIALIZER;
+static int bscanRefeshDraw = FALSE;
+inline void bscan_set_refresh(int flag)
+{
+    pthread_mutex_lock(&bscanRefeshDrawMutex);
+    bscanRefeshDraw = flag;
+    pthread_mutex_unlock(&bscanRefeshDrawMutex);
+}
+static inline gboolean bscan_need_refresh()
+{
+    int ret = FALSE;
+    pthread_mutex_lock(&bscanRefeshDrawMutex);
+    ret = bscanRefeshDraw;
+    pthread_mutex_unlock(&bscanRefeshDrawMutex);
+    return ret;
+}
 
 void DrawBscan(int WinIndex, unsigned short *pFrameBuffer , unsigned int pBeamData)
 {
-	if (pp->bRefreshDraw)
+    if (pp->bRefreshDraw || bscan_need_refresh())
 	{
 		DrawBscanInit(WinIndex);
 		return ;
@@ -3800,7 +3817,7 @@ void TofdBscanRefreshScanRulerVer(int nWinIndex_)
 
 void DrawBscanTOFD(int WinIndex, unsigned short *pFrameBuffer , unsigned int pBeamData)
 {
-	if (pp->bRefreshDraw)
+    if (pp->bRefreshDraw || bscan_need_refresh())
 	{
 		DrawBscanTOFDInit(WinIndex);
 		return ;
@@ -3834,7 +3851,7 @@ void DrawBscanTOFD(int WinIndex, unsigned short *pFrameBuffer , unsigned int pBe
 
 void DrawBscanTOFDVer(int WinIndex, unsigned short *pFrameBuffer , unsigned int pBeamData)
 {
-	if (pp->bRefreshDraw)
+    if (pp->bRefreshDraw || bscan_need_refresh())
 	{
 		DrawBscanTOFDInit(WinIndex);
 		return ;

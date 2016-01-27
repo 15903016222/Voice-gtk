@@ -155,4 +155,6 @@ extern VERTICAL_LINE AScanDrawRange[setup_MAX_GROUP_QTY][MAX_BEAM_QTY];
 extern int g_nScanTimmerCounter ;
 extern int g_bScanTimmerCircled ;
 
+extern void bscan_set_refresh(int flag);
+
 #endif

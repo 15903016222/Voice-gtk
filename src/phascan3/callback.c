@@ -5237,8 +5237,9 @@ void data_3112 (GtkSpinButton *spinbutton, gpointer data)
 		if(temp_value  == TMP(beam_num[grp]))    return ;
 		TMP(beam_num[grp]) = temp_value ;
 	}
-	//request_refresh(REFRESH_CURRENT_LAW_CHANGED);
-	gtk_widget_queue_draw (pp->vboxtable);//DrawDisplayWindowFrame() ;
+//    request_refresh(REFRESH_CURRENT_LAW_CHANGED);
+    bscan_set_refresh(TRUE);
+    gtk_widget_queue_draw (pp->vboxtable);//DrawDisplayWindowFrame() ;
 	UpdateWindowTitle()  ;
 }
 

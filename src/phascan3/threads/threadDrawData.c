@@ -297,6 +297,7 @@ void draw_frame_thread(int nPosition_)
 	{
 		draw_scan(k, TMP(fb1_addr) , pBeamData);
 	}
+    bscan_set_refresh(FALSE);
 #endif
 
 }
