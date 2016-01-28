@@ -48,7 +48,8 @@ struct TofdStraighteningStruct
 	int dataPoints;
 	float refLine;
 };
-extern struct TofdStraighteningStruct gTofdS;
+#define MAX_GROUP   8
+extern struct TofdStraighteningStruct gTofdS[MAX_GROUP];
 void TofdGetPara(int grp);
 void TofdHandler(int i ,int grp ,int width ,int _nDataOffset ,int _nDataSize);
 void SetDefaultPCS(int grp);

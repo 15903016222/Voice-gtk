@@ -291,7 +291,7 @@ void DrawCursorBSCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 		sample_range *= cos_current_angle ;
 	}
 
-	double tofdRefLine = gTofdS.refLine / rate;
+    double tofdRefLine = gTofdS[grp].refLine / rate;
 	struct TofdStruct tofd;
 	int i;
 	double xx[NUMOFPOINT];
@@ -313,7 +313,7 @@ void DrawCursorBSCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 	//ur线
 	cairo_set_source_rgba(cr,1.0,0.5,0.5,1.0);/*红色cursor*/
 	_nTmpX = (u_reference-sample_start)/sample_range  ;/* 当前值除以最大值再乘以窗口宽度*/
-	gTofdS.ur = _nTmpX ;
+    gTofdS[grp].ur = _nTmpX ;
 	_nTmpX = 20+(w-50)*_nTmpX;
 	_nTmpX = (int)_nTmpX + 0.5  ;
 	cairo_move_to (cr, _nTmpX, 0);
@@ -343,7 +343,7 @@ void DrawCursorBSCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 
 	//sr线
 	_nTmpY = (s_reference-_nVStart) / (_nVStop - _nVStart);
-	gTofdS.sr = _nTmpY;
+    gTofdS[grp].sr = _nTmpY;
 	_nTmpY = (1 - _nTmpY) * (h - 20) ;
 	_nTmpY = (int)_nTmpY + 0.5 ;
 	cairo_set_source_rgba(cr,1.0,0.5,0.5,1.0);/*红色cursor*/
@@ -422,7 +422,7 @@ void DrawCursorBSCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 
 		//ref line线
 		_nTmpY = (tofdRefLine -_nVStart) / (_nVStop - _nVStart);
-		gTofdS.averagePos = _nTmpY;//从开始算的第几个像素
+        gTofdS[grp].averagePos = _nTmpY;//从开始算的第几个像素
 		_nTmpY = (1 - _nTmpY) * (h - 20) ;
 		_nTmpY = (int)_nTmpY + 0.5 ;
 		cairo_set_source_rgba(cr,1.0,1.0,0.5,1.0);/*黄色cursor*/
@@ -449,7 +449,7 @@ void DrawCursorBSCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 	cairo_set_source_rgba(cr,0,0,1,1.0);/*蓝色cursor*/
 	/* 当前值除以最大值再乘以窗口宽度 */
 	_nTmpX = (u_measure-sample_start)/(sample_range)  ;
-	gTofdS.um = _nTmpX;
+    gTofdS[grp].um = _nTmpX;
 	_nTmpX = 20+(w-50)*_nTmpX;
 	_nTmpX = (int)_nTmpX + 0.5  ;
 	cairo_move_to (cr, _nTmpX, 0);
@@ -479,7 +479,7 @@ void DrawCursorBSCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 
 	//sm线
 	_nTmpY = (s_measure - _nVStart) / (_nVStop - _nVStart);
-	gTofdS.sm = _nTmpY;
+    gTofdS[grp].sm = _nTmpY;
 	_nTmpY = (1 - _nTmpY) * (h - 20) ;
 	_nTmpY = (int)_nTmpY + 0.5 ;
 	cairo_set_source_rgba(cr,0,0,1,1.0);/*蓝色cursor*/
@@ -1020,7 +1020,7 @@ void DrawCursorTOFDB(GtkWidget *widget , gpointer data , cairo_t *cr)
 		sample_range *= cos_current_angle ;
 	}
 
-	double tofdRefLine = gTofdS.refLine / rate;
+    double tofdRefLine = gTofdS[grp].refLine / rate;
 	struct TofdStruct tofd;
 	int i;
 	double yy[NUMOFPOINT];
@@ -1044,7 +1044,7 @@ void DrawCursorTOFDB(GtkWidget *widget , gpointer data , cairo_t *cr)
 	//ur线
 	cairo_set_source_rgba(cr,1.0,0.5,0.5,1.0);/*红色cursor*/
 	_nTmpX = (u_reference - sample_start) / sample_range  ;/* 当前值除以最大值再乘以窗口宽度*/
-	gTofdS.ur = _nTmpX ;
+    gTofdS[grp].ur = _nTmpX ;
 	_nTmpX *= (h - 20);
 	_nTmpX = (int)_nTmpX + 0.5  ;
 	cairo_move_to (cr, 20 , _nTmpX);
@@ -1081,7 +1081,7 @@ void DrawCursorTOFDB(GtkWidget *widget , gpointer data , cairo_t *cr)
 
 	//sr线
 	_nTmpY = (s_reference-_nVStart) / (_nVStop - _nVStart);
-	gTofdS.sr = _nTmpY;
+    gTofdS[grp].sr = _nTmpY;
 	_nTmpY = _nTmpY * (w - 50) + 20 ;
 	_nTmpY = (int)_nTmpY + 0.5 ;
 	cairo_set_source_rgba(cr,1.0,0.5,0.5,1.0);/*红色cursor*/
@@ -1165,7 +1165,7 @@ void DrawCursorTOFDB(GtkWidget *widget , gpointer data , cairo_t *cr)
 
 		//ref line线
 		_nTmpY = (tofdRefLine -_nVStart) / (_nVStop - _nVStart);
-		gTofdS.averagePos = _nTmpY ;//从开始算的第几个像素
+        gTofdS[grp].averagePos = _nTmpY ;//从开始算的第几个像素
 		_nTmpY = _nTmpY * (w - 50) + 20 ;
 		_nTmpY = (int)_nTmpY + 0.5 ;
 		cairo_set_source_rgba(cr,1.0,1.0,0.5,1.0);/*黄色cursor*/
@@ -1192,7 +1192,7 @@ void DrawCursorTOFDB(GtkWidget *widget , gpointer data , cairo_t *cr)
 	cairo_set_source_rgba(cr,0,0,1,1.0);/*蓝色cursor*/
 //	cairo_set_source_rgba(cr,0.5,1.0,0.5,1.0);/*绿色cursor*/
 	_nTmpX = (u_measure-sample_start)/(sample_range)  ;	/* 当前值除以最大值再乘以窗口宽度 */
-	gTofdS.um = _nTmpX;
+    gTofdS[grp].um = _nTmpX;
 	_nTmpX *= (h-20);
 	_nTmpX = (int)_nTmpX + 0.5  ;
 	cairo_move_to (cr, 20 , _nTmpX);
@@ -1228,7 +1228,7 @@ void DrawCursorTOFDB(GtkWidget *widget , gpointer data , cairo_t *cr)
 
 	//sm线
 	_nTmpY = (s_measure - _nVStart) / (_nVStop - _nVStart);
-	gTofdS.sm = _nTmpY;
+    gTofdS[grp].sm = _nTmpY;
 	_nTmpY = _nTmpY * (w - 50) + 20 ;
 	_nTmpY = (int)_nTmpY + 0.5 ;
 	cairo_set_source_rgba(cr,0,0,1,1.0);/*蓝色cursor*/

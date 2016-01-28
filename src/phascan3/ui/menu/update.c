@@ -132,6 +132,7 @@ void menuCommon(MENU_UNION menu_union)
 
 void menu315(MENU_UNION menu_union)
 {
+    int grp = get_current_group(pp->p_config);
 	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == menu_union.pos.menu3))
 	{
 		gCurrentMenuPos.key = menu_union.key;
@@ -148,7 +149,7 @@ void menu315(MENU_UNION menu_union)
 			}
 			if(get_inspec_source (pp->p_config) == 0)
 			{
-				pMenuData->current_value = gTofdS.refLine;
+                pMenuData->current_value = gTofdS[grp].refLine;
 				double rate =  GROUP_VAL_POS(0 , prf1) * get_area_scanresolution (pp->p_config) / 10000.0;
 				pMenuData->current_value /= rate ;
 				pMenuData->lower = -1000;
@@ -158,7 +159,7 @@ void menu315(MENU_UNION menu_union)
 			}
 			else
 			{
-				pMenuData->current_value = gTofdS.refLine;
+                pMenuData->current_value = gTofdS[grp].refLine;
 				pMenuData->lower = -10000;
 				pMenuData->upper = 10000;
 				pMenuData->unit = UNITS_MM;
@@ -179,14 +180,14 @@ void menu315(MENU_UNION menu_union)
 		{
 			if(get_inspec_source (pp->p_config) == 0)
 			{
-				pMenuData->current_value = gTofdS.refLine;
+                pMenuData->current_value = gTofdS[grp].refLine;
 				double rate =  GROUP_VAL_POS(0 , prf1) * get_area_scanresolution (pp->p_config) / 10000.0;
 				pMenuData->current_value /= rate ;
 				pMenuData->unit = UNITS_S;
 			}
 			else
 			{
-				pMenuData->current_value = gTofdS.refLine;
+                pMenuData->current_value = gTofdS[grp].refLine;
 				pMenuData->unit = UNITS_MM;
 			}
 			menuSpinRelease(menu_union);
@@ -216,8 +217,10 @@ void menu341(MENU_UNION menu_union)//3 ,4 ,1 ,0
 			}
 		}
 		else
-		{
-			pMenuData->data = gTofdS.straighteningEnable;//更新需要读取数据
+        {
+            int grp = get_current_group(pp->p_config);
+
+            pMenuData->data = gTofdS[grp].straighteningEnable;//更新需要读取数据
 			menuSetLabel(menu_union.pos.menu3 ,LABELBUTTON_MODE_DATA3 ,LABELBUTTON_STATUS_RELEASE
 					,getMainLabelString(menu_union)
 					,getMainDictString(MAINSTRINGDICT_SWITCH ,pMenuData->data));
@@ -244,7 +247,8 @@ void menu342(MENU_UNION menu_union)//3 ,4 ,2 ,0
 		}
 		else
 		{
-			pMenuData->data = gTofdS.removeLateralWaveEnable;//更新需要读取数据
+            int grp = get_current_group(pp->p_config);
+            pMenuData->data = gTofdS[grp].removeLateralWaveEnable;//更新需要读取数据
 			menuSetLabel(menu_union.pos.menu3 ,LABELBUTTON_MODE_DATA3 ,LABELBUTTON_STATUS_RELEASE
 					,getMainLabelString(menu_union)
 					,getMainDictString(MAINSTRINGDICT_SWITCH ,pMenuData->data));

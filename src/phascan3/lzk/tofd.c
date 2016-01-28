@@ -108,22 +108,23 @@ void GetPointer(struct TofdStruct* pTofd ,struct DefectStruct* pDefect ,double* 
 
 #include <string.h>
 #include "../drawfb.h"
-struct TofdStraighteningStruct gTofdS;
+struct TofdStraighteningStruct gTofdS[MAX_GROUP] ;
 
 static int TofdGetGatePos(const unsigned char* pData)
 {
 	int averageStartPos = 0;
+    int grp = get_current_group(pp->p_config);
 
 	int lo,hi;
-	if(gTofdS.intUm > gTofdS.intUr)
+    if(gTofdS[grp].intUm > gTofdS[grp].intUr)
 	{
-		hi = gTofdS.intUm;
-		lo = gTofdS.intUr;
+        hi = gTofdS[grp].intUm;
+        lo = gTofdS[grp].intUr;
 	}
 	else
 	{
-		hi = gTofdS.intUr;
-		lo = gTofdS.intUm;
+        hi = gTofdS[grp].intUr;
+        lo = gTofdS[grp].intUm;
 	}
 
 	int i;
@@ -176,15 +177,16 @@ void TofdStraightening(unsigned char* pData ,const unsigned char* pAverageData ,
 void TofdRemoveLateralWave(unsigned char* pData ,const unsigned char* pAverageData)
 {
 	int lo,hi;
-	if(gTofdS.intUm > gTofdS.intUr)
+    int grp = get_current_group(pp->p_config);
+    if(gTofdS[grp].intUm > gTofdS[grp].intUr)
 	{
-		hi = gTofdS.intUm;
-		lo = gTofdS.intUr;
+        hi = gTofdS[grp].intUm;
+        lo = gTofdS[grp].intUr;
 	}
 	else
 	{
-		hi = gTofdS.intUr;
-		lo = gTofdS.intUm;
+        hi = gTofdS[grp].intUr;
+        lo = gTofdS[grp].intUm;
 	}
 
 	int i;
@@ -206,21 +208,22 @@ void TofdGetPara(int grp)
 		double end = get_area_scanend(pp->p_config) / 1000.0;//mm
 		double resolution = get_area_scanresolution(pp->p_config) / 1000.0;//mm
 
-		double tofdRefLine = gTofdS.refLine ;//mm
+        double tofdRefLine = gTofdS[grp].refLine ;//mm
 		double s_reference = GROUP_VAL_POS(grp , s_reference)/100.0 ;//mm
 		double s_measure   = GROUP_VAL_POS(grp , s_measure)/100.0 ;//mm
 
-		gTofdS.intAveragePos = tofdRefLine > end ?0 :(int)((tofdRefLine - start) / resolution) + 1;
-		gTofdS.intSr = s_reference > end ?0 :(int)((s_reference - start) / resolution) + 1;
-		gTofdS.intSm = s_measure > end ?0 :(int)((s_measure - start) / resolution) + 1;
+        gTofdS[grp].intAveragePos = tofdRefLine > end ?0 :(int)((tofdRefLine - start) / resolution) + 1;
+        gTofdS[grp].intSr = s_reference > end ?0 :(int)((s_reference - start) / resolution) + 1;
+        gTofdS[grp].intSm = s_measure > end ?0 :(int)((s_measure - start) / resolution) + 1;
 
-		gTofdS.dataPoints = pp->nPointQty[grp];
-		if(gTofdS.um < 0) gTofdS.um = 0 ;
-		if(gTofdS.um > 1) gTofdS.um = 1 ;
-		if(gTofdS.ur < 0) gTofdS.ur = 0 ;
-		if(gTofdS.ur > 1) gTofdS.ur = 1 ;
-		gTofdS.intUm = (int)(gTofdS.um * gTofdS.dataPoints);
-		gTofdS.intUr = (int)(gTofdS.ur * gTofdS.dataPoints);
+        gTofdS[grp].dataPoints = pp->nPointQty[grp];
+        if(gTofdS[grp].um < 0) gTofdS[grp].um = 0 ;
+        if(gTofdS[grp].um > 1) gTofdS[grp].um = 1 ;
+        if(gTofdS[grp].ur < 0) gTofdS[grp].ur = 0 ;
+        if(gTofdS[grp].ur > 1) gTofdS[grp].ur = 1 ;
+        gTofdS[grp].intUm = (int)(gTofdS[grp].um * gTofdS[grp].dataPoints);
+        gTofdS[grp].intUr = (int)(gTofdS[grp].ur * gTofdS[grp].dataPoints);
+
 	}
 }
 
@@ -236,29 +239,29 @@ void TofdHandler(int i ,int grp ,int width ,int _nDataOffset ,int _nDataSize)
 
 	memcpy(tmpData ,_pData ,dataPoints);
 	_pData = tmpData;
-	pAverageData = (unsigned char*)(pStoreBuffer + gTofdS.intAveragePos * _nDataSize + _nDataOffset);
+    pAverageData = (unsigned char*)(pStoreBuffer + gTofdS[grp].intAveragePos * _nDataSize + _nDataOffset);
 
 
-	if(gTofdS.straighteningEnable)
+    if(gTofdS[grp].straighteningEnable)
 	{
 		TofdStraightening(_pData ,pAverageData ,dataPoints);
 	}
 
 	int lo,hi;
-	if(gTofdS.intSm > gTofdS.intSr)
+    if(gTofdS[grp].intSm > gTofdS[grp].intSr)
 	{
-		hi = gTofdS.intSm;
-		lo = gTofdS.intSr;
+        hi = gTofdS[grp].intSm;
+        lo = gTofdS[grp].intSr;
 	}
 	else
 	{
-		hi = gTofdS.intSr;
-		lo = gTofdS.intSm;
+        hi = gTofdS[grp].intSr;
+        lo = gTofdS[grp].intSm;
 	}
 
     if((i <= hi) && (i >= lo))
 	{
-		if(gTofdS.removeLateralWaveEnable)
+        if(gTofdS[grp].removeLateralWaveEnable)
 		{
 			TofdRemoveLateralWave(_pData ,pAverageData);
 		}
@@ -279,10 +282,10 @@ int MenuHandler_TofdStraightening(void* p_para)
 	GROUP* pGroup = get_group_by_id (pp->p_config, group);
 	if(TOFD == get_group_val (pGroup, GROUP_TX_RX_MODE))//tofd
 	{
-		if(0 == gTofdS.straighteningEnable)
+        if(0 == gTofdS[group].straighteningEnable)
 		{
 			TofdGetPara(group);
-			gTofdS.straighteningEnable = 1;
+            gTofdS[group].straighteningEnable = 1;
 		} else {
             MenuHandler_TofdCancel(NULL);
         }
@@ -304,10 +307,10 @@ int MenuHandler_TofdRemoveLateralWave(void* p_para)
 	GROUP* pGroup = get_group_by_id (pp->p_config, group);
 	if(TOFD == get_group_val (pGroup, GROUP_TX_RX_MODE))//tofd
 	{
-		if(0 == gTofdS.removeLateralWaveEnable)
+        if(0 == gTofdS[group].removeLateralWaveEnable)
 		{
 			TofdGetPara(group);
-			gTofdS.removeLateralWaveEnable = 1;
+            gTofdS[group].removeLateralWaveEnable = 1;
 		} else {
             MenuHandler_TofdCancel(NULL);
         }
@@ -326,14 +329,15 @@ int MenuHandler_TofdRemoveLateralWave(void* p_para)
 
 int MenuHandler_TofdCancel(void* p_para)
 {
-	if(gTofdS.straighteningEnable)
+    int grp = get_current_group(pp->p_config);
+    if(gTofdS[grp].straighteningEnable)
 	{
-		gTofdS.straighteningEnable = 0;
+        gTofdS[grp].straighteningEnable = 0;
 	}
 
-	if(gTofdS.removeLateralWaveEnable)
+    if(gTofdS[grp].removeLateralWaveEnable)
 	{
-		gTofdS.removeLateralWaveEnable = 0;
+        gTofdS[grp].removeLateralWaveEnable = 0;
 	}
 	return TRUE;
 }
@@ -342,21 +346,22 @@ int MenuHandler_TofdRefLine(void* p_para)
 {
 	if(NULL != p_para)
 	{
+        int grp = get_current_group(pp->p_config);
 		float para = *(float*)p_para;
 		if(get_inspec_source (pp->p_config) == 0)
 		{
 			double rate =  GROUP_VAL_POS(0 , prf1) * get_area_scanresolution (pp->p_config) / 10000.0;
-			gTofdS.refLine  =  para * rate;
+            gTofdS[grp].refLine  =  para * rate;
 		}
 		else
 		{
 			if (UNIT_MM == get_unit(pp->p_config))
 			{
-				gTofdS.refLine  =  para;
+                gTofdS[grp].refLine  =  para;
 			}
 			else/* 英寸 */
 			{
-				gTofdS.refLine  =  para / 0.03937;
+                gTofdS[grp].refLine  =  para / 0.03937;
 			}
 		}
 		gtk_widget_queue_draw (pp->vboxtable);
