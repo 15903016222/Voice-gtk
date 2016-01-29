@@ -6,6 +6,8 @@
 #ifndef __SPI_D_H_
 #define __SPI_D_H_
 
+#include "version.h"
+
 #define FOCAL_DATA_ADD	0x10000000
 #define GROUP_DATA_ADD	0x20000000
 #define TGC_DATA_ADD	0x40000000
@@ -31,6 +33,10 @@ typedef struct _Group_data
 #if HIGH_POWER
 	unsigned int	compress_rato:14;		/* bit:7-20  压缩比	*/
 	unsigned int	gain:11;				/* bit:21-31 Gain	*/
+#elif V3_2
+    unsigned int    compress_rato:12;       /* bit:7-18 压缩比 */
+    unsigned int    TT9:2;                  /* 保留两位 */
+    unsigned int    gain:11;                /* bit:21-31 Gain */
 #else
 	unsigned int	compress_rato:12;		/* bit:7-18  压缩比	*/
 	unsigned int	TT9:3;					/*  */
