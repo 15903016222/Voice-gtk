@@ -45,41 +45,41 @@ int isThisApplicationExisted()
 }
 
 /* config结构体的初始值 */
-void set_config (unsigned int nGroupId_)
+void set_config (unsigned int grp)
 {
 	gint i;
-	GROUP *p_grp = get_group_by_id (pp->p_config, nGroupId_);
+    GROUP *p_grp = get_group_by_id (pp->p_config, grp);
 	set_group_qty (pp->p_config, 1);
 	pp->p_config->groupId = 0 ;
 #if HIGH_POWER
 	set_language (pp->p_config, LANGUAGE_CHINESE);
 	GROUP_VAL_POS(nGroupId_ , group_mode) = UT1_SCAN;
 #else
-	GROUP_VAL_POS(nGroupId_ , group_mode) = PA_SCAN;
+    GROUP_VAL_POS(grp , group_mode) = PA_SCAN;
 #endif
 	set_probe_select (pp->p_config, CHOOSE_PROBE);
 	set_probe_fft (pp->p_config, NORMAL_OFF);
-	GROUP_VAL_POS(nGroupId_ , scan_offset)=0;
-	GROUP_VAL_POS(nGroupId_ , index_offset)=0;
-	GROUP_VAL_POS(nGroupId_ , skew)= 9000;
-	GROUP_VAL_POS(nGroupId_ , agate_start)=1000;
-	GROUP_VAL_POS(nGroupId_ , agate_width)=1000;
+    GROUP_VAL_POS(grp , scan_offset)=0;
+    GROUP_VAL_POS(grp , index_offset)=0;
+    GROUP_VAL_POS(grp , skew)= 9000;
+    GROUP_VAL_POS(grp , agate_start)=1000;
+    GROUP_VAL_POS(grp , agate_width)=1000;
 
-	set_part_thickness (nGroupId_ , GUINT_TO_POINTER (50000));
-	set_part_diameter (nGroupId_, GUINT_TO_POINTER (1000));
-	set_part_material (nGroupId_, GUINT_TO_POINTER (1));
-	set_part_weld (nGroupId_, GUINT_TO_POINTER (1));
+    set_part_thickness (grp , GUINT_TO_POINTER (50000));
+    set_part_diameter (grp, GUINT_TO_POINTER (1000));
+    set_part_material (grp, GUINT_TO_POINTER (1));
+    set_part_weld (grp, GUINT_TO_POINTER (1));
 	set_auto_detect (pp->p_config, NORMAL_OFF);
 	set_auto_focal (pp->p_config, NORMAL_ON);
-	set_voltage (pp->p_config, nGroupId_, VOLTAGE_LOW);
+    set_voltage (pp->p_config, grp, VOLTAGE_LOW);
 	/* UT settings */
 	set_group_val (p_grp, GROUP_WEDGE_DELAY, 0);
 	set_group_val (p_grp, GROUP_RANGE, 57022);
 	set_group_val (p_grp, GROUP_START, 0);
-	set_group_val (p_grp, GROUP_GAIN, 2000);
+    group_set_gain(grp, 2000);
 	set_group_val (p_grp, GROUP_GAINR, 0);
 	set_group_val (p_grp, GROUP_VELOCITY, 324000);
-	set_group_db_ref (pp->p_config, nGroupId_, NORMAL_OFF);
+    set_group_db_ref (pp->p_config, grp, NORMAL_OFF);
 
 	set_group_val (p_grp, GROUP_PULSER, 1);
 	set_group_val (p_grp, GROUP_RECEIVER, 1);
@@ -101,30 +101,30 @@ void set_config (unsigned int nGroupId_)
     GROUP_VAL_POS(0 , prf_pos1) = 3 ;
 	GROUP_VAL_POS(0 , prf1) = 200 ;
 
-	GROUP_VAL_POS(nGroupId_ , point_qty)	= 605;			/* 0是Auto */
-	GROUP_VAL_POS(nGroupId_ , sum_gain)	= 400;			/* 0是Auto */
-	GROUP_VAL_POS(nGroupId_ , gate_pos)	= GATE_A;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_A , start) = 0;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_A , width) = 5000;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_A , height) = 25; /*闸门默认高度为25*/
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_A , parameters) = 0; /*闸门默认高度为20*/
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_A , synchro)    = 0; /*闸门默认高度为20*/
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_B , start) = 2500;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_B , width) = 2500;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_B , height) = 20; /*闸门默认高度为20*/
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_B , parameters) = 0; /*闸门默认高度为20*/
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_B , synchro)    = 0; /*闸门默认高度为20*/
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_I , start) = 0;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_I , width) = 0;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_I , height)= 0;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_A ,  measure) = 0  ;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_B ,  measure) = 0  ;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_I ,  measure) = 1  ;
+    GROUP_VAL_POS(grp , point_qty)	= 605;			/* 0是Auto */
+    GROUP_VAL_POS(grp , sum_gain)	= 400;			/* 0是Auto */
+    GROUP_VAL_POS(grp , gate_pos)	= GATE_A;
+    GROUP_GATE_VAL_POS( grp , GATE_A , start) = 0;
+    GROUP_GATE_VAL_POS( grp , GATE_A , width) = 5000;
+    GROUP_GATE_VAL_POS( grp , GATE_A , height) = 25; /*闸门默认高度为25*/
+    GROUP_GATE_VAL_POS( grp , GATE_A , parameters) = 0; /*闸门默认高度为20*/
+    GROUP_GATE_VAL_POS( grp , GATE_A , synchro)    = 0; /*闸门默认高度为20*/
+    GROUP_GATE_VAL_POS( grp , GATE_B , start) = 2500;
+    GROUP_GATE_VAL_POS( grp , GATE_B , width) = 2500;
+    GROUP_GATE_VAL_POS( grp , GATE_B , height) = 20; /*闸门默认高度为20*/
+    GROUP_GATE_VAL_POS( grp , GATE_B , parameters) = 0; /*闸门默认高度为20*/
+    GROUP_GATE_VAL_POS( grp , GATE_B , synchro)    = 0; /*闸门默认高度为20*/
+    GROUP_GATE_VAL_POS( grp , GATE_I , start) = 0;
+    GROUP_GATE_VAL_POS( grp , GATE_I , width) = 0;
+    GROUP_GATE_VAL_POS( grp , GATE_I , height)= 0;
+    GROUP_GATE_VAL_POS( grp , GATE_A ,  measure) = 0  ;
+    GROUP_GATE_VAL_POS( grp , GATE_B ,  measure) = 0  ;
+    GROUP_GATE_VAL_POS( grp , GATE_I ,  measure) = 1  ;
 	set_alarm_pos (pp->p_config, 0);
-	set_alarm_groupa (pp->p_config, nGroupId_);
+    set_alarm_groupa (pp->p_config, grp);
 	set_alarm_conditiona (pp->p_config, ALARM_NONE);
 	set_alarm_operator (pp->p_config, OPERATOR_AND);
-	set_alarm_groupb (pp->p_config, nGroupId_);
+    set_alarm_groupb (pp->p_config, grp);
 	set_alarm_conditionb (pp->p_config, ALARM_NONE);
 
 	set_output_pos (pp->p_config, OUTPUT1);
@@ -132,16 +132,16 @@ void set_config (unsigned int nGroupId_)
 		set_output_alarm (pp->p_config, ALARM_OFF, i);
 	set_output_count(pp->p_config,1);
 
-	GROUP_VAL_POS(nGroupId_ , selection)=0;   /*0 是 A-scan*/
-	GROUP_VAL_POS(nGroupId_ , per_reference)=1000.0;
-	GROUP_VAL_POS(nGroupId_ , per_measure)=1000.0;
-	GROUP_VAL_POS(nGroupId_ , u_reference)=1000.0;
-	GROUP_VAL_POS(nGroupId_ , u_measure)=1000.0;
-	GROUP_VAL_POS(nGroupId_ , s_reference)=1000.0;
-	GROUP_VAL_POS(nGroupId_ , s_measure)=100.0;
-	GROUP_VAL_POS(nGroupId_ , source)=0;   /*0是A^ */
-	GROUP_VAL_POS(nGroupId_ , min_thickness) = 500;
-	GROUP_VAL_POS(nGroupId_ , max_thickness) = 50000;
+    GROUP_VAL_POS(grp , selection)=0;   /*0 是 A-scan*/
+    GROUP_VAL_POS(grp , per_reference)=1000.0;
+    GROUP_VAL_POS(grp , per_measure)=1000.0;
+    GROUP_VAL_POS(grp , u_reference)=1000.0;
+    GROUP_VAL_POS(grp , u_measure)=1000.0;
+    GROUP_VAL_POS(grp , s_reference)=1000.0;
+    GROUP_VAL_POS(grp , s_measure)=100.0;
+    GROUP_VAL_POS(grp , source)=0;   /*0是A^ */
+    GROUP_VAL_POS(grp , min_thickness) = 500;
+    GROUP_VAL_POS(grp , max_thickness) = 50000;
 
 	set_reading_field1 (pp->p_config, 0);/*A%*/
 	set_reading_field2 (pp->p_config, 31);/*DA*/
@@ -159,7 +159,7 @@ void set_config (unsigned int nGroupId_)
 
 	pp->p_config->damping_pos_ut1 = 0;
 	pp->p_config->damping_pos_ut2 = 0;
-	GROUP_VAL_POS(nGroupId_ , probe.Model[0]) = 32;
+    GROUP_VAL_POS(grp , probe.Model[0]) = 32;
 
 	set_display_table (pp->p_config, NORMAL_OFF);
 	set_entry_image (pp->p_config, NORMAL_OFF);
@@ -187,69 +187,69 @@ void set_config (unsigned int nGroupId_)
 	set_stripscan_data2 (pp->p_config, STRIP_SCAN_A_HEIGHT);
 	set_stripscan_mode (pp->p_config, STRIP_SCAN_ALL_ASCAN);
 	set_stripscan_disrange (pp->p_config, 100);
-	GROUP_VAL_POS(nGroupId_ , ut_unit)=2;  /* 2 是 true depth */
+    GROUP_VAL_POS(grp , ut_unit)=2;  /* 2 是 true depth */
 	set_overlay_grid(pp->p_config, 5);     /*5是 Off*/
 	set_overlay_sizing_curves (pp->p_config, NORMAL_OFF);
 	set_overlay_gate (pp->p_config, NORMAL_ON);
 	set_overlay_cursor (pp->p_config, NORMAL_OFF);
 	set_overlay_overlay (pp->p_config, NORMAL_ON);
 	/**/
-	GROUP_VAL_POS(nGroupId_ , col_select_pos)=0;  /*0 Amplitude*/
-	GROUP_VAL_POS(nGroupId_ , col_start)   = 0.0;
-	GROUP_VAL_POS(nGroupId_ , col_end)     = 100.0;
-	GROUP_VAL_POS(nGroupId_ , col_contrast)= 0.0;
-	GROUP_VAL_POS(nGroupId_ , col_brightness)    = 50.0;
-	GROUP_VAL_POS(nGroupId_ , col_min)           = 5000.0;
-	GROUP_VAL_POS(nGroupId_ , col_max)           = 50000.0;
-	GROUP_VAL_POS(nGroupId_ , col_mode)    = 0;  /*0 Exclusion*/
+    GROUP_VAL_POS(grp , col_select_pos)=0;  /*0 Amplitude*/
+    GROUP_VAL_POS(grp , col_start)   = 0.0;
+    GROUP_VAL_POS(grp , col_end)     = 100.0;
+    GROUP_VAL_POS(grp , col_contrast)= 0.0;
+    GROUP_VAL_POS(grp , col_brightness)    = 50.0;
+    GROUP_VAL_POS(grp , col_min)           = 5000.0;
+    GROUP_VAL_POS(grp , col_max)           = 50000.0;
+    GROUP_VAL_POS(grp , col_mode)    = 0;  /*0 Exclusion*/
 
 	set_dis_prop_scan (pp->p_config, DIS_PROP_SCAN_A);/*0 A-Scan*/
-	GROUP_VAL_POS(nGroupId_ , ascan_color) = 3; 	/*3 Yellow*/
-	GROUP_VAL_POS(nGroupId_ , ascan_envelope)	=	0; /*0 None*/
-	GROUP_VAL_POS(nGroupId_ , ascan_appearance)	=	0; /*0 Hollow*/
-	GROUP_VAL_POS(nGroupId_ , ascan_overlay)	=	0; /*0 None*/
+    GROUP_VAL_POS(grp , ascan_color) = 3; 	/*3 Yellow*/
+    GROUP_VAL_POS(grp , ascan_envelope)	=	0; /*0 None*/
+    GROUP_VAL_POS(grp , ascan_appearance)	=	0; /*0 Hollow*/
+    GROUP_VAL_POS(grp , ascan_overlay)	=	0; /*0 None*/
 	set_dis_prop_boptimum (pp->p_config, NORMAL_OFF);
 	set_dis_prop_cratio (pp->p_config, NORMAL_OFF);
 	set_dis_prop_sinterpolation (pp->p_config, NORMAL_ON);
 	set_dis_prop_strip_orientation (pp->p_config, NORMAL_OFF);
 
 	set_fft_color (pp->p_config, FFT_BLUE);
-	GROUP_VAL_POS(nGroupId_ , skew_pos) = 1;
-	GROUP_VAL_POS(nGroupId_ , wedge.Orientation)    = 1 ;
+    GROUP_VAL_POS(grp , skew_pos) = 1;
+    GROUP_VAL_POS(grp , wedge.Orientation)    = 1 ;
 
-	GROUP_VAL_POS(nGroupId_ , probe.Model[0]) = 32;
-	GROUP_VAL_POS(nGroupId_ , probe.Elem_qty)  = 16  ;
+    GROUP_VAL_POS(grp , probe.Model[0]) = 32;
+    GROUP_VAL_POS(grp , probe.Elem_qty)  = 16  ;
 
-	GROUP_VAL_POS(nGroupId_ , pulser1 )         = 1;		/* 1~128 - elem_qty(聚焦阵元数最大为32) + 1 指定发射阵元 */
-	GROUP_VAL_POS(nGroupId_ , receiver1 )       = 1;		/* 接收阵元 必须是 PR 模式才能调节 */
-	LAW_VAL_POS (nGroupId_ , Tx_connect)	= 1;
-	LAW_VAL_POS (nGroupId_ , Rx_connect)	= 1;
-	LAW_VAL_POS (nGroupId_ , First_tx_elem)	= 1;
-	LAW_VAL_POS (nGroupId_ , First_rx_elem)	= 1;
-	LAW_VAL_POS (nGroupId_ , Last_tx_elem)	= 16;
-	LAW_VAL_POS (nGroupId_ , Last_rx_elem)	= 16;
-	LAW_VAL_POS (nGroupId_ , Elem_step)		=	1;
-	LAW_VAL_POS (nGroupId_ , Elem_qty)	    = 16;
-	LAW_VAL_POS (nGroupId_ , Wave_type)		=	LONGITUDINAL_WAVE;
-	LAW_VAL_POS (nGroupId_ , Angle_min)		=   3000;
-	LAW_VAL_POS (nGroupId_ , Angle_max)		=	6000;
-	LAW_VAL_POS (nGroupId_ , Angle_step)	=	100;
-	LAW_VAL_POS (nGroupId_ , Angle_beam_skew_min)		=	0;
-	LAW_VAL_POS (nGroupId_ , Angle_beam_skew_max)		=	0;
-	LAW_VAL_POS (nGroupId_ , Angle_beam_skew_step)		=	100;
-	LAW_VAL_POS (nGroupId_ , Focus_depth)	=	5000;
-	LAW_VAL_POS (nGroupId_ , Position_start)	=	30000;
-	LAW_VAL_POS (nGroupId_ , Position_end)	=	50000;
-	LAW_VAL_POS (nGroupId_ , Position_step)	=	1000;
-	LAW_VAL_POS (nGroupId_ , Offset_start)	=	2000;
-	LAW_VAL_POS (nGroupId_ , Offset_end)	=	2000;
-	LAW_VAL_POS (nGroupId_ , Depth_start)	=	2000;
-	LAW_VAL_POS (nGroupId_ , Depth_end)	    =	2000;
-	LAW_VAL_POS (nGroupId_ , Focal_type)	=   AZIMUTHAL_SCAN;
-	LAW_VAL_POS (nGroupId_ , Focal_point_type)	= DEPTH_P;
+    GROUP_VAL_POS(grp , pulser1 )         = 1;		/* 1~128 - elem_qty(聚焦阵元数最大为32) + 1 指定发射阵元 */
+    GROUP_VAL_POS(grp , receiver1 )       = 1;		/* 接收阵元 必须是 PR 模式才能调节 */
+    LAW_VAL_POS (grp , Tx_connect)	= 1;
+    LAW_VAL_POS (grp , Rx_connect)	= 1;
+    LAW_VAL_POS (grp , First_tx_elem)	= 1;
+    LAW_VAL_POS (grp , First_rx_elem)	= 1;
+    LAW_VAL_POS (grp , Last_tx_elem)	= 16;
+    LAW_VAL_POS (grp , Last_rx_elem)	= 16;
+    LAW_VAL_POS (grp , Elem_step)		=	1;
+    LAW_VAL_POS (grp , Elem_qty)	    = 16;
+    LAW_VAL_POS (grp , Wave_type)		=	LONGITUDINAL_WAVE;
+    LAW_VAL_POS (grp , Angle_min)		=   3000;
+    LAW_VAL_POS (grp , Angle_max)		=	6000;
+    LAW_VAL_POS (grp , Angle_step)	=	100;
+    LAW_VAL_POS (grp , Angle_beam_skew_min)		=	0;
+    LAW_VAL_POS (grp , Angle_beam_skew_max)		=	0;
+    LAW_VAL_POS (grp , Angle_beam_skew_step)		=	100;
+    LAW_VAL_POS (grp , Focus_depth)	=	5000;
+    LAW_VAL_POS (grp , Position_start)	=	30000;
+    LAW_VAL_POS (grp , Position_end)	=	50000;
+    LAW_VAL_POS (grp , Position_step)	=	1000;
+    LAW_VAL_POS (grp , Offset_start)	=	2000;
+    LAW_VAL_POS (grp , Offset_end)	=	2000;
+    LAW_VAL_POS (grp , Depth_start)	=	2000;
+    LAW_VAL_POS (grp , Depth_end)	    =	2000;
+    LAW_VAL_POS (grp , Focal_type)	=   AZIMUTHAL_SCAN;
+    LAW_VAL_POS (grp , Focal_point_type)	= DEPTH_P;
 
-	LAW_VAL_POS (nGroupId_ , law_index_start)= 0;
-	LAW_VAL_POS (nGroupId_ , law_index_end)	= 1;
+    LAW_VAL_POS (grp , law_index_start)= 0;
+    LAW_VAL_POS (grp , law_index_end)	= 1;
 
 	set_cur_encoder (pp->p_config, ENCODER_1);
 	set_enc_type (pp->p_config,  3 , 0);
@@ -299,13 +299,13 @@ void set_config (unsigned int nGroupId_)
 	set_report_userfield_label (pp->p_config, "Author", 0);
 	set_report_userfield_content (pp->p_config, "Content", 0);
 
-	set_part_geometry (nGroupId_, GUINT_TO_POINTER (PLATE_PART));
+    set_part_geometry (grp, GUINT_TO_POINTER (PLATE_PART));
 	set_report_template (pp->p_config, REPORT_COMPLETE);
 	set_report_paper_size (pp->p_config, PAPER_A4);
 
 	for(i=0; i < 256; i++)
 	{
-		GROUP_VAL_POS(nGroupId_ , gain_offset[i]) = 0;
+        GROUP_VAL_POS(grp , gain_offset[i]) = 0;
 	}
 
 	set_output_pos (pp->p_config, 2);
@@ -316,42 +316,42 @@ void set_config (unsigned int nGroupId_)
 	set_output_holdtime(pp->p_config,100000);
 
 	pp->p_config->bright = 50 ;
-	GROUP_VAL_POS(nGroupId_ , VelocityCalibrated) = 0;
-	GROUP_VAL_POS(nGroupId_ , WedgeDelayCalibrated) = 0 ;
-	GROUP_VAL_POS(nGroupId_ , SensationCalibrated) =  0  ;
-	GROUP_VAL_POS(nGroupId_ , part.weldtype_pos )  =  0 ;
-	memset ((void*)(GROUP_VAL_POS(nGroupId_ , nReferenceData)), 0, 32);
+    GROUP_VAL_POS(grp , VelocityCalibrated) = 0;
+    GROUP_VAL_POS(grp , WedgeDelayCalibrated) = 0 ;
+    GROUP_VAL_POS(grp , SensationCalibrated) =  0  ;
+    GROUP_VAL_POS(grp , part.weldtype_pos )  =  0 ;
+    memset ((void*)(GROUP_VAL_POS(grp , nReferenceData)), 0, 32);
 
 	strcpy(pp->p_config->file_name_inspection_data , "InspectData");
 	strcpy(pp->p_config->file_name_inspection_table , "InspectTable");
 	strcpy(pp->p_config->file_name_screen , "Screen");
 	strcpy(pp->p_config->file_name_report , "Report");
 
-	GROUP_VAL_POS(nGroupId_ , SizingCurves.mode_pos)= 0;				 /* 0是Setup */
-	GROUP_VAL_POS(nGroupId_ , SizingCurves.curve_pos)= 0;			/* 0是NOne */
-	InitSizingCurveParameters(nGroupId_);
+    GROUP_VAL_POS(grp , SizingCurves.mode_pos)= 0;				 /* 0是Setup */
+    GROUP_VAL_POS(grp , SizingCurves.curve_pos)= 0;			/* 0是NOne */
+    InitSizingCurveParameters(grp);
 }
 
-void SettingGroupConfigure (int nGroupId_)
+void SettingGroupConfigure (int grp)
 {
 	int i;
-	GROUP *p_grp = get_group_by_id (pp->p_config, nGroupId_);
-	GROUP_VAL_POS(nGroupId_ , group_mode) = PA_SCAN;
+    GROUP *p_grp = get_group_by_id (pp->p_config, grp);
+    GROUP_VAL_POS(grp , group_mode) = PA_SCAN;
 
-	GROUP_VAL_POS(nGroupId_ , scan_offset)=0;
-	GROUP_VAL_POS(nGroupId_ , index_offset)=0;
-	GROUP_VAL_POS(nGroupId_ , skew)=9000;
-	GROUP_VAL_POS(nGroupId_ , agate_start)=1000;
-	GROUP_VAL_POS(nGroupId_ , agate_width)=1000;
-	set_voltage (pp->p_config, nGroupId_, VOLTAGE_LOW);
+    GROUP_VAL_POS(grp , scan_offset)=0;
+    GROUP_VAL_POS(grp , index_offset)=0;
+    GROUP_VAL_POS(grp , skew)=9000;
+    GROUP_VAL_POS(grp , agate_start)=1000;
+    GROUP_VAL_POS(grp , agate_width)=1000;
+    set_voltage (pp->p_config, grp, VOLTAGE_LOW);
 	/* UT settings */
 	set_group_val (p_grp, GROUP_WEDGE_DELAY, 0);
 	set_group_val (p_grp, GROUP_RANGE, 57022);
 	set_group_val (p_grp, GROUP_START, 0);
-	set_group_val (p_grp, GROUP_GAIN, 2000);
+    group_set_gain(grp, 2000);
 	set_group_val (p_grp, GROUP_GAINR, 0);
 	set_group_val (p_grp, GROUP_VELOCITY, 324000);
-	set_group_db_ref (pp->p_config, nGroupId_, NORMAL_OFF);
+    set_group_db_ref (pp->p_config, grp, NORMAL_OFF);
 	set_group_val (p_grp, GROUP_PULSER, 1);
 	set_group_val (p_grp, GROUP_RECEIVER, 1);
 	set_group_val (p_grp, GROUP_FILTER_POS, 1);
@@ -369,100 +369,100 @@ void SettingGroupConfigure (int nGroupId_)
 	set_group_val (p_grp, GROUP_PW_VAL, 10000);
 #endif
 
-	GROUP_VAL_POS(nGroupId_ , point_qty)	= 605;			/* 0是Auto */
-	GROUP_VAL_POS(nGroupId_ , sum_gain)	= 400;			/* 0是Auto */
-	GROUP_VAL_POS(nGroupId_ , gate_pos)	= GATE_A;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_A , start) = 0;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_A , width) = 5000;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_A , height) = 25; /*闸门默认高度为20*/
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_A , parameters) = 0; /*闸门默认高度为20*/
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_A , synchro)    = 0; /*闸门默认高度为20*/
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_B , start) = 2500;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_B , width) = 2500;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_B , height) = 20; /*闸门默认高度为20*/
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_B , parameters) = 0; /*闸门默认高度为20*/
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_B , synchro)    = 0; /*闸门默认高度为20*/
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_I , start) = 0;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_I , width) = 0;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_I , height)= 0; /*闸门默认高度为20*/
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_A ,  measure) = 0  ;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_B ,  measure) = 0  ;
-	GROUP_GATE_VAL_POS( nGroupId_ , GATE_I ,  measure) = 1  ;
+    GROUP_VAL_POS(grp , point_qty)	= 605;			/* 0是Auto */
+    GROUP_VAL_POS(grp , sum_gain)	= 400;			/* 0是Auto */
+    GROUP_VAL_POS(grp , gate_pos)	= GATE_A;
+    GROUP_GATE_VAL_POS( grp , GATE_A , start) = 0;
+    GROUP_GATE_VAL_POS( grp , GATE_A , width) = 5000;
+    GROUP_GATE_VAL_POS( grp , GATE_A , height) = 25; /*闸门默认高度为20*/
+    GROUP_GATE_VAL_POS( grp , GATE_A , parameters) = 0; /*闸门默认高度为20*/
+    GROUP_GATE_VAL_POS( grp , GATE_A , synchro)    = 0; /*闸门默认高度为20*/
+    GROUP_GATE_VAL_POS( grp , GATE_B , start) = 2500;
+    GROUP_GATE_VAL_POS( grp , GATE_B , width) = 2500;
+    GROUP_GATE_VAL_POS( grp , GATE_B , height) = 20; /*闸门默认高度为20*/
+    GROUP_GATE_VAL_POS( grp , GATE_B , parameters) = 0; /*闸门默认高度为20*/
+    GROUP_GATE_VAL_POS( grp , GATE_B , synchro)    = 0; /*闸门默认高度为20*/
+    GROUP_GATE_VAL_POS( grp , GATE_I , start) = 0;
+    GROUP_GATE_VAL_POS( grp , GATE_I , width) = 0;
+    GROUP_GATE_VAL_POS( grp , GATE_I , height)= 0; /*闸门默认高度为20*/
+    GROUP_GATE_VAL_POS( grp , GATE_A ,  measure) = 0  ;
+    GROUP_GATE_VAL_POS( grp , GATE_B ,  measure) = 0  ;
+    GROUP_GATE_VAL_POS( grp , GATE_I ,  measure) = 1  ;
 
-	GROUP_VAL_POS(nGroupId_ , selection)=0;   /*0 是 A-scan*/
-	GROUP_VAL_POS(nGroupId_ , per_reference)=1000.0;
-	GROUP_VAL_POS(nGroupId_ , per_measure)=1000.0;
-	GROUP_VAL_POS(nGroupId_ , u_reference)=1000.0;
-	GROUP_VAL_POS(nGroupId_ , u_measure)=1000.0;
-	GROUP_VAL_POS(nGroupId_ , s_reference)=1000.0;
-	GROUP_VAL_POS(nGroupId_ , s_measure)=100.0;
-	GROUP_VAL_POS(nGroupId_ , source)=0;   /*0是A^ */
-	GROUP_VAL_POS(nGroupId_ , min_thickness) = 500;
-	GROUP_VAL_POS(nGroupId_ , max_thickness) = 50000;
-	GROUP_VAL_POS(nGroupId_ , probe.Model[0]) = 32;
-	GROUP_VAL_POS(nGroupId_ , probe.Elem_qty)  = 16  ;
+    GROUP_VAL_POS(grp , selection)=0;   /*0 是 A-scan*/
+    GROUP_VAL_POS(grp , per_reference)=1000.0;
+    GROUP_VAL_POS(grp , per_measure)=1000.0;
+    GROUP_VAL_POS(grp , u_reference)=1000.0;
+    GROUP_VAL_POS(grp , u_measure)=1000.0;
+    GROUP_VAL_POS(grp , s_reference)=1000.0;
+    GROUP_VAL_POS(grp , s_measure)=100.0;
+    GROUP_VAL_POS(grp , source)=0;   /*0是A^ */
+    GROUP_VAL_POS(grp , min_thickness) = 500;
+    GROUP_VAL_POS(grp , max_thickness) = 50000;
+    GROUP_VAL_POS(grp , probe.Model[0]) = 32;
+    GROUP_VAL_POS(grp , probe.Elem_qty)  = 16  ;
 
-	GROUP_VAL_POS(nGroupId_ , ut_unit)=2;  /* 2 是 true depth */
-	GROUP_VAL_POS(nGroupId_ , col_select_pos)=0;  /*0 Amplitude*/
-	GROUP_VAL_POS(nGroupId_ , col_start)   = 0.0;
-	GROUP_VAL_POS(nGroupId_ , col_end)     = 100.0;
-	GROUP_VAL_POS(nGroupId_ , col_contrast)= 0.0;
-	GROUP_VAL_POS(nGroupId_ , col_brightness)    = 50.0;
-	GROUP_VAL_POS(nGroupId_ , col_min)           = 5000.0;
-	GROUP_VAL_POS(nGroupId_ , col_max)           = 50000.0;
-	GROUP_VAL_POS(nGroupId_ , col_mode)    = 0;  /*0 Exclusion*/
-	GROUP_VAL_POS(nGroupId_ , ascan_color) = 3; 	/*3 Yellow*/
-	GROUP_VAL_POS(nGroupId_ , ascan_envelope)	=	0; /*0 None*/
-	GROUP_VAL_POS(nGroupId_ , ascan_appearance)	=	0; /*0 Hollow*/
-	GROUP_VAL_POS(nGroupId_ , ascan_overlay)	=	0; /*0 None*/
-	GROUP_VAL_POS(nGroupId_ , skew_pos) = 1;
+    GROUP_VAL_POS(grp , ut_unit)=2;  /* 2 是 true depth */
+    GROUP_VAL_POS(grp , col_select_pos)=0;  /*0 Amplitude*/
+    GROUP_VAL_POS(grp , col_start)   = 0.0;
+    GROUP_VAL_POS(grp , col_end)     = 100.0;
+    GROUP_VAL_POS(grp , col_contrast)= 0.0;
+    GROUP_VAL_POS(grp , col_brightness)    = 50.0;
+    GROUP_VAL_POS(grp , col_min)           = 5000.0;
+    GROUP_VAL_POS(grp , col_max)           = 50000.0;
+    GROUP_VAL_POS(grp , col_mode)    = 0;  /*0 Exclusion*/
+    GROUP_VAL_POS(grp , ascan_color) = 3; 	/*3 Yellow*/
+    GROUP_VAL_POS(grp , ascan_envelope)	=	0; /*0 None*/
+    GROUP_VAL_POS(grp , ascan_appearance)	=	0; /*0 Hollow*/
+    GROUP_VAL_POS(grp , ascan_overlay)	=	0; /*0 None*/
+    GROUP_VAL_POS(grp , skew_pos) = 1;
 	/* 探头信息 */
-	GROUP_VAL_POS(nGroupId_ , wedge.Orientation)    = 1 ;
-	GROUP_VAL_POS(nGroupId_ , pulser1 )         = 1;		/* 1~128 - elem_qty(聚焦阵元数最大为32) + 1 指定发射阵元 */
-	GROUP_VAL_POS(nGroupId_ , receiver1 )       = 1;		/* 接收阵元 必须是 PR 模式才能调节 */
-	GROUP_VAL_POS(nGroupId_ , part.Material_pos) = 1;
-	LAW_VAL_POS (nGroupId_ , Tx_connect)	= 1;
-	LAW_VAL_POS (nGroupId_ , Rx_connect)	= 1;
-	LAW_VAL_POS (nGroupId_ , First_tx_elem)	= 1;
-	LAW_VAL_POS (nGroupId_ , First_rx_elem)	= 1;
-	LAW_VAL_POS (nGroupId_ , Last_tx_elem)	= 16;
-	LAW_VAL_POS (nGroupId_ , Last_rx_elem)	= 16;
-	LAW_VAL_POS (nGroupId_ , Elem_step)		=	1;
-	LAW_VAL_POS (nGroupId_ , Elem_qty)	    = 16;
-	LAW_VAL_POS (nGroupId_ , Wave_type)		=	LONGITUDINAL_WAVE;
-	LAW_VAL_POS (nGroupId_ , Angle_min)		=   3000;
-	LAW_VAL_POS (nGroupId_ , Angle_max)		=	5000;
-	LAW_VAL_POS (nGroupId_ , Angle_step)	=	100;
-	LAW_VAL_POS (nGroupId_ , Angle_beam_skew_min)		=	0;
-	LAW_VAL_POS (nGroupId_ , Angle_beam_skew_max)		=	0;
-	LAW_VAL_POS (nGroupId_ , Angle_beam_skew_step)		=	100;
-	LAW_VAL_POS (nGroupId_ , Focus_depth)	=	5000;
-	LAW_VAL_POS (nGroupId_ , Position_start)	=	30000;
-	LAW_VAL_POS (nGroupId_ , Position_end)	=	50000;
-	LAW_VAL_POS (nGroupId_ , Position_step)	=	1000;
-	LAW_VAL_POS (nGroupId_ , Offset_start)	=	2000;
-	LAW_VAL_POS (nGroupId_ , Offset_end)	=	2000;
-	LAW_VAL_POS (nGroupId_ , Depth_start)	=	2000;
-	LAW_VAL_POS (nGroupId_ , Depth_end)	    =	20000;
-	LAW_VAL_POS (nGroupId_ , Focal_type)	=   AZIMUTHAL_SCAN;
-	LAW_VAL_POS (nGroupId_ , Focal_point_type)	= DEPTH_P;
+    GROUP_VAL_POS(grp , wedge.Orientation)    = 1 ;
+    GROUP_VAL_POS(grp , pulser1 )         = 1;		/* 1~128 - elem_qty(聚焦阵元数最大为32) + 1 指定发射阵元 */
+    GROUP_VAL_POS(grp , receiver1 )       = 1;		/* 接收阵元 必须是 PR 模式才能调节 */
+    GROUP_VAL_POS(grp , part.Material_pos) = 1;
+    LAW_VAL_POS (grp , Tx_connect)	= 1;
+    LAW_VAL_POS (grp , Rx_connect)	= 1;
+    LAW_VAL_POS (grp , First_tx_elem)	= 1;
+    LAW_VAL_POS (grp , First_rx_elem)	= 1;
+    LAW_VAL_POS (grp , Last_tx_elem)	= 16;
+    LAW_VAL_POS (grp , Last_rx_elem)	= 16;
+    LAW_VAL_POS (grp , Elem_step)		=	1;
+    LAW_VAL_POS (grp , Elem_qty)	    = 16;
+    LAW_VAL_POS (grp , Wave_type)		=	LONGITUDINAL_WAVE;
+    LAW_VAL_POS (grp , Angle_min)		=   3000;
+    LAW_VAL_POS (grp , Angle_max)		=	5000;
+    LAW_VAL_POS (grp , Angle_step)	=	100;
+    LAW_VAL_POS (grp , Angle_beam_skew_min)		=	0;
+    LAW_VAL_POS (grp , Angle_beam_skew_max)		=	0;
+    LAW_VAL_POS (grp , Angle_beam_skew_step)		=	100;
+    LAW_VAL_POS (grp , Focus_depth)	=	5000;
+    LAW_VAL_POS (grp , Position_start)	=	30000;
+    LAW_VAL_POS (grp , Position_end)	=	50000;
+    LAW_VAL_POS (grp , Position_step)	=	1000;
+    LAW_VAL_POS (grp , Offset_start)	=	2000;
+    LAW_VAL_POS (grp , Offset_end)	=	2000;
+    LAW_VAL_POS (grp , Depth_start)	=	2000;
+    LAW_VAL_POS (grp , Depth_end)	    =	20000;
+    LAW_VAL_POS (grp , Focal_type)	=   AZIMUTHAL_SCAN;
+    LAW_VAL_POS (grp , Focal_point_type)	= DEPTH_P;
 
-	LAW_VAL_POS (nGroupId_ , law_index_start)= 0;
-	LAW_VAL_POS (nGroupId_ , law_index_end)	= 1;
+    LAW_VAL_POS (grp , law_index_start)= 0;
+    LAW_VAL_POS (grp , law_index_end)	= 1;
 
 	for(i=0; i < 256; i++)
 	{
-		GROUP_VAL_POS(nGroupId_ , gain_offset[i]) = 0;
+        GROUP_VAL_POS(grp , gain_offset[i]) = 0;
 	}
-	GROUP_VAL_POS(nGroupId_ , VelocityCalibrated) = 0  ;
-	GROUP_VAL_POS(nGroupId_ , WedgeDelayCalibrated) = 0 ;
-	GROUP_VAL_POS(nGroupId_ , SensationCalibrated) =  0  ;
+    GROUP_VAL_POS(grp , VelocityCalibrated) = 0  ;
+    GROUP_VAL_POS(grp , WedgeDelayCalibrated) = 0 ;
+    GROUP_VAL_POS(grp , SensationCalibrated) =  0  ;
 
-	memset ((void*)(GROUP_VAL_POS(nGroupId_ , nReferenceData)), 0, 32);
+    memset ((void*)(GROUP_VAL_POS(grp , nReferenceData)), 0, 32);
 
-	GROUP_VAL_POS(nGroupId_ , SizingCurves.mode_pos)= 0;				 /* 0是Setup */
-	GROUP_VAL_POS(nGroupId_ , SizingCurves.curve_pos)= 0;			/* 0是NOne */
-	InitSizingCurveParameters(nGroupId_);
+    GROUP_VAL_POS(grp , SizingCurves.mode_pos)= 0;				 /* 0是Setup */
+    GROUP_VAL_POS(grp , SizingCurves.curve_pos)= 0;			/* 0是NOne */
+    InitSizingCurveParameters(grp);
 }
 
 /* 设置config结构体之外的初始值  */
@@ -1009,7 +1009,7 @@ void init_group_spi (int group)
 	TMP(group_spi[group]).compress_rato	= 
 		((get_group_val (get_group_by_id (pp->p_config, group), GROUP_RANGE) / 10.0) / GROUP_VAL_POS(group, point_qty)) > 1 ? 
 		((get_group_val (get_group_by_id (pp->p_config, group), GROUP_RANGE) / 10.0) / GROUP_VAL_POS(group, point_qty)) : 1;
-	TMP(group_spi[group]).gain			= get_group_val (get_group_by_id (pp->p_config, group), GROUP_GAIN) / 10.0;
+    TMP(group_spi[group]).gain			= group_get_gain(group) / 10.0;
 	TMP(group_spi[group]).tcg_point_qty	= GROUP_VAL_POS(group , SizingCurves.dac_point_qty);
 	if(GROUP_VAL_POS(group , SizingCurves.curve_pos) == 3)
 	{
@@ -1253,7 +1253,7 @@ void RefreshGroupGroupSpi (guint group)
 	TMP(group_spi[group]).compress_rato	=
 		((get_group_val (get_group_by_id (pp->p_config, group), GROUP_RANGE) / 10.0) / GROUP_VAL_POS(group, point_qty)) > 1 ?
 		((get_group_val (get_group_by_id (pp->p_config, group), GROUP_RANGE) / 10.0) / GROUP_VAL_POS(group, point_qty)) : 1;
-	TMP(group_spi[group]).gain			= get_group_val (get_group_by_id (pp->p_config, group), GROUP_GAIN) / 10.0;
+    TMP(group_spi[group]).gain			= group_get_gain(group) / 10.0;
 
 	TMP(group_spi[group]).tcg_point_qty	= GROUP_VAL_POS(group , SizingCurves.dac_point_qty);
 	if(GROUP_VAL_POS(group , SizingCurves.curve_pos) == 3)

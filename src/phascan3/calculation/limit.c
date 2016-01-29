@@ -20,7 +20,7 @@
 int ConfirmGainOffsetOfAllBeamInLimit(int grp)
 {
 	int ret = 0 ;
-	int _nGain = GROUP_VAL_POS(grp , gain) ; // 0 - 8000 (80DB)
+    int _nGain = group_get_gain(grp) ; // 0 - 8000 (80DB)
 	int i , _nTmpValue;
 	int _nBeamQty = TMP(beam_qty[grp]) ;
 	for(i = 0 ; i < _nBeamQty ; i++)
@@ -38,7 +38,7 @@ int ConfirmGainOffsetOfAllBeamInLimit(int grp)
 
 double GetGainOffsetLimit(int grp)
 {
-	int _nGain = GROUP_VAL_POS(grp , gain) ; // 0 - 8000 (80DB)
+    int _nGain = group_get_gain(grp) ; // 0 - 8000 (80DB)
 	double _nResult = (8000 - _nGain) / 100.0 ;
 	if(_nResult > 40)  _nResult = 40 ;
 	return _nResult ;

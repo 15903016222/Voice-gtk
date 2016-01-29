@@ -5374,20 +5374,18 @@ void ShowBatteryStatus(cairo_t* cr)
 	}
 }
 
-void RefreshGainMark(int nGroupId_)
+void RefreshGainMark(int grp)
 {
     char* markup ;
-	if (get_group_db_ref (pp->p_config, nGroupId_))
-	{
+
+    if (get_group_db_ref (pp->p_config, grp)) {
 		markup = g_markup_printf_escaped (
 				"<span foreground='white' font_desc='16'>%0.1f(%0.1f)</span>",
-				(GROUP_VAL_POS(nGroupId_ , gain) - GROUP_VAL_POS(nGroupId_ , gainr)) / 100.0,
-						GROUP_VAL_POS(nGroupId_ , gainr) / 100.0);
-	}
-	else
-	{
+                (group_get_gain(grp) - group_get_gainrf(grp)) / 100.0,
+                        group_get_gainrf(grp) / 100.0);
+    } else {
 		markup = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>%0.1f</span>",
-				GROUP_VAL_POS(nGroupId_ , gain) / 100.0 );
+                group_get_gain(grp) / 100.0 );
 	}
 	gtk_label_set_markup (GTK_LABEL(pp->label[GAIN_VALUE]), markup);
 	g_free(markup);
@@ -10915,7 +10913,7 @@ void init_ui(DRAW_UI_P p)
 	gtk_widget_set_size_request (GTK_WIDGET(pp->event[1]), 112, 45);  
 	update_widget_bg(pp->event[1], /*backpic[4]*/ 4);
 	markup = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>%0.1f</span>", 
-			get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_GAIN) / 100.0);
+            group_get_gain(get_current_group(pp->p_config)) / 100.0);
 	gtk_label_set_markup (GTK_LABEL (pp->label[1]), markup);      /* 增益数值 */
 	g_free (markup);
 	/* 小状态栏  */

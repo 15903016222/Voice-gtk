@@ -269,8 +269,8 @@ void DrawMenu023UltrasoundVelocityStep2()
 	double cur_value=0.0, lower = 0, upper = 0, step = 0;
 	int digit = 0, pos, unit = 0;
 	int grp = get_current_group (pp->p_config);
-    int _nGain = GROUP_VAL_POS(grp , gain)  ;
-    int _nGainR= GROUP_VAL_POS(grp , gainr) ;
+    int _nGain = group_get_gain(grp);
+    int _nGainR= group_get_gainrf(grp);
 
 	switch (TMP(db_reg))
 	{
@@ -568,8 +568,8 @@ void DrawMenu023UltrasoundUtWedgedelayAndVelocityStep2()
 	double cur_value=0.0, lower = 0, upper = 0, step = 0;
 	int digit = 0, pos, unit = 0;
 	int grp = get_current_group (pp->p_config);
-	int _nGain  = GROUP_VAL_POS(grp , gain) ;
-	int _nGainR = GROUP_VAL_POS(grp , gainr);
+    int _nGain  = group_get_gain(grp) ;
+    int _nGainR = group_get_gainrf(grp);
 
 	switch (TMP(db_reg))
 	{
@@ -1129,8 +1129,8 @@ void DrawMenu023TOFDStep3()
 	double cur_value=0.0, lower = 0, upper = 0, step = 0;
 	int digit = 0, pos, unit = 0;
 	int grp = get_current_group (pp->p_config);
-	int _nGain  = GROUP_VAL_POS(grp , gain) ;
-	int _nGainR = GROUP_VAL_POS(grp , gainr);
+    int _nGain  = group_get_gain(grp);
+    int _nGainR = group_get_gainrf(grp);
 
 	switch (TMP(db_reg))
 	{
@@ -1728,19 +1728,25 @@ void DrawMenu103()
 
 void DrawMenu113()
 {
-	int grp = get_current_group (pp->p_config);
+    gint grp = get_current_group (pp->p_config);
+    guchar grpMode = pp->p_config->group[grp].group_mode;
+    gint offset = PA_VOLTAGE;
+    gint num = 2;
+
+    if (UT1_SCAN == grpMode || UT2_SCAN == grpMode) {
+        offset = UT_VOLTAGE;
+        num = 3;
+    }
 
 	pp->x_pos = 570, pp->y_pos = 423 - 26;
-	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 3))
-	{
-		draw3_pop_tt (data_113, NULL,
-				menu_content[VOLTAGE + 3 + get_voltage(pp->p_config, grp)],
-				menu_content + VOLTAGE, 3, 3, get_voltage (pp->p_config, grp),
-				((pp->p_config->group[grp].group_mode) == PA_SCAN ||(pp->p_config->group[grp].group_mode) == UT_SCAN) ? 4 : 0);
-	}
-	else
-	{
-		draw3_popdown (menu_content[VOLTAGE + 3 + get_voltage (pp->p_config, grp)], 3, 0);
+    if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 3)) {
+            draw3_pop_tt(data_113, NULL,
+                    menu_content[offset + num + get_voltage(pp->p_config, grp)],
+                    menu_content + offset, num, 3, get_voltage(pp->p_config, grp),
+                    0);
+
+    } else {
+        draw3_popdown (menu_content[offset + num + get_voltage (pp->p_config, grp)], 3, 0);
 	}
 }
 

@@ -218,9 +218,9 @@ void CalibrationGain()
 		}
 		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 2))
 		{
-			cur_value = (GROUP_VAL_POS(grp , gain) - GROUP_VAL_POS(grp , gainr) * get_group_db_ref (pp->p_config, grp)) / 100.0;
-			lower = 0.0 - GROUP_VAL_POS(grp , gainr) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
-			upper = GAIN_MAX - GROUP_VAL_POS(grp , gainr) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+            cur_value = (group_get_gain(grp) - group_get_gainrf(grp) * get_group_db_ref (pp->p_config, grp)) / 100.0;
+            lower = 0.0 - group_get_gainrf(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+            upper = GAIN_MAX - group_get_gainrf(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
 			step = tmpf;
 			digit = 1;
 			pos = 2;
@@ -230,7 +230,7 @@ void CalibrationGain()
 		}
 		else
 		{
-			cur_value = (GROUP_VAL_POS(grp , gain) - GROUP_VAL_POS(grp , gainr) * get_group_db_ref (pp->p_config, grp)) / 100.0;
+            cur_value = (group_get_gain(grp) - group_get_gainrf(grp) * get_group_db_ref (pp->p_config, grp)) / 100.0;
 			digit = 1;
 			pos = 2;
 			unit = UNIT_DB;
@@ -582,9 +582,9 @@ void DrawMenu022UltrasoundSensationStep6()
 	}
 	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 2))
 	{
-		cur_value = (GROUP_VAL_POS(grp , gain)  - GROUP_VAL_POS(grp , gainr) * get_group_db_ref (pp->p_config, grp)) / 100.0;
-		lower = 0.0 - GROUP_VAL_POS(grp , gainr) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
-		upper = GAIN_MAX - GROUP_VAL_POS(grp , gainr) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+        cur_value = (group_get_gain(grp)  - group_get_gainrf(grp) * get_group_db_ref (pp->p_config, grp)) / 100.0;
+        lower = 0.0 - group_get_gainrf(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+        upper = GAIN_MAX - group_get_gainrf(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
 		step = tmpf;
 		digit = 1;
 		pos = 2;
@@ -594,7 +594,7 @@ void DrawMenu022UltrasoundSensationStep6()
 	}
 	else
 	{
-		cur_value = (GROUP_VAL_POS(grp , gain) - GROUP_VAL_POS(grp , gainr) * get_group_db_ref (pp->p_config, grp)) / 100.0;
+        cur_value = (group_get_gain(grp) - group_get_gainrf(grp) * get_group_db_ref (pp->p_config, grp)) / 100.0;
 		digit = 1;
 		pos = 2;
 		unit = UNIT_DB;
@@ -732,9 +732,9 @@ void DrawMenu022CodeAWSStep4()
 	}
 	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 2))
 	{
-		cur_value = (GROUP_VAL_POS(grp , gain) - GROUP_VAL_POS(grp , gainr) * get_group_db_ref (pp->p_config, grp)) / 100.0;
-		lower = 0.0 - GROUP_VAL_POS(grp , gainr) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
-		upper = GAIN_MAX - GROUP_VAL_POS(grp , gainr) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+        cur_value = (group_get_gain(grp) - group_get_gainrf(grp) * get_group_db_ref (pp->p_config, grp)) / 100.0;
+        lower = 0.0 - group_get_gainrf(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+        upper = GAIN_MAX - group_get_gainrf(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
 		step = tmpf;
 		digit = 1;
 		pos = 2;
@@ -744,7 +744,7 @@ void DrawMenu022CodeAWSStep4()
 	}
 	else
 	{
-		cur_value = (GROUP_VAL_POS(grp , gain) - GROUP_VAL_POS(grp , gainr) * get_group_db_ref (pp->p_config, grp)) / 100.0;
+        cur_value = (group_get_gain(grp) - group_get_gainrf(grp) * get_group_db_ref (pp->p_config, grp)) / 100.0;
 		digit = 1;
 		pos = 2;
 		unit = UNIT_DB;

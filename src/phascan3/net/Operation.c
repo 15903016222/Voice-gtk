@@ -540,36 +540,36 @@ void NetSetPartInfo(void* pData_ , int nGroupId_)
 }
 
 
-void NetGetUtGeneral(void* pData_ , int nGroupId_)
+void NetGetUtGeneral(void* pData_ , int grp)
 {
-	if(nGroupId_ < 0 || nGroupId_ >= get_group_qty(pp->p_config))
+    if(grp < 0 || grp >= get_group_qty(pp->p_config))
 		return;
 	CONFIG_UT_GENERAL* _pInfo = (CONFIG_UT_GENERAL*)pData_ ;
 
-	_pInfo->fGain  = GROUP_VAL_POS(nGroupId_ , gain) / 100.0;
-	_pInfo->uiStart= GROUP_VAL_POS(nGroupId_ , start);
-	_pInfo->uiRange= GROUP_VAL_POS(nGroupId_ , range);
+    _pInfo->fGain  = group_get_gain(grp) / 100.0;
+    _pInfo->uiStart= GROUP_VAL_POS(grp , start);
+    _pInfo->uiRange= GROUP_VAL_POS(grp , range);
 
-	_pInfo->uiWedgeDelay = GROUP_VAL_POS(nGroupId_ , wedge_delay) ;
-	_pInfo->fVelocity   = GROUP_VAL_POS(nGroupId_ , velocity) / 100.0 ;
+    _pInfo->uiWedgeDelay = GROUP_VAL_POS(grp , wedge_delay) ;
+    _pInfo->fVelocity   = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 
 
 }
 
-void NetSetUtGeneral(void* pData_ , int nGroupId_)
+void NetSetUtGeneral(void* pData_ , int grp)
 {
-	if(nGroupId_ < 0 || nGroupId_ >= get_group_qty(pp->p_config))
+    if(grp < 0 || grp >= get_group_qty(pp->p_config))
 		return;
 	CONFIG_UT_GENERAL* _pInfo = (CONFIG_UT_GENERAL*)pData_ ;
 
-	GROUP_VAL_POS(nGroupId_ , gain) = _pInfo->fGain * 100;
-	GROUP_VAL_POS(nGroupId_ , start)= _pInfo->uiStart  ;
-	GROUP_VAL_POS(nGroupId_ , range)= _pInfo->uiRange  ;
+    group_set_gain(grp, (gshort)(_pInfo->fGain*100));
+    GROUP_VAL_POS(grp , start)= _pInfo->uiStart  ;
+    GROUP_VAL_POS(grp , range)= _pInfo->uiRange  ;
 
-	GROUP_VAL_POS(nGroupId_ , wedge_delay) = _pInfo->uiWedgeDelay ;
-	GROUP_VAL_POS(nGroupId_ , velocity)    = _pInfo->fVelocity * 100 ;
+    GROUP_VAL_POS(grp , wedge_delay) = _pInfo->uiWedgeDelay ;
+    GROUP_VAL_POS(grp , velocity)    = _pInfo->fVelocity * 100 ;
 
-	GenerateFocallawOneGroup(nGroupId_ ,  TRUE) ;
+    GenerateFocallawOneGroup(grp ,  TRUE) ;
 	ResetFpgaAll() ;
 	RedrawAllUserInterface();
 	RefreshGainMark(get_current_group(pp->p_config)) ;
@@ -880,16 +880,16 @@ void NetSetDisplayInfo(void* pData_)
 }
 
 
-void NetSetGainValue(int nGroupId_ , double nVal_)
+void NetSetGainValue(int grp , double nVal_)
 {
-	GROUP_VAL_POS(nGroupId_ , gain) =  nVal_ * 100  ;
-	TMP(group_spi[nGroupId_]).gain = nVal_;
-	RefreshGainMark(nGroupId_);
+    group_set_gain(grp, (gshort)(nVal_ * 100));
+    TMP(group_spi[grp]).gain = nVal_;
+    RefreshGainMark(grp);
 	pp->pos_pos = MENU3_STOP;
 	draw_menu3(0, NULL);
 
-	init_group_spi(nGroupId_)  ;
-	send_group_spi(nGroupId_)  ;
+    init_group_spi(grp)  ;
+    send_group_spi(grp)  ;
 
 }
 

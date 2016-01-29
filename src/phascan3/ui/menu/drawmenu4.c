@@ -487,8 +487,8 @@ void DrawMenu024UltrasoundSensationStep5()
 	double cur_value, lower, upper, step;
 	int digit, pos, unit;
 	int grp = get_current_group(pp->p_config);
-	int _nGain = GROUP_VAL_POS(grp , gain ) ;
-	int _nGainR= GROUP_VAL_POS(grp , gainr) ;
+    int _nGain = group_get_gain(grp);
+    int _nGainR= group_get_gainrf(grp);
 
 	switch (TMP(db_reg))
 	{

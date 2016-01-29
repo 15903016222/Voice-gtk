@@ -539,7 +539,7 @@ static void save_cal_law(int group, PARAMETER_P p)
 		for(k=ElementStart,j = 0; k< ElementStop; k++,j++)
 		{ 
 			TMP(focal_law_all_elem[group][i][j]).E_number = j + 1;
-			TMP(focal_law_all_elem[group][i][j]).FL_gain	= get_group_val (get_group_by_id (pp->p_config, group), GROUP_GAIN) / 100;
+            TMP(focal_law_all_elem[group][i][j]).FL_gain	= group_get_gain(group) / 100;
 			TMP(focal_law_all_elem[group][i][j]).T_delay	= p->timedelay[i][k];
 			TMP(focal_law_all_elem[group][i][j]).R_delay	= p->timedelay[i][k];
 			TMP(focal_law_all_elem[group][i][j]).Amplitude = get_voltage (pp->p_config, get_current_group(pp->p_config));
@@ -1605,7 +1605,7 @@ void b3_fun1(gpointer p)
 			switch (pp->pos1[1])
 			{
 				case 4: 
-					GROUP_VAL_POS(grp , gainr) = GROUP_VAL_POS(grp , gain);
+                    group_set_gainrf(grp , group_get_gain(grp));
 					pp->pos_pos = MENU3_STOP;
 					RefreshGainMark(grp) ;
 					break; /* Set Ref P141 设置参考增益值*/
@@ -3618,12 +3618,13 @@ void data_100 (GtkSpinButton *spinbutton, gpointer data) /* 增益Gain P100 */
 	int grp = get_current_group(pp->p_config);
 	GROUP *p_grp = get_group_by_id (pp->p_config, grp);
 	int gain = ((int)(gtk_spin_button_get_value(spinbutton) * 1000) + 1) / 10;
-	if (get_group_db_ref (pp->p_config, grp))
-		set_group_val (p_grp, GROUP_GAIN, gain + get_group_val (p_grp, GROUP_GAINR));
-	else
-		set_group_val (p_grp, GROUP_GAIN,	gain);
+    if (get_group_db_ref (pp->p_config, grp)) {
+        group_set_gain(grp, gain+group_get_gain(grp));
+    } else {
+        group_set_gain(grp, gain);
+    }
 
-	TMP(group_spi[grp]).gain = get_group_val (p_grp, GROUP_GAIN) / 10;
+    TMP(group_spi[grp]).gain = group_get_gain(grp) / 10;
 
 	RefreshGainMark(grp);
 
@@ -5081,16 +5082,18 @@ void data_235 (GtkSpinButton *spinbutton, gpointer data) /*  reference gain */
 {
 	int grp = get_current_group(pp->p_config);
 	GROUP *p_grp = get_group_by_id (pp->p_config, grp);
-
+    int gain = 0;
 	int temp_value = (int) (gtk_spin_button_get_value (spinbutton) * 100.0) ;
 	if(get_group_val (p_grp, GROUP_GAINR) == temp_value)  return ;
 
-	GROUP_VAL_POS(grp , gain) -= get_group_val (p_grp, GROUP_GAINR);
-	set_group_val (p_grp, GROUP_GAINR , temp_value);
-	GROUP_VAL_POS(grp , gain) += temp_value   ;
+    gain = group_get_gain(grp) - group_get_gainrf(grp);
+
+    group_set_gainrf(grp, (gshort)temp_value);
+
+    group_set_gain(grp, gain+temp_value);
 
 	RefreshGainMark(grp) ;
-	TMP(group_spi[grp]).gain = get_group_val (p_grp, GROUP_GAIN) / 10;
+    TMP(group_spi[grp]).gain = group_get_gain(grp) / 10;
 
 	group_data_spi new, *p1;
 	memcpy (&new, &TMP(group_spi[grp]), sizeof (group_data_spi));
@@ -5967,9 +5970,8 @@ void data_501 (GtkMenuItem *menuitem, gpointer data) /* Probe/Part->Select->Grou
 	temp_value = (char) (GPOINTER_TO_UINT (data));
 #if HIGH_POWER
 #else
-	if(temp_value == GROUP_VAL_POS (group, group_mode))
-	{
-		return ;
+	if(temp_value == GROUP_VAL_POS (group, group_mode)) {
+		return;
 	}
 	int response = dialogWarning(pp->window , getDictString(_STRING_GROUP_MODE_CHANGE));
 	if(!response)
@@ -7272,10 +7274,11 @@ static int SetDBEightPercentThread(gpointer data)
 		offset += TMP(beam_qty[k]);
 	int index = offset + TMP(beam_num[grp]);
 	int _bRefDB = get_group_db_ref (pp->p_config, grp) ;
-	int _nRefDB = GROUP_VAL_POS(grp , gainr);
+    int _nRefDB = group_get_gainrf(grp);
 
     double _nGateValue ;
     short  _nTmp       ;
+    gshort gain = 0;
 	while(i)
 	{
 		if(GROUP_VAL_POS(grp , rectifier1))
@@ -7290,37 +7293,43 @@ static int SetDBEightPercentThread(gpointer data)
 
 		if(fabs(_nGateValue - 80.0) <=1 )  break  ;
 		scale =  80.0/_nGateValue  ;
-		GROUP_VAL_POS(grp , gain) =  GROUP_VAL_POS (grp  , gain) + (short)(log10(scale)*2000) ;
-		if(GROUP_VAL_POS(grp , gain) > 8000)
-		{
-			GROUP_VAL_POS(grp , gain) = 8000;
+
+        gain = group_get_gain(grp);
+        gain += (gshort)(log10(scale)*2000);
+
+        if(gain > 8000)	{
+            gain = 8000;
+        } else if(gain < 0)	{
+            gain = 0;
 		}
-		if(GROUP_VAL_POS(grp , gain) <    0)
-		{
-			GROUP_VAL_POS(grp , gain) =    0;
-		}
-		TMP(group_spi[grp]).gain = GROUP_VAL_POS(grp , gain) / 10;
+
+        group_set_gain(grp, gain);
+
+        TMP(group_spi[grp]).gain = gain / 10;
 		send_group_spi (grp);
 		i--;
-		if(_bRefDB)
-		{
+        if(_bRefDB) {
 			markup = g_markup_printf_escaped (
 								"<span foreground='white' font_desc='16'>%0.1f(%0.1f)</span>",
-								(GROUP_VAL_POS(grp , gain) - _nRefDB ) / 100.0,
+                                (gain - _nRefDB ) / 100.0,
 								_nRefDB / 100.0);
 		}
 		else
 		{
 			markup = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>%0.1f</span>",
-						GROUP_VAL_POS(grp , gain) / 100.0 );
+                        gain / 100.0 );
 		}
 		gdk_threads_enter() ;
 		gtk_label_set_markup (GTK_LABEL(pp->label[GAIN_VALUE]),markup);
 		gdk_threads_leave() ;
 		g_free(markup);
 
-		if(GROUP_VAL_POS(grp , gain) >= 8000)  break;
-		if(GROUP_VAL_POS(grp , gain) <=    0)  break;
+        if( gain  >= 8000) {
+            break;
+        } else if( gain <= 0) {
+            break;
+        }
+
 		usleep(400000);
 	}
 

@@ -122,8 +122,9 @@
 /* 各个menu 弹出菜单的偏移量 */
 #define TX_RX_MODE	0
 #define FREQUENCY	(TX_RX_MODE + 8)
-#define VOLTAGE		(FREQUENCY + 14)
-#define PULSER_WIDTH	(VOLTAGE + 8)
+#define PA_VOLTAGE	(FREQUENCY + 14)
+#define UT_VOLTAGE  (PA_VOLTAGE + 4)
+#define PULSER_WIDTH    (UT_VOLTAGE + 8)
 #define PRF		(PULSER_WIDTH + 2)
 #define FILTER		(PRF + 4)
 #define RECTIFIER	(FILTER + 16)
@@ -446,7 +447,7 @@ extern void SaveDataProcess(char* strTitle) ;
 extern void setKeyInvalidateWhenDataRecalling(int bEnable_);
 extern void UpdateWindowTitle() ;
 extern void FreezeScreen(int enable) ;
-extern void RefreshGainMark(int nGroupId_);
+extern void RefreshGainMark(int grp);
 /* 显示各个菜单图标的名称 */
 extern const gchar **con0_p;
 extern const gchar ***con1_p;

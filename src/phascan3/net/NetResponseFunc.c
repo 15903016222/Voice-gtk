@@ -508,9 +508,9 @@ int Response_CMD_GET_VAL_GROUP_BEAM_LENGTH(USLONG Command, USLONG ParamSize, cha
 int Response_CMD_GET_VAL_GAIN(USLONG Command, USLONG ParamSize, char* Parameter)
 {
 	int err = 0;
-	int _nGroupId = get_current_group(pp->p_config) ;
+    int grp = get_current_group(pp->p_config) ;
 	int* _pGain = (int*)Parameter ;
-	*_pGain = GROUP_VAL_POS(_nGroupId , gain) / 10;
+    *_pGain = group_get_gain(grp) / 10;
 	return err;
 }
 int Response_CMD_SET_VAL_GAIN(USLONG Command, USLONG ParamSize, char* Parameter)

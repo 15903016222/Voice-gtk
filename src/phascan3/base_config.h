@@ -12,9 +12,10 @@
 #ifndef __BASE_CONFIG_H_
 #define __BASE_CONFIG_H_
 
+#include <glib.h>
 #include "base_const.h"
 
-#define	GROUP_GAIN			0x1000
+#define	JJGROUP_GAIN			0x1000
 #define	GROUP_GAINR			0x1001
 #define GROUP_START			0x1002
 #define GROUP_RANGE			0x1003
@@ -311,7 +312,6 @@ typedef struct _AWS_D_15
 }AWS_D_15 , *AWS_D_15_P;
 
 
-struct _Group;
 typedef struct _Group GROUP;
 
 /* 组信息 */
@@ -352,8 +352,8 @@ struct _Group
 	unsigned char	prf_pos1;		/* 脉冲宽度选择模式 */
 	unsigned short	frequency1;		/* 以0.001Mhz 也就是Khz 1MHz~20MHz 为单位 当探头学选unknown 时候才可以调节 */
 	unsigned short	pulser_width1;	/* 30~500ns 2.5ns为步进*/
-	short	gain;			/* 实际增益 单位 0.01dB */
-	short	gainr;			/* 参考增益 单位 0.01dB	*/
+    short	jGain;			/* 实际增益 单位 0.01dB */
+    short	jGainr;			/* 参考增益 单位 0.01dB	*/
 	unsigned short	s_refmeas;
 	unsigned short	cursors_angle;
 	unsigned short	skew;				/**/
@@ -788,6 +788,14 @@ extern void set_file_name_all (CONFIG *p, const char *content);
 extern char			get_probe_type (CONFIG *p);
 extern void			set_probe_type (CONFIG *p, char data);
 /* 配置信息的操作end */
+
+
+
+/*Group参数操作接口，将取代下面老旧的接口*/
+extern gshort group_get_gain(gint grp);
+extern void group_set_gain(gint grp, gshort val);
+extern gshort group_get_gainrf(gint grp);
+extern void group_set_gainrf(gint grp, gshort val);
 
 
 

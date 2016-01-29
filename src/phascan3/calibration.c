@@ -1355,14 +1355,16 @@ void CalculateCodeCalibraionAWS()
 	int _nIndex = offset + TMP(beam_num[grp]);
 	_nAmplitude =  (((TMP(measure_data[_nIndex][1]))>>20) & 0x00000fff)/20.47;//满屏时200% 4095
     //_nAmplitude = 40.0 ;
-	_nGain  = GROUP_VAL_POS( grp , gain) ;
+    _nGain  = group_get_gain(grp) ;
 	_nScale =  80.0 /_nAmplitude  ;
 	_nGainReference = (short)(log10(_nScale)*2000) + _nGain;
-	if(_nGainReference < 0 || _nGainReference > 8000)  return ;
+    if(_nGainReference < 0 || _nGainReference > 8000) {
+        return ;
+    }
 
-	GROUP_VAL_POS(grp , gain)  = (int)_nGainReference ;
-	GROUP_VAL_POS(grp , gainr) = (int)_nGainReference ;
-	TMP(group_spi[grp]).gain   = GROUP_VAL_POS(grp , gain) / 10 ;
+    group_set_gain(grp, (gshort)(_nGainReference));
+    group_set_gainrf(grp, (gshort)(_nGainReference));
+    TMP(group_spi[grp]).gain   = (gshort)(_nGainReference) / 10 ;
 	send_group_spi (grp);
 
 	set_group_db_ref (pp->p_config, grp , 1) ;
@@ -1391,8 +1393,8 @@ void CodeCalibraionAWSCallback021()
 		set_group_db_ref (pp->p_config, grp, 1);
 		char* markup = g_markup_printf_escaped (
 					"<span foreground='white' font_desc='16'>%0.1f(%0.1f)</span>",
-					(GROUP_VAL_POS(grp , gain) - GROUP_VAL_POS(grp , gainr)) / 100.0,
-					GROUP_VAL_POS(grp , gainr) / 100.0);
+                    (group_get_gain(grp) - group_get_gainrf(grp)) / 100.0,
+                    group_get_gainrf(grp) / 100.0);
 		gtk_label_set_markup (GTK_LABEL(pp->label[GAIN_VALUE]),markup);
 		g_free(markup);
 		pp->bRefreshDraw = TRUE ;
@@ -1517,13 +1519,13 @@ int CalibrationCallback022()
 			{
 				AWS_D_15_P pInfo = &(GROUP_VAL_POS(grp , AwsCalibration));
                 memset(pInfo , 0 , sizeof(AWS_D_15)) ;
-                GROUP_VAL_POS(grp , gainr) = 0 ;
+                group_set_gainrf(grp, 0);
 
         		set_group_db_ref (pp->p_config, grp, 1);
         		char* markup = g_markup_printf_escaped (
         					"<span foreground='white' font_desc='16'>%0.1f(%0.1f)</span>",
-        					(GROUP_VAL_POS(grp , gain) - GROUP_VAL_POS(grp , gainr)) / 100.0,
-        					GROUP_VAL_POS(grp , gainr) / 100.0);
+                            (group_get_gain(grp) - group_get_gainrf(grp)) / 100.0,
+                            group_get_gainrf(grp) / 100.0);
         		gtk_label_set_markup (GTK_LABEL(pp->label[GAIN_VALUE]),markup);
         		g_free(markup);
     			ascanResetEnvelope(get_current_group(pp->p_config)) ;
@@ -1598,7 +1600,7 @@ int CalibrationCallback023()
 				if (pp->cstart_qty == 4)//Clear Calibrate
 				{
                     memset(pInfo , 0 , sizeof(AWS_D_15)) ;
-                    GROUP_VAL_POS(grp , gainr) = 0 ;
+                    group_set_gainrf(grp, 0);
         			ascanResetEnvelope(get_current_group(pp->p_config)) ;
         			ascanResetPeak(get_current_group(pp->p_config)) ;
         			pp->bRefreshDraw = TRUE ;
@@ -1608,7 +1610,7 @@ int CalibrationCallback023()
 				{
 					//printf("aws restart\n");
                     memset(pInfo , 0 , sizeof(AWS_D_15)) ;
-                    GROUP_VAL_POS(grp , gainr) = 0 ;
+                    group_set_gainrf(grp, 0);
                     pp->cstart_qty = 2 ;
         			ascanResetEnvelope(get_current_group(pp->p_config)) ;
         			ascanResetPeak(get_current_group(pp->p_config)) ;

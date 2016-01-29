@@ -1526,6 +1526,45 @@ void set_probe_type (CONFIG *p, char data)
 	p->probe_type = data;
 }
 
+/**
+ * Group 参数操作接口
+ */
+
+inline gshort group_get_gain(gint grp)
+{
+    gshort gain = GROUP_VAL_POS(grp, jGain);
+    if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
+            || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+        gain >>= 1;
+    }
+    return gain;
+}
+inline void group_set_gain(gint grp, gshort val)
+{
+    if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
+            || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+        val <<= 1;
+    }
+    GROUP_VAL_POS(grp, jGain) = val;
+}
+
+inline gshort group_get_gainrf(gint grp)
+{
+    gshort gainr = GROUP_VAL_POS(grp, jGainr);
+    if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
+            || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+        gainr >>= 1;
+    }
+    return gainr;
+}
+inline void group_set_gainrf(gint grp, gshort val)
+{
+    if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
+            || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+        val <<= 1;
+    }
+    GROUP_VAL_POS(grp, jGainr) = val;
+}
 
 /* GROUP 参数的保存读取*/
 /**
@@ -1535,8 +1574,8 @@ int get_group_val (GROUP *p, int type)
 	int tt = 0;
 	switch (type)
 	{
-		case GROUP_GAIN:tt = p->gain;break;
-		case GROUP_GAINR:tt = p->gainr;break;
+//        case GROUP_GAIN:tt = p->gain;break;
+//		case GROUP_GAINR:tt = p->gainr;break;
 		case GROUP_START:tt = p->start;break;
 		case GROUP_RANGE:tt = p->range;break;
 		case GROUP_WEDGE_DELAY:tt = p->wedge_delay;break;
@@ -1567,8 +1606,8 @@ void set_group_val (GROUP *p, int type, int val)
 {
 	switch (type)
 	{
-		case GROUP_GAIN:p->gain = (short)(val);break;
-		case GROUP_GAINR:p->gainr = (short)(val);break;
+//		case GROUP_GAIN:p->gain = (short)(val);break;
+//        case GROUP_GAINR:p->gainr = (short)(val);break;
 		case GROUP_START:p->start = val;break;
 		case GROUP_RANGE:p->range = val;break;
 		case GROUP_WEDGE_DELAY:p->wedge_delay = val;break;

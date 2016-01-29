@@ -2,7 +2,8 @@
  * threadDrawData.c
  *
  *  Created on: 2013-5-2
- *      Author: wolflord
+ *    Modified: 2016-01-29
+ *      Author: JakeYang
  */
 #include "../drawui.h"
 #include "../file_op.h"
@@ -75,12 +76,11 @@ void draw_field_value ()
 	if (get_group_db_ref (pp->p_config, grp))
 		DB_mark = g_markup_printf_escaped (
 				"<span foreground='white' font_desc='16'>%0.1f(%0.1f)</span>",
-				(get_group_val (p_grp, GROUP_GAIN) -
-				 get_group_val (p_grp, GROUP_GAINR)) / 100.0,
-				get_group_val (p_grp, GROUP_GAINR) / 100.0);
+                (group_get_gain(grp) - group_get_gainrf(grp)) / 100.0,
+                group_get_gainrf(grp) / 100.0);
 	else
 		DB_mark = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>%0.1f</span>",
-				get_group_val (p_grp, GROUP_GAIN) / 100.0 );
+                group_get_gain(grp) / 100.0 );
 
 	if(UNIT_MM == get_unit(pp->p_config))
 	{

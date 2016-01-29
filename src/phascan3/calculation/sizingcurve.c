@@ -94,11 +94,11 @@ void ClearTCGCalibrationCurrentPoint(int nGroupId_)
 	}
 }
 
-double CurrentPointTcgGainLimit(int nGroupId_)
+double CurrentPointTcgGainLimit(int grp)
 {
-	unsigned char point_pos = GROUP_VAL_POS(nGroupId_ , SizingCurves.point_pos) ;
+    unsigned char point_pos = GROUP_VAL_POS(grp , SizingCurves.point_pos) ;
 	double ret;
-	ret = MIN(40 , 80 - GROUP_VAL_POS(nGroupId_ , gain) / 100.0) ;
+    ret = MIN(40 , 80 - group_get_gain(grp) / 100.0) ;
 
 	if(point_pos == 0)		ret = 0 ;
 
@@ -156,13 +156,13 @@ void refresh_linear_dac_pointer_info()
 	}
 }
 
-double DacAmptitudeMinimumLimit(int nGroupId_)
+double DacAmptitudeMinimumLimit(int grp)
 {
 	double _nResult ;
 	double _nGainLimit;
-	int _nBeamNo = TMP(beam_num[nGroupId_]) ;
-	_nGainLimit = MIN(40 , 80 - GROUP_VAL_POS(nGroupId_ , gain) / 100.0) ;
-	_nResult = GROUP_VAL_POS(nGroupId_ , SizingCurves.amplitude[_nBeamNo][0]) / 1000.0 ;
+    int _nBeamNo = TMP(beam_num[grp]) ;
+    _nGainLimit = MIN(40 , 80 - group_get_gain(grp) / 100.0) ;
+    _nResult = GROUP_VAL_POS(grp , SizingCurves.amplitude[_nBeamNo][0]) / 1000.0 ;
 	_nResult = _nResult /(pow(10 , _nGainLimit / 20.0)) ;
 
 	return _nResult ;

@@ -496,8 +496,13 @@ void fprintfReportGroupSetup(FILE* fp ,int group)
     fprintf(fp,"</tr>\n\n");
 
     fprintf(fp,"<tr>\n");
-    fprintf(fp,"<td %s>%s V</td>\n" ,tableTdStyle ,menu_content[VOLTAGE + 3 + get_voltage (pp->p_config, grp)]);//Voltage
-    fprintf(fp,"<td %s>%.1f dB</td>\n" ,tableTdStyle ,get_group_val (p_grp ,GROUP_GAIN) / 100.0);//Gain
+    if (PA_SCAN == pp->p_config->group[grp].group_mode
+            || UT_SCAN == pp->p_config->group[grp].group_mode) {
+        fprintf(fp,"<td %s>%s V</td>\n" ,tableTdStyle ,menu_content[PA_VOLTAGE + 2 + get_voltage (pp->p_config, grp)]);//Voltage
+    } else {
+        fprintf(fp,"<td %s>%s V</td>\n" ,tableTdStyle ,menu_content[UT_VOLTAGE + 3 + get_voltage (pp->p_config, grp)]);//Voltage
+    }
+    fprintf(fp,"<td %s>%.1f dB</td>\n" ,tableTdStyle ,group_get_gain(grp) / 100.0);//Gain
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ TX_RX_MODE + get_group_val (p_grp, GROUP_TX_RX_MODE)]);//Mode
     int material = get_part_material(group);
     int sw = velocity > get_material_sw(material) ? velocity - get_material_sw(material) :get_material_sw(material) - velocity;

@@ -101,10 +101,12 @@ void DrawMenu040()
 void DrawMenu100()
 {
 	double tmpf ;
-	double cur_value=0.0, lower, upper, step;
+	double curValue=0.0, lower, upper, step;
 	int digit, pos, unit, content_pos ;
-	int _nGroupId = get_current_group(pp->p_config);
-	int _bDbRef = get_group_db_ref (pp->p_config, _nGroupId);
+    int group = get_current_group(pp->p_config);
+    int _bDbRef = get_group_db_ref (pp->p_config, group);
+
+
 	switch (TMP(db_reg))
 	{
 		case 0:	tmpf = 0.1; break;
@@ -118,42 +120,35 @@ void DrawMenu100()
 		content_pos = 6;
 	else
 		content_pos = 0;
-	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 0))
-	{
-		if(_bDbRef)
-		{
-			cur_value = (GROUP_VAL_POS(_nGroupId , gain) - GROUP_VAL_POS(_nGroupId , gainr))/ 100.0 ;
-			lower = 0.0 - GROUP_VAL_POS(_nGroupId , gainr)/ 100.0 ;
-			upper = GetGainLimit(_nGroupId) -  GROUP_VAL_POS(_nGroupId , gainr)/ 100.0;
-		}
-		else
-		{
-			cur_value = GROUP_VAL_POS(_nGroupId , gain)/ 100.0 ;
+    if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 0)) {
+        if(_bDbRef) {
+            curValue = (group_get_gain(group) - group_get_gainrf(group))/100.0;
+            lower = 0.0 - group_get_gainrf(group)/ 100.0 ;
+            upper = GetGainLimit(group) -  group_get_gainrf(group)/ 100.0;
+        } else {
+            curValue = group_get_gain(group) / 100.0 ;
 			lower = 0.0;
-			upper = GetGainLimit(_nGroupId);
+            upper = GetGainLimit(group);
 		}
 
 		step = tmpf;
 		digit = 1;
 		pos = 0;
 		unit = UNIT_DB;
-		draw3_digit_pressed (data_100, units[unit], cur_value ,
+        g_message("%s[%d]: value(%f)", __func__, __LINE__, curValue);
+        draw3_digit_pressed (data_100, units[unit], curValue ,
 				lower, upper, step, digit, pp, pos, content_pos);
-	}
-	else
-	{
-		if(_bDbRef)
-		{
-			cur_value = (GROUP_VAL_POS(_nGroupId , gain) - GROUP_VAL_POS(_nGroupId , gainr))/ 100.0 ;
-		}
-		else
-		{
-			cur_value = GROUP_VAL_POS(_nGroupId , gain)/ 100.0 ;
+    } else {
+        if(_bDbRef) {
+            curValue = (group_get_gain(group) - group_get_gainrf(group))/100.0;
+        } else {
+            curValue = group_get_gain(group) / 100.0;
 		}
 		digit = 1;
 		pos = 0;
 		unit = UNIT_DB;
-		draw3_digit_stop (cur_value, units[unit], digit, pos, content_pos);
+        g_message("%s[%d]: value(%f)", __func__, __LINE__, curValue);
+        draw3_digit_stop (curValue, units[unit], digit, pos, content_pos);
 	}
 }
 

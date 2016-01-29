@@ -32,8 +32,8 @@ extern void NetSetWedgeInfo(char* pData_ , int nGroupId_) ;
 extern void NetGetPartInfo(void* pData_ , int nGroupId_)  ;
 extern void NetSetPartInfo(void* pData_ , int nGroupId_)  ;
 
-extern void NetGetUtGeneral(void* pData_ , int nGroupId_)  ;
-extern void NetSetUtGeneral(void* pData_ , int nGroupId_)  ;
+extern void NetGetUtGeneral(void* pData_ , int grp)  ;
+extern void NetSetUtGeneral(void* pData_ , int grp)  ;
 extern void NetGetUtPulser(void* pData_ , int nGroupId_)   ;
 extern void NetSetUtPulser(void* pData_ , int nGroupId_)   ;
 extern void NetGetUtReceive(void* pData_ , int nGroupId_)  ;
@@ -54,7 +54,7 @@ extern void NetGetDisplayInfo(void* pData_) ;
 extern void NetSetDisplayInfo(void* pData_) ;
 
 
-extern void NetSetGainValue(int nGroupId_ , double nVal_) ;
+extern void NetSetGainValue(int grp , double nVal_) ;
 
 extern void NetSetGroupValueStart(int nGroupId_ , int nVal_) ;
 extern void NetSetGroupValueRange(int nGroupId_ , int nVal_) ;
