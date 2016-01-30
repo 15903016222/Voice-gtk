@@ -1,8 +1,9 @@
 /**
- * File: dxf_map.h
- * Desc: 映射表，保存解析、删除和打印函数
- * Author: JakeYang
- * Log: 2015-09-25
+ * @file dxf_map.c
+ * @brief dxf映射表封装
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
  */
 
 #include "dxf_map.h"

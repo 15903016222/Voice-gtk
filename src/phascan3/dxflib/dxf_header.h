@@ -1,3 +1,11 @@
+/**
+ * @file dxf_header.h
+ * @brief dxf header层
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #ifndef __DXF_HEADER_H__
 #define __DXF_HEADER_H__
 

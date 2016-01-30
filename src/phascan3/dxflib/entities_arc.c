@@ -1,3 +1,11 @@
+/**
+ * @file entities_arc.c
+ * @brief dxf entities层, arc对象
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #include "entities_arc.h"
 
 static inline DxfArc *arc_new_item()

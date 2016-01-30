@@ -1,3 +1,11 @@
+/**
+ * @file dxf_tables_vport.h
+ * @brief dxf tables层, vport封装
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #ifndef __DXF_TABLES_VPORT_H__
 #define __DXF_TABLES_VPORT_H__
 

@@ -1,3 +1,11 @@
+/**
+ * @file dxf_header.c
+ * @brief dxf header层
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #include "dxf_header.h"
 
 static inline DxfHeader *dxf_header_new_item()

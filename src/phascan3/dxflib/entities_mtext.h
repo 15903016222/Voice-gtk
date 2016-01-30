@@ -1,3 +1,11 @@
+/**
+ * @file entities_mtext.h
+ * @brief dxf entities层, mtext对象
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #ifndef __ENTITIES_MTEXT_H__
 #define __ENTITIES_MTEXT_H__
 

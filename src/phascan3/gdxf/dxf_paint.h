@@ -1,8 +1,9 @@
 /**
- * File: dxf_paint.h
- * Desc: 根据Dxf描绘图形
- * Author: JakeYang
- * Log: 2015-10-16
+ * @file dxf_paint.h
+ * @brief 描绘Dxf图形
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-10-16
  */
 
 #ifndef __DXF_PAINT_H__

@@ -1,3 +1,11 @@
+/**
+ * @file entities_image.h
+ * @brief dxf entities层, image对象
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #ifndef __ENTITIES_IMAGE_H__
 #define __ENTITIES_IMAGE_H__
 

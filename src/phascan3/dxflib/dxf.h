@@ -1,3 +1,12 @@
+/**
+ * @file dxf.h
+ * @brief dxf接口文件
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
+
 #ifndef __DXF_H__
 #define __DXF_H__
 

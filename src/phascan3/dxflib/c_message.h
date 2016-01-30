@@ -2,7 +2,7 @@
  * @file c_message.h
  * @brief debug tool
  * @author JakeYang <add358@gmail.com>
- * @version 1.0
+ * @version 0.2
  * @date 2015-04-14
  */
 
