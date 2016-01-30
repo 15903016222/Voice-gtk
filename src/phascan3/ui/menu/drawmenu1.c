@@ -1489,9 +1489,9 @@ void DrawMenu521()
 	int digit, pos, unit , content_pos;
 	int grp = get_current_group (pp->p_config);
 	GROUP* p_grp = get_group_by_id (pp->p_config, grp) ;
+
 	/* 当前步进 */
-	switch (TMP(db_reg))
-	{
+    switch (TMP(db_reg)) {
 		case 0:	tmpf = 0.1; break;
 		case 1:	tmpf = 0.5; break;
 		case 2:	tmpf = 1.0; break;
@@ -1499,25 +1499,24 @@ void DrawMenu521()
 		case 4:	tmpf = 6.0; break;
 		default:break;
 	}
-	if (get_group_db_ref (pp->p_config, grp))
-		content_pos = 6;
-	else
-		content_pos = 0;
 
-	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1))
-	{
-        cur_value = ((int)(group_get_gain(grp)) - (int)(get_group_val (p_grp, GROUP_GAINR) * get_group_db_ref (pp->p_config, grp))) / 100.0;
-		lower = 0.0 - (int)(get_group_val (p_grp, GROUP_GAINR)) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
-		upper = GAIN_MAX - get_group_val (p_grp, GROUP_GAINR) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+    if (get_group_db_ref (pp->p_config, grp)) {
+        content_pos = 6;
+    } else {
+		content_pos = 0;
+    }
+
+    if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1)) {
+        cur_value = ((int)(group_get_gain(grp)) - (int)(group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp))) / 100.0;
+        lower = 0.0 - (group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp)) / 100.0 ;
+        upper = GAIN_MAX - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0;
 		step = tmpf;
 		digit = 1;
 		pos = 1;
 		unit = UNIT_DB;
 		draw3_digit_pressed (data_100, units[unit], cur_value , lower, upper, step, digit, NULL, pos, content_pos);
-	}
-	else
-	{
-        cur_value = (group_get_gain(get_current_group(pp->p_config)) - get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_GAINR) * get_group_db_ref (pp->p_config, get_current_group (pp->p_config))) / 100.0;
+    } else {
+        cur_value = (group_get_gain(grp) - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp)) / 100.0;
 		digit = 1;
 		pos = 1;
 		unit = UNIT_DB;

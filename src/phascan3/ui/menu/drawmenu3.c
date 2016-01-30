@@ -270,7 +270,7 @@ void DrawMenu023UltrasoundVelocityStep2()
 	int digit = 0, pos, unit = 0;
 	int grp = get_current_group (pp->p_config);
     int _nGain = group_get_gain(grp);
-    int _nGainR= group_get_gainrf(grp);
+    int _nGainR= group_get_refgain(grp);
 
 	switch (TMP(db_reg))
 	{
@@ -569,7 +569,7 @@ void DrawMenu023UltrasoundUtWedgedelayAndVelocityStep2()
 	int digit = 0, pos, unit = 0;
 	int grp = get_current_group (pp->p_config);
     int _nGain  = group_get_gain(grp) ;
-    int _nGainR = group_get_gainrf(grp);
+    int _nGainR = group_get_refgain(grp);
 
 	switch (TMP(db_reg))
 	{
@@ -1130,7 +1130,7 @@ void DrawMenu023TOFDStep3()
 	int digit = 0, pos, unit = 0;
 	int grp = get_current_group (pp->p_config);
     int _nGain  = group_get_gain(grp);
-    int _nGainR = group_get_gainrf(grp);
+    int _nGainR = group_get_refgain(grp);
 
 	switch (TMP(db_reg))
 	{

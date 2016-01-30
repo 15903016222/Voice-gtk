@@ -122,9 +122,9 @@ void DrawMenu100()
 		content_pos = 0;
     if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 0)) {
         if(_bDbRef) {
-            curValue = (group_get_gain(group) - group_get_gainrf(group))/100.0;
-            lower = 0.0 - group_get_gainrf(group)/ 100.0 ;
-            upper = GetGainLimit(group) -  group_get_gainrf(group)/ 100.0;
+            curValue = (group_get_gain(group) - group_get_refgain(group))/100.0;
+            lower = 0.0 - group_get_refgain(group)/ 100.0 ;
+            upper = GetGainLimit(group) -  group_get_refgain(group)/ 100.0;
         } else {
             curValue = group_get_gain(group) / 100.0 ;
 			lower = 0.0;
@@ -135,19 +135,17 @@ void DrawMenu100()
 		digit = 1;
 		pos = 0;
 		unit = UNIT_DB;
-        g_message("%s[%d]: value(%f)", __func__, __LINE__, curValue);
         draw3_digit_pressed (data_100, units[unit], curValue ,
 				lower, upper, step, digit, pp, pos, content_pos);
     } else {
         if(_bDbRef) {
-            curValue = (group_get_gain(group) - group_get_gainrf(group))/100.0;
+            curValue = (group_get_gain(group) - group_get_refgain(group))/100.0;
         } else {
             curValue = group_get_gain(group) / 100.0;
 		}
 		digit = 1;
 		pos = 0;
 		unit = UNIT_DB;
-        g_message("%s[%d]: value(%f)", __func__, __LINE__, curValue);
         draw3_digit_stop (curValue, units[unit], digit, pos, content_pos);
 	}
 }

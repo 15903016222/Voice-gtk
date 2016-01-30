@@ -77,7 +77,7 @@ void set_config (unsigned int grp)
 	set_group_val (p_grp, GROUP_RANGE, 57022);
 	set_group_val (p_grp, GROUP_START, 0);
     group_set_gain(grp, 2000);
-	set_group_val (p_grp, GROUP_GAINR, 0);
+    group_set_refgain(grp, 0);
 	set_group_val (p_grp, GROUP_VELOCITY, 324000);
     set_group_db_ref (pp->p_config, grp, NORMAL_OFF);
 
@@ -349,7 +349,7 @@ void SettingGroupConfigure (int grp)
 	set_group_val (p_grp, GROUP_RANGE, 57022);
 	set_group_val (p_grp, GROUP_START, 0);
     group_set_gain(grp, 2000);
-	set_group_val (p_grp, GROUP_GAINR, 0);
+    group_set_refgain(grp, 0);
 	set_group_val (p_grp, GROUP_VELOCITY, 324000);
     set_group_db_ref (pp->p_config, grp, NORMAL_OFF);
 	set_group_val (p_grp, GROUP_PULSER, 1);

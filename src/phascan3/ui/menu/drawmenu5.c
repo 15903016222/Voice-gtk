@@ -2078,8 +2078,8 @@ void DrawMenu235()
 			}
 			if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 5))
 			{
-                cur_value =group_get_gainrf(grp)/100.0;
-                lower = (group_get_gainrf(grp)- group_get_gain(grp))/100.0;
+                cur_value =group_get_refgain(grp)/100.0;
+                lower = (group_get_refgain(grp)- group_get_gain(grp))/100.0;
 				upper = 80 + lower;
 				step = tmpf;
 				digit = 1;
@@ -2089,7 +2089,7 @@ void DrawMenu235()
 			}
 			else
 			{
-                cur_value = group_get_gainrf(grp)/100.0;
+                cur_value = group_get_refgain(grp)/100.0;
 				digit = 1;
 				pos = 5;
 				unit = UNIT_DB;

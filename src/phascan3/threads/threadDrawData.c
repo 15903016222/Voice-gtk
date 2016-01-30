@@ -76,8 +76,8 @@ void draw_field_value ()
 	if (get_group_db_ref (pp->p_config, grp))
 		DB_mark = g_markup_printf_escaped (
 				"<span foreground='white' font_desc='16'>%0.1f(%0.1f)</span>",
-                (group_get_gain(grp) - group_get_gainrf(grp)) / 100.0,
-                group_get_gainrf(grp) / 100.0);
+                (group_get_gain(grp) - group_get_refgain(grp)) / 100.0,
+                group_get_refgain(grp) / 100.0);
 	else
 		DB_mark = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>%0.1f</span>",
                 group_get_gain(grp) / 100.0 );

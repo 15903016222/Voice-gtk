@@ -15,8 +15,6 @@
 #include <glib.h>
 #include "base_const.h"
 
-#define	JJGROUP_GAIN			0x1000
-#define	GROUP_GAINR			0x1001
 #define GROUP_START			0x1002
 #define GROUP_RANGE			0x1003
 #define GROUP_WEDGE_DELAY	0x1004
@@ -794,8 +792,8 @@ extern void			set_probe_type (CONFIG *p, char data);
 /*Group参数操作接口，将取代下面老旧的接口*/
 extern gshort group_get_gain(gint grp);
 extern void group_set_gain(gint grp, gshort val);
-extern gshort group_get_gainrf(gint grp);
-extern void group_set_gainrf(gint grp, gshort val);
+extern gshort group_get_refgain(gint grp);
+extern void group_set_refgain(gint grp, gshort val);
 
 
 

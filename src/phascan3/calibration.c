@@ -1363,7 +1363,7 @@ void CalculateCodeCalibraionAWS()
     }
 
     group_set_gain(grp, (gshort)(_nGainReference));
-    group_set_gainrf(grp, (gshort)(_nGainReference));
+    group_set_refgain(grp, (gshort)(_nGainReference));
     TMP(group_spi[grp]).gain   = (gshort)(_nGainReference) / 10 ;
 	send_group_spi (grp);
 
@@ -1393,8 +1393,8 @@ void CodeCalibraionAWSCallback021()
 		set_group_db_ref (pp->p_config, grp, 1);
 		char* markup = g_markup_printf_escaped (
 					"<span foreground='white' font_desc='16'>%0.1f(%0.1f)</span>",
-                    (group_get_gain(grp) - group_get_gainrf(grp)) / 100.0,
-                    group_get_gainrf(grp) / 100.0);
+                    (group_get_gain(grp) - group_get_refgain(grp)) / 100.0,
+                    group_get_refgain(grp) / 100.0);
 		gtk_label_set_markup (GTK_LABEL(pp->label[GAIN_VALUE]),markup);
 		g_free(markup);
 		pp->bRefreshDraw = TRUE ;
@@ -1519,13 +1519,13 @@ int CalibrationCallback022()
 			{
 				AWS_D_15_P pInfo = &(GROUP_VAL_POS(grp , AwsCalibration));
                 memset(pInfo , 0 , sizeof(AWS_D_15)) ;
-                group_set_gainrf(grp, 0);
+                group_set_refgain(grp, 0);
 
         		set_group_db_ref (pp->p_config, grp, 1);
         		char* markup = g_markup_printf_escaped (
         					"<span foreground='white' font_desc='16'>%0.1f(%0.1f)</span>",
-                            (group_get_gain(grp) - group_get_gainrf(grp)) / 100.0,
-                            group_get_gainrf(grp) / 100.0);
+                            (group_get_gain(grp) - group_get_refgain(grp)) / 100.0,
+                            group_get_refgain(grp) / 100.0);
         		gtk_label_set_markup (GTK_LABEL(pp->label[GAIN_VALUE]),markup);
         		g_free(markup);
     			ascanResetEnvelope(get_current_group(pp->p_config)) ;
@@ -1600,7 +1600,7 @@ int CalibrationCallback023()
 				if (pp->cstart_qty == 4)//Clear Calibrate
 				{
                     memset(pInfo , 0 , sizeof(AWS_D_15)) ;
-                    group_set_gainrf(grp, 0);
+                    group_set_refgain(grp, 0);
         			ascanResetEnvelope(get_current_group(pp->p_config)) ;
         			ascanResetPeak(get_current_group(pp->p_config)) ;
         			pp->bRefreshDraw = TRUE ;
@@ -1610,7 +1610,7 @@ int CalibrationCallback023()
 				{
 					//printf("aws restart\n");
                     memset(pInfo , 0 , sizeof(AWS_D_15)) ;
-                    group_set_gainrf(grp, 0);
+                    group_set_refgain(grp, 0);
                     pp->cstart_qty = 2 ;
         			ascanResetEnvelope(get_current_group(pp->p_config)) ;
         			ascanResetPeak(get_current_group(pp->p_config)) ;

@@ -1605,7 +1605,7 @@ void b3_fun1(gpointer p)
 			switch (pp->pos1[1])
 			{
 				case 4: 
-                    group_set_gainrf(grp , group_get_gain(grp));
+                    group_set_refgain(grp , group_get_gain(grp));
 					pp->pos_pos = MENU3_STOP;
 					RefreshGainMark(grp) ;
 					break; /* Set Ref P141 设置参考增益值*/
@@ -3619,7 +3619,7 @@ void data_100 (GtkSpinButton *spinbutton, gpointer data) /* 增益Gain P100 */
 	GROUP *p_grp = get_group_by_id (pp->p_config, grp);
 	int gain = ((int)(gtk_spin_button_get_value(spinbutton) * 1000) + 1) / 10;
     if (get_group_db_ref (pp->p_config, grp)) {
-        group_set_gain(grp, gain+group_get_gain(grp));
+        group_set_gain(grp, gain+group_get_refgain(grp));
     } else {
         group_set_gain(grp, gain);
     }
@@ -5081,14 +5081,16 @@ void data_235_del_point  (DRAW_UI_P p) /*   */
 void data_235 (GtkSpinButton *spinbutton, gpointer data) /*  reference gain */
 {
 	int grp = get_current_group(pp->p_config);
-	GROUP *p_grp = get_group_by_id (pp->p_config, grp);
     int gain = 0;
 	int temp_value = (int) (gtk_spin_button_get_value (spinbutton) * 100.0) ;
-	if(get_group_val (p_grp, GROUP_GAINR) == temp_value)  return ;
 
-    gain = group_get_gain(grp) - group_get_gainrf(grp);
+    if(group_get_refgain(grp) == temp_value) {
+        return ;
+    }
 
-    group_set_gainrf(grp, (gshort)temp_value);
+    gain = group_get_gain(grp) - group_get_refgain(grp);
+
+    group_set_refgain(grp, (gshort)temp_value);
 
     group_set_gain(grp, gain+temp_value);
 
@@ -7274,7 +7276,7 @@ static int SetDBEightPercentThread(gpointer data)
 		offset += TMP(beam_qty[k]);
 	int index = offset + TMP(beam_num[grp]);
 	int _bRefDB = get_group_db_ref (pp->p_config, grp) ;
-    int _nRefDB = group_get_gainrf(grp);
+    int _nRefDB = group_get_refgain(grp);
 
     double _nGateValue ;
     short  _nTmp       ;
