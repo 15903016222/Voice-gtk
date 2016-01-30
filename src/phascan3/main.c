@@ -75,7 +75,7 @@ void set_config (unsigned int grp)
 	/* UT settings */
 	set_group_val (p_grp, GROUP_WEDGE_DELAY, 0);
 	set_group_val (p_grp, GROUP_RANGE, 57022);
-	set_group_val (p_grp, GROUP_START, 0);
+    group_set_start(grp, 0);
     group_set_gain(grp, 2000);
     group_set_refgain(grp, 0);
 	set_group_val (p_grp, GROUP_VELOCITY, 324000);
@@ -347,7 +347,7 @@ void SettingGroupConfigure (int grp)
 	/* UT settings */
 	set_group_val (p_grp, GROUP_WEDGE_DELAY, 0);
 	set_group_val (p_grp, GROUP_RANGE, 57022);
-	set_group_val (p_grp, GROUP_START, 0);
+    group_set_start(grp, 0);
     group_set_gain(grp, 2000);
     group_set_refgain(grp, 0);
 	set_group_val (p_grp, GROUP_VELOCITY, 324000);
@@ -1038,7 +1038,7 @@ void init_group_spi (int group)
 	TMP(group_spi[group]).tx_start	= 2;
 	TMP(group_spi[group]).tx_end	= GROUP_VAL_POS(group , pulser_width1) / (25 * PW_DIV / 10);
 
-	TMP(group_spi[group]).sample_start	= (GROUP_VAL_POS(group , start) + GROUP_VAL_POS(group , wedge_delay)) / 10;
+    TMP(group_spi[group]).sample_start	= (group_get_start(group) + GROUP_VAL_POS(group , wedge_delay)) / 10;
 	TMP(group_spi[group]).sample_range	= TMP(group_spi[group]).sample_start + GROUP_VAL_POS(group , range) / 10;
 	TMP(group_spi[group]).sum_gain = GROUP_VAL_POS(group , sum_gain)  ;
 	TMP(group_spi[group]).point_qty  = GROUP_VAL_POS(group , point_qty);
@@ -1284,7 +1284,7 @@ void RefreshGroupGroupSpi (guint group)
 	TMP(group_spi[group]).tx_start	= 2;
 	TMP(group_spi[group]).tx_end	= GROUP_VAL_POS(group , pulser_width1) / (25 * PW_DIV / 10);
 
-	TMP(group_spi[group]).sample_start	= (GROUP_VAL_POS(group , start) + GROUP_VAL_POS(group , wedge_delay)) / 10;
+    TMP(group_spi[group]).sample_start	= (group_get_start(group) + GROUP_VAL_POS(group , wedge_delay)) / 10;
 	TMP(group_spi[group]).sample_range	= TMP(group_spi[group]).sample_start + GROUP_VAL_POS(group , range) / 10;
 	TMP(group_spi[group]).sum_gain = GROUP_VAL_POS(group , sum_gain)  ;
 	TMP(group_spi[group]).point_qty  = GROUP_VAL_POS(group , point_qty);

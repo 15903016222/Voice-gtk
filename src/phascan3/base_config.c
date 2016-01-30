@@ -1532,7 +1532,7 @@ void set_probe_type (CONFIG *p, char data)
 
 inline gshort group_get_gain(gint grp)
 {
-    gshort gain = GROUP_VAL_POS(grp, jGain);
+    gshort gain = GROUP_VAL_POS(grp, gain);
     if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
             || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
         gain >>= 1;
@@ -1545,17 +1545,17 @@ inline void group_set_gain(gint grp, gshort val)
             || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
         val <<= 1;
     }
-    GROUP_VAL_POS(grp, jGain) = val;
+    GROUP_VAL_POS(grp, gain) = val;
 }
 
 inline gshort group_get_refgain(gint grp)
 {
-    gshort gainr = GROUP_VAL_POS(grp, jGainr);
+    gshort gain = GROUP_VAL_POS(grp, refgain);
     if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
             || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
-        gainr >>= 1;
+        gain >>= 1;
     }
-    return gainr;
+    return gain;
 }
 inline void group_set_refgain(gint grp, gshort val)
 {
@@ -1563,7 +1563,16 @@ inline void group_set_refgain(gint grp, gshort val)
             || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
         val <<= 1;
     }
-    GROUP_VAL_POS(grp, jGainr) = val;
+    GROUP_VAL_POS(grp, refgain) = val;
+}
+
+inline gint group_get_start(gint grp)
+{
+    return GROUP_VAL_POS(grp, start);
+}
+inline void group_set_start(gint grp, gint val)
+{
+    GROUP_VAL_POS(grp, start) = val;
 }
 
 /* GROUP 参数的保存读取*/
@@ -1574,7 +1583,7 @@ int get_group_val (GROUP *p, int type)
 	int tt = 0;
 	switch (type)
 	{
-		case GROUP_START:tt = p->start;break;
+//		case GROUP_START:tt = p->start;break;
 		case GROUP_RANGE:tt = p->range;break;
 		case GROUP_WEDGE_DELAY:tt = p->wedge_delay;break;
 		case GROUP_VELOCITY:tt = p->velocity;break;
@@ -1604,7 +1613,7 @@ void set_group_val (GROUP *p, int type, int val)
 {
 	switch (type)
 	{
-		case GROUP_START:p->start = val;break;
+//		case GROUP_START:p->start = val;break;
 		case GROUP_RANGE:p->range = val;break;
 		case GROUP_WEDGE_DELAY:p->wedge_delay = val;break;
 		case GROUP_VELOCITY:p->velocity = val;break;

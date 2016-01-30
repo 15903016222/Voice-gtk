@@ -734,7 +734,7 @@ int GetGroupRxTime(int GroupId_)
 	int _nSampleRange ;
 	int _nMaxBeamDelay;
 
-	_nSampleRange	= (GROUP_VAL_POS(GroupId_ , start) +
+    _nSampleRange	= (group_get_start(GroupId_) +
 			+ GROUP_VAL_POS(GroupId_ , range)
 			+ GROUP_VAL_POS(GroupId_ , wedge_delay)) / 10;
 	_nMaxBeamDelay  = GetGroupMaxBeamDelay(GroupId_);
@@ -3687,10 +3687,12 @@ void data_101 (GtkSpinButton *spinbutton, gpointer data) /*Start 扫描延时 P1
 
 	temp_value = ((temp_value + 5) / 10 ) * 10 ;
 	// if the value is not changed  return
-	if(temp_value == get_group_val(p_grp, GROUP_START))  return ;
-	set_group_val(p_grp , GROUP_START , temp_value);
+    if(temp_value == group_get_start(grp)) {
+        return;
+    }
+    group_set_start(grp, temp_value);
 
-	TMP(group_spi[grp]).sample_start	= (GROUP_VAL_POS(grp , start) + GROUP_VAL_POS(grp , wedge_delay)) / 10;
+    TMP(group_spi[grp]).sample_start	= (group_get_start(grp) + GROUP_VAL_POS(grp , wedge_delay)) / 10;
 	TMP(group_spi[grp]).sample_range	= TMP(group_spi[grp]).sample_start + GROUP_VAL_POS(grp , range) / 10;
 
 	_nMaxBeamDelay = GetGroupMaxBeamDelay(grp) ;
@@ -3787,7 +3789,7 @@ void data_103 (GtkSpinButton *spinbutton, gpointer data) /*楔块延时  P103 */
 	if(temp_value == GROUP_VAL_POS(grp , wedge_delay))  return ;
 	GROUP_VAL_POS(grp , wedge_delay) = temp_value ;
 
-	TMP(group_spi[grp]).sample_start	= (GROUP_VAL_POS(grp , start) + GROUP_VAL_POS(grp , wedge_delay)) / 10;
+    TMP(group_spi[grp]).sample_start	= (group_get_start(grp) + GROUP_VAL_POS(grp , wedge_delay)) / 10;
 	TMP(group_spi[grp]).sample_range	= TMP(group_spi[grp]).sample_start + GROUP_VAL_POS(grp , range) / 10;
 	_nMaxBeamDelay = GetGroupMaxBeamDelay(grp) ;
 	TMP(group_spi[grp]).rx_time		= TMP(group_spi[grp]).sample_range  + _nMaxBeamDelay + 5;
@@ -4785,9 +4787,9 @@ void data_231 (GtkMenuItem *menuitem, gpointer data) /* Gate/Alarm->Sizing Curve
 	if(temp_value) set_overlay_sizing_curves (pp->p_config, 1)  ;
 	if(temp_value == 1) {
 		set_group_db_ref (pp->p_config, grp , 1) ;
-		if (GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][0]) < get_group_val (get_group_by_id (pp->p_config, grp), GROUP_START))
+        if (GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][0]) < group_get_start (grp) )
 		{
-			GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][0]) = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_START) +
+            GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][0]) = group_get_start (grp) +
 				get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 10 ;
 			GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][1]) = GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][0]) + get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 10 ;
 			GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][2]) = GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][1]) + get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 10 ;
@@ -6201,9 +6203,7 @@ void data_520()
 void data_521 (GtkSpinButton *spinbutton, gpointer data) /*gain */
 {
 	int grp = get_current_group(pp->p_config);
-	GROUP *p_grp = get_group_by_id (pp->p_config, grp);
-
-	set_group_val (p_grp, GROUP_START, (gshort) (gtk_spin_button_get_value (spinbutton) * 10.0));
+    group_set_start(grp, (gshort) (gtk_spin_button_get_value (spinbutton) * 10.0));
 }
 
 void data_522 (GtkSpinButton *spinbutton, gpointer data) /*agate_start */

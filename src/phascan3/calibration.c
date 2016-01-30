@@ -58,7 +58,7 @@ void update_spi_after_wedge_delay_calibration(unsigned char grp)
 
 	UpdateGateForSpiSending(grp);
 
-	TMP(group_spi[grp]).sample_start	= (GROUP_VAL_POS(grp , start) + GROUP_VAL_POS(grp , wedge_delay)) / 10;
+    TMP(group_spi[grp]).sample_start	= (group_get_start(grp) + GROUP_VAL_POS(grp , wedge_delay)) / 10;
 	TMP(group_spi[grp]).sample_range	= TMP(group_spi[grp]).sample_start + GROUP_VAL_POS(grp , range) / 10;
 
 	_nMaxBeamDelay = GetGroupMaxBeamDelay(grp) ;

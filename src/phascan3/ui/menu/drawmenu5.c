@@ -40,7 +40,7 @@ void DrawSampleRange()
 	int digit, pos, unit;
 	int grp = get_current_group (pp->p_config);
 	int _nPointQty = GROUP_VAL_POS(grp , point_qty);
-	double _nStart = GROUP_VAL_POS(grp , start) / 1000.0   ;
+    double _nStart = group_get_start(grp) / 1000.0   ;
 	double _nRange = GROUP_VAL_POS(grp , range) / 1000.0   ;
 	double _nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0  ;
 	double _nLimitRange  = PrfLimitToGroupSampleRange(grp) / 100.0 ;
@@ -1360,7 +1360,7 @@ void DrawMenu102Eaglet()
 	}
 	tmpfm = GROUP_VAL_POS( grp , point_qty) / 100.0;
 
-	max_tmp = (PrfLimitToGroupSampleRange(grp)/ 100  - get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_START) / 1000.0);
+    max_tmp = (PrfLimitToGroupSampleRange(grp)/ 100  - group_get_start (grp) / 1000.0);
 	max_tmp1 = GROUP_VAL_POS( grp , point_qty) * 20.0;
 
 	if(UT_UNIT_TRUE_DEPTH == GROUP_VAL_POS( grp , ut_unit))

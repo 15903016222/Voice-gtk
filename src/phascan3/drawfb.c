@@ -3559,13 +3559,13 @@ void DrawAscanHorizontal(unsigned char WinIndex, unsigned short *pFrameBuffer , 
 	gAscanData[WinIndex].group = group;
 	GROUP *pGroup = get_group_by_id (pp->p_config, group);
 	if(
-		(gAscanData[WinIndex].start != get_group_val(pGroup, GROUP_START))
+        (gAscanData[WinIndex].start != group_get_start(group))
 	||	(gAscanData[WinIndex].range != get_group_val(pGroup, GROUP_RANGE))
 	)
 	{
 		ascanResetCurvesWhenStartOrRangeChanged(group);
 	}
-	gAscanData[WinIndex].start = get_group_val(pGroup, GROUP_START);
+    gAscanData[WinIndex].start = group_get_start(group);
 	gAscanData[WinIndex].range = get_group_val(pGroup, GROUP_RANGE);
 
 	ascanDrawWave(pFrameBuffer ,&gAscanData[WinIndex]);
@@ -3648,13 +3648,13 @@ void DrawAscanVertical(unsigned char WinIndex, unsigned short *pFrameBuffer , un
 	gAscanData[WinIndex].group = group;
 	GROUP *p_grp = get_group_by_id (pp->p_config, group);
 	if(
-		(gAscanData[WinIndex].start != get_group_val(p_grp, GROUP_START))
+        (gAscanData[WinIndex].start != group_get_start(group))
 	||	(gAscanData[WinIndex].range != get_group_val(p_grp, GROUP_RANGE))
 	)
 	{
 		ascanResetCurvesWhenStartOrRangeChanged(group);
 	}
-	gAscanData[WinIndex].start = get_group_val(p_grp, GROUP_START);
+    gAscanData[WinIndex].start = group_get_start(group);
 	gAscanData[WinIndex].range = get_group_val(p_grp, GROUP_RANGE);
 
 	ascanDrawWave(pFrameBuffer ,&gAscanData[WinIndex]);
@@ -4329,7 +4329,7 @@ void RefreshDisplayMatrix(unsigned char WinIndex)
 				//_nPointQty = GROUP_VAL_POS(group , point_qty) ;
 				RANGE = GROUP_VAL_POS(group , range) / 1000.0      ;
 				VELOCITY = GROUP_VAL_POS(group , velocity) / 100.0 ;
-				START  = GROUP_VAL_POS(group , start) / 1000.0     ;
+                START  = group_get_start(group) / 1000.0     ;
 				start = START * VELOCITY / 2000.0 ;
 				range = RANGE * VELOCITY / 2000.0 ; // + start;
 
@@ -4354,7 +4354,7 @@ void RefreshDisplayMatrix(unsigned char WinIndex)
 			_nPointQty = GROUP_VAL_POS(group , point_qty) ;
 			RANGE = GROUP_VAL_POS(group , range) / 1000.0      ;
 			VELOCITY = GROUP_VAL_POS(group , velocity) / 100.0 ;
-			START  = GROUP_VAL_POS(group , start) / 1000.0     ;
+            START  = group_get_start(group) / 1000.0     ;
 		    start = START * VELOCITY / 2000.0 ;
 			range = RANGE * VELOCITY / 2000.0 ; // + start;
 			if(GROUP_VAL_POS(group , skew) >= 18000)
@@ -4442,7 +4442,7 @@ void RefreshDisplayMatrix(unsigned char WinIndex)
 			{
 				RANGE = GROUP_VAL_POS(group , range) / 1000.0      ;
 				VELOCITY = GROUP_VAL_POS(group , velocity) / 100.0 ;
-				START  = GROUP_VAL_POS(group , start) / 1000.0  ;
+                START  = group_get_start(group) / 1000.0  ;
 				start = START * VELOCITY / 2000.0 ;
 				range = start + RANGE * VELOCITY / 2000.0 ;
 				calc_line_position(LAW_VAL_POS(group , Angle_min)/100.0, LAW_VAL_POS(group , Angle_max)/100.0, LAW_VAL_POS(group , Angle_step)/100.0,

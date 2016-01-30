@@ -547,7 +547,7 @@ void NetGetUtGeneral(void* pData_ , int grp)
 	CONFIG_UT_GENERAL* _pInfo = (CONFIG_UT_GENERAL*)pData_ ;
 
     _pInfo->fGain  = group_get_gain(grp) / 100.0;
-    _pInfo->uiStart= GROUP_VAL_POS(grp , start);
+    _pInfo->uiStart= group_get_start(grp);
     _pInfo->uiRange= GROUP_VAL_POS(grp , range);
 
     _pInfo->uiWedgeDelay = GROUP_VAL_POS(grp , wedge_delay) ;
@@ -563,7 +563,7 @@ void NetSetUtGeneral(void* pData_ , int grp)
 	CONFIG_UT_GENERAL* _pInfo = (CONFIG_UT_GENERAL*)pData_ ;
 
     group_set_gain(grp, (gshort)(_pInfo->fGain*100));
-    GROUP_VAL_POS(grp , start)= _pInfo->uiStart  ;
+    group_set_start(grp, _pInfo->uiStart);
     GROUP_VAL_POS(grp , range)= _pInfo->uiRange  ;
 
     GROUP_VAL_POS(grp , wedge_delay) = _pInfo->uiWedgeDelay ;
@@ -893,13 +893,15 @@ void NetSetGainValue(int grp , double nVal_)
 
 }
 
-void NetSetGroupValueStart(int nGroupId_ , int nVal_)
+void NetSetGroupValueStart(int grp , int val)
 {
 
-	int _nValue = ((nVal_ + 5) / 10 ) * 10 ;
+    int tmp = ((val + 5) / 10 ) * 10 ;
 	// if the value is not changed  return
-	if(_nValue == GROUP_VAL_POS(nGroupId_ , start))  return ;
-	GROUP_VAL_POS(nGroupId_ , start) = _nValue  ;
+    if(tmp == group_get_start(grp)) {
+        return ;
+    }
+    group_set_start(grp, tmp);
 
 	pp->pos_pos = MENU3_STOP;
 	draw_menu3(0, NULL);

@@ -464,7 +464,7 @@ void fprintfReportGroupSetup(FILE* fp ,int group)
 
     fprintf(fp,"<tr>\n");
     fprintf(fp,"<td %s>%.2f μs</td>\n" ,tableTdStyle ,GROUP_VAL_POS(grp , beam_delay[TMP(beam_num[grp])]) * 0.001);//Beam Delay
-    fprintf(fp,"<td %s>%.2f %s</td>\n" ,tableTdStyle ,get_group_val (p_grp ,GROUP_START) * 0.001 * dbVelocity ,unit);//Start (Half Path)
+    fprintf(fp,"<td %s>%.2f %s</td>\n" ,tableTdStyle ,group_get_start (grp) * 0.001 * dbVelocity ,unit);//Start (Half Path)
     fprintf(fp,"<td %s>%.2f %s</td>\n" ,tableTdStyle ,get_group_val (p_grp ,GROUP_RANGE) * 0.001 * dbVelocity ,unit);//Range (Half Path)
     fprintf(fp,"<td %s>%d</td>\n" ,tableTdStyle ,GROUP_VAL_POS(0 , prf1) / 10);//PRF
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ GROUP_MODE_P +(GROUP_VAL_POS(group,group_mode))]);//Type

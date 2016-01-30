@@ -1550,7 +1550,7 @@ void DrawMenu102()
 	}
 	tmpfm = GROUP_VAL_POS( grp , point_qty) / 100.0;
 
-	max_tmp = (PrfLimitToGroupSampleRange(grp)/ 100  - get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_START) / 1000.0);
+    max_tmp = (PrfLimitToGroupSampleRange(grp)/ 100  - group_get_start (grp) / 1000.0);
 	max_tmp1 = GROUP_VAL_POS( grp , point_qty) * 20.0;
 
 	if(UT_UNIT_TRUE_DEPTH == GROUP_VAL_POS( grp , ut_unit))

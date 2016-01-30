@@ -140,7 +140,7 @@ void refresh_linear_dac_pointer_info()
 	material_decorate = GROUP_VAL_POS(grp , SizingCurves.mat_atten ) / 1000.0;  // (db / 100mm)
 	delay = GROUP_VAL_POS(grp , SizingCurves.delay ) ; // 10ns
 
-	sample_start = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_START) ;
+    sample_start = group_get_start (grp) ;
 	sample_range = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) ;
 	velocity  = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_VELOCITY) / 20000.0 ;
 	interval = (sample_range - delay + sample_start) / 10 ;

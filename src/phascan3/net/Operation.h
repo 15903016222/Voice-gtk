@@ -56,7 +56,7 @@ extern void NetSetDisplayInfo(void* pData_) ;
 
 extern void NetSetGainValue(int grp , double nVal_) ;
 
-extern void NetSetGroupValueStart(int nGroupId_ , int nVal_) ;
+extern void NetSetGroupValueStart(int grp , int val) ;
 extern void NetSetGroupValueRange(int nGroupId_ , int nVal_) ;
 extern void NetSetGroupValuePointQty(int nGroupId_ , int nVal_) ;
 extern void NetSetGroupValueWedgeDelay(int nGroupId_ , int nVal_) ;

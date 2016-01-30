@@ -1903,7 +1903,7 @@ void DrawMenu203()
 				}
 				cur_value = GROUP_GATE_POS(width) / 1000.0 ;
 				lower =	0.02;
-				upper =	((MAX_RANGE_US - GROUP_GATE_POS(start) /1000.0 ) > 6400.0 ? 6400.0 : (MAX_RANGE_US - get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_START) / 1000.0));
+                upper =	((MAX_RANGE_US - GROUP_GATE_POS(start) /1000.0 ) > 6400.0 ? 6400.0 : (MAX_RANGE_US - group_get_start (grp) / 1000.0));
 				step = tmpf;
 				digit = 2;
 				pos = 3;
@@ -2806,7 +2806,7 @@ void DrawMenu523()
 		{
 			cur_value = GROUP_VAL_POS( grp , gate[0].width) / 1000.0 ;
 			lower = 0.01;
-			upper =	((MAX_RANGE_US - GROUP_GATE_POS(start) /1000.0 ) > 6400.0 ? 6400.0 : (MAX_RANGE_US - get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_START) / 1000.0));
+            upper =	((MAX_RANGE_US - GROUP_GATE_POS(start) /1000.0 ) > 6400.0 ? 6400.0 : (MAX_RANGE_US - group_get_start (grp) / 1000.0));
 			step = tmpf;
 			digit = 2;
 			pos = 3;

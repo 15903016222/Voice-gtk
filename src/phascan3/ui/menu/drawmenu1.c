@@ -456,7 +456,7 @@ void DrawMenu101()
 		{
 			if (UNIT_MM == get_unit(pp->p_config))
 			{
-				cur_value = (GROUP_VAL_POS(grp , start) / 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);   /* 当前显示的范围数值mm */
+                cur_value = (group_get_start(grp) / 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);   /* 当前显示的范围数值mm */
 				cur_value = cur_value * cos(TMP(current_angle[grp]));
 				lower = 0;
 				upper =	( PrfLimitToGroupSampleRange(grp)/ 100.0 - GROUP_VAL_POS(grp , range)/ 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);
@@ -470,7 +470,7 @@ void DrawMenu101()
 			}
 			else
 			{
-				cur_value = (GROUP_VAL_POS(grp , start) / 1000.0) * 0.03937 * (GROUP_VAL_POS(grp , velocity) / 200000.0); /* 当前显示的范围inch */
+                cur_value = (group_get_start(grp) / 1000.0) * 0.03937 * (GROUP_VAL_POS(grp , velocity) / 200000.0); /* 当前显示的范围inch */
 				cur_value = cur_value * cos(TMP(current_angle[grp]));
 				lower = 0;
 				upper =	(PrfLimitToGroupSampleRange(grp)/ 100.0 - GROUP_VAL_POS(grp , range) / 1000.0 )
@@ -487,7 +487,7 @@ void DrawMenu101()
 		{
 			if (UNIT_MM == get_unit(pp->p_config))
 			{
-				cur_value = (GROUP_VAL_POS(grp , start) / 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);   /* 当前显示的范围数值mm */
+                cur_value = (group_get_start(grp) / 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);   /* 当前显示的范围数值mm */
 				lower = 0;
 				upper =	(PrfLimitToGroupSampleRange(grp)/ 100.0  - GROUP_VAL_POS(grp , range) / 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);
 				step = tmpf * (GROUP_VAL_POS(grp , velocity) / 200000.0);
@@ -498,7 +498,7 @@ void DrawMenu101()
 			}
 			else
 			{
-				cur_value = (GROUP_VAL_POS(grp , start)/ 1000.0) * 0.03937 * (GROUP_VAL_POS(grp , velocity) / 200000.0); /* 当前显示的范围inch */
+                cur_value = (group_get_start(grp)/ 1000.0) * 0.03937 * (GROUP_VAL_POS(grp , velocity) / 200000.0); /* 当前显示的范围inch */
 				lower = 0;
 				upper =	(PrfLimitToGroupSampleRange(grp)/ 100 - GROUP_VAL_POS(grp , range) / 1000.0 ) * 0.03937 * GROUP_VAL_POS(grp , velocity) / 200000.0;
 				step = tmpf * 0.03937 * GROUP_VAL_POS(grp , velocity) / 200000.0;
@@ -509,7 +509,7 @@ void DrawMenu101()
 		}
 		else
 		{
-			cur_value = GROUP_VAL_POS(grp , start) / 1000.0 ;
+            cur_value = group_get_start(grp) / 1000.0 ;
 			lower =	0 ;
 			upper =	PrfLimitToGroupSampleRange(grp)/ 100.0 - GROUP_VAL_POS(grp , range ) / 1000.0;
 			step = tmpf;
@@ -526,7 +526,7 @@ void DrawMenu101()
 		{
 			if (UNIT_MM == get_unit(pp->p_config))
 			{
-				cur_value = (GROUP_VAL_POS(grp , start) / 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);   /* 当前显示的范围数值mm */
+                cur_value = (group_get_start(grp) / 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);   /* 当前显示的范围数值mm */
 				cur_value = cur_value * cos(TMP(current_angle[grp]));
 				unit = UNIT_MM;
 				digit = 2;
@@ -534,7 +534,7 @@ void DrawMenu101()
 			}
 			else
 			{
-				cur_value = (GROUP_VAL_POS(grp , start)/ 1000.0) * 0.03937 * (GROUP_VAL_POS(grp , velocity) / 200000.0); /* 当前显示的范围inch */
+                cur_value = (group_get_start(grp)/ 1000.0) * 0.03937 * (GROUP_VAL_POS(grp , velocity) / 200000.0); /* 当前显示的范围inch */
 				cur_value = cur_value * cos(TMP(current_angle[grp]));
 				unit = UNIT_INCH;
 				digit = 3;
@@ -545,14 +545,14 @@ void DrawMenu101()
 		{
 			if (UNIT_MM == get_unit(pp->p_config))
 			{
-				cur_value = (GROUP_VAL_POS(grp , start) / 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);   /* 当前显示的范围数值mm */
+                cur_value = (group_get_start(grp) / 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);   /* 当前显示的范围数值mm */
 				unit = UNIT_MM;
 				digit = 2;
 				pos = 1;
 			}
 			else
 			{
-				cur_value = (GROUP_VAL_POS(grp , start) / 1000.0) * 0.03937 * (GROUP_VAL_POS(grp , velocity) / 200000.0); /* 当前显示的范围inch */
+                cur_value = (group_get_start(grp) / 1000.0) * 0.03937 * (GROUP_VAL_POS(grp , velocity) / 200000.0); /* 当前显示的范围inch */
 				unit = UNIT_INCH;
 				digit = 3;
 				pos = 1;
@@ -560,7 +560,7 @@ void DrawMenu101()
 		}
 		else
 		{
-			cur_value = get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_START) / 1000.0 ;
+            cur_value = group_get_start (grp) / 1000.0 ;
 			unit = UNIT_US;
 			digit = 2;
 			pos = 1;

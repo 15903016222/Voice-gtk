@@ -15,7 +15,7 @@
 #include <glib.h>
 #include "base_const.h"
 
-#define GROUP_START			0x1002
+//#define GROUP_START			0x1002
 #define GROUP_RANGE			0x1003
 #define GROUP_WEDGE_DELAY	0x1004
 #define GROUP_VELOCITY		0x1005
@@ -350,8 +350,8 @@ struct _Group
 	unsigned char	prf_pos1;		/* 脉冲宽度选择模式 */
 	unsigned short	frequency1;		/* 以0.001Mhz 也就是Khz 1MHz~20MHz 为单位 当探头学选unknown 时候才可以调节 */
 	unsigned short	pulser_width1;	/* 30~500ns 2.5ns为步进*/
-    short	jGain;			/* 实际增益 单位 0.01dB */
-    short	jGainr;			/* 参考增益 单位 0.01dB	*/
+    short	gain;                   /* 实际增益 单位 0.01dB */
+    short	refgain;                /* 参考增益 单位 0.01dB	*/
 	unsigned short	s_refmeas;
 	unsigned short	cursors_angle;
 	unsigned short	skew;				/**/
@@ -382,7 +382,7 @@ struct _Group
 	/* 基本设置 */
 	int		wedge_delay;	/* 楔款延时 单位 ns		*/
 	int		range;			/* 显示范围 单位 ns		*/
-	int		start;			/* 扫描延时 单位 ns		*/
+    int		start;			/* 扫描延时 单位 ns		*/
 	int		velocity;		/* 实际声速 单位 0.01m/s*/
 	int		on_off_status;
 	int		prf1;			/* 重复频率 1-20000Hz 取值为10~200000 */
@@ -792,10 +792,12 @@ extern void			set_probe_type (CONFIG *p, char data);
 /*Group参数操作接口，将取代下面老旧的接口*/
 extern gshort group_get_gain(gint grp);
 extern void group_set_gain(gint grp, gshort val);
+
 extern gshort group_get_refgain(gint grp);
 extern void group_set_refgain(gint grp, gshort val);
 
-
+extern gint group_get_start(gint grp);
+extern void group_set_start(gint grp, gint val);
 
 /* Group 参数的保存读取 */
 extern int	get_group_point_qty_pos	(CONFIG *p, int group_id);

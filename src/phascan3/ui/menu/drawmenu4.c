@@ -38,7 +38,7 @@ void DrawSampleStart()
 	double cur_value, lower, upper, step;
 	int digit, pos, unit;
 	int grp = get_current_group (pp->p_config);
-	double _nStart    = GROUP_VAL_POS(grp , start) / 1000.0  ;
+    double _nStart    = group_get_start(grp) / 1000.0  ;
 	double _nRange    = GROUP_VAL_POS(grp , range) / 1000.0  ;
 	double _nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 	int _nPointQty = GROUP_VAL_POS(grp , point_qty)     ;
