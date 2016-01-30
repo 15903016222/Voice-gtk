@@ -1730,6 +1730,7 @@ void DrawMenu113()
 {
     gint grp = get_current_group (pp->p_config);
     guchar grpMode = pp->p_config->group[grp].group_mode;
+
     gint offset = PA_VOLTAGE;
     gint num = 2;
 

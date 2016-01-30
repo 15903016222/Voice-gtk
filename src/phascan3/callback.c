@@ -5972,7 +5972,7 @@ void data_501 (GtkMenuItem *menuitem, gpointer data) /* Probe/Part->Select->Grou
 	char temp_value ;
 	int group = get_current_group(pp->p_config);
 
-#define FPGA_VERSION > 1
+#if FPGA_VERSION > 1
     gshort gain = group_get_gain(group);
     gshort refgain = group_get_refgain(group);
 #endif

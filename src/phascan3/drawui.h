@@ -125,7 +125,7 @@
 #define PA_VOLTAGE	(FREQUENCY + 14)
 #define UT_VOLTAGE  (PA_VOLTAGE + 4)
 #define PULSER_WIDTH    (UT_VOLTAGE + 8)
-#define PRF		(PULSER_WIDTH + 2)
+#define PRF         (PULSER_WIDTH + 2)
 #define FILTER		(PRF + 4)
 #define RECTIFIER	(FILTER + 16)
 #define AVERAGING	(RECTIFIER + 4)

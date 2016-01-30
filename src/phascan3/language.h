@@ -8,6 +8,7 @@
 #define __LANGUAGE_H_
 
 #include <glib.h>
+#include "version.h"
 
 extern const gchar *content_en10[];
 extern const gchar **content1_en[]; 
