@@ -1,9 +1,11 @@
 /**
- * File: dxf_tables_entries.h
- * Desc: entries parse
- * Author: JakeYang
- * Log: 2015-09-29
+ * @file dxf_tables_entries.h
+ * @brief dxf tables层, entries封装
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
  */
+
 
 #ifndef __DXF_TABLES_ENTRIES_H__
 #define __DXF_TABLES_ENTRIES_H__

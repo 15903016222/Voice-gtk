@@ -1,7 +1,8 @@
 #ifndef __VERSION_H__
 #define __VERSION_H__
 
-#define PHASCAN_VERSION "2cce58c"
-#define V3_2 1
+#define PHASCAN_MAJOR (3)
+#define PHASCAN_MINOR (1)
+#define PHASCAN_MICRO (2)
 
 #endif

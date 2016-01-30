@@ -1,3 +1,11 @@
+/**
+ * @file entities_mtext.c
+ * @brief dxf entities层, mtext对象
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #include "entities_mtext.h"
 
 static inline DxfMtext *mtext_new_item()

@@ -1,3 +1,11 @@
+/**
+ * @file entities_image.c
+ * @brief dxf entities层, image对象
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #include "entities_image.h"
 
 static inline DxfImage *image_new_item()

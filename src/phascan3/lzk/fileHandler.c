@@ -462,6 +462,8 @@ int saveInspectData(const char* filename)
 	char* _pStoreData ;
 	unsigned char cEndFile = 0xfe;
 
+    memset(&_DrawInfor, 0, sizeof(DRAW_INFO_PACK));
+
 	_DrawInfor.nEncodeType = _nEncoderType ;
 	_DrawInfor.nGroupNum = get_group_qty(pp->p_config);
 	for (i = 0; i < 8; i++)
@@ -699,6 +701,10 @@ int ReadDataFileData(const char* dataFile)
 
 
 		fileHeadStruct fileHead;
+
+
+        memset(&_DrawInfor, 0, sizeof(DRAW_INFO_PACK));
+
 		lseek( fd,0,SEEK_SET );
 		read (fd, &fileHead, sizeof(fileHeadStruct));
 		read (fd, &_DrawInfor, sizeof(DRAW_INFO_PACK));

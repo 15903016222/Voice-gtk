@@ -1,3 +1,11 @@
+/**
+ * @file entities_3dsolid.h
+ * @brief dxf entities层, 3dsolid对象
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #include "entities_3dsolid.h"
 
 static inline Dxf3Dsolid *dxf3dsolid_new_item()

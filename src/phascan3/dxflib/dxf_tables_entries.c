@@ -1,3 +1,11 @@
+/**
+ * @file dxf_tables_entries.c
+ * @brief dxf tables层, entries封装
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #include "dxf_tables_entries.h"
 #include "dxf_map.h"
 

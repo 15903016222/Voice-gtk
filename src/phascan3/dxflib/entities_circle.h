@@ -1,3 +1,11 @@
+/**
+ * @file entities_circle.h
+ * @brief dxf entities层, circle对象
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #ifndef __ENTITIES_CIRCLE_H__
 #define __ENTITIES_CIRCLE_H__
 

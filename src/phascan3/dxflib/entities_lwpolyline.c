@@ -1,3 +1,11 @@
+/**
+ * @file entities_lwpolyline.c
+ * @brief dxf entities层, lwpolyline对象
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #include "entities_lwpolyline.h"
 
 static inline DxfLWPolyline *lwpolyline_new_item()

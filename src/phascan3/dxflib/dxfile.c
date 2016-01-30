@@ -1,3 +1,11 @@
+/**
+ * @file dxfile.c
+ * @brief dxf文件操作
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #include "dxfile.h"
 
 static inline Dxfile *dxfile_new_item() { return g_malloc0(sizeof(Dxfile)); }

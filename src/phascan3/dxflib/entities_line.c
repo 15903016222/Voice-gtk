@@ -1,3 +1,11 @@
+/**
+ * @file entities_line.h
+ * @brief dxf entities层, line对象
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #include "entities_line.h"
 
 static inline DxfLine *line_new_item()

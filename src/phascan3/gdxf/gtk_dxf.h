@@ -1,3 +1,11 @@
+/**
+ * @file gtk_dxf.h
+ * @brief GtkDxf类
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #ifndef __GDXF_H__
 #define __GDXF_H__
 

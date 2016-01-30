@@ -1,3 +1,11 @@
+/**
+ * @file entities_circle.c
+ * @brief dxf entities层, circle对象
+ * @author JakeYang <add358@gmail.com>
+ * @version 0.2
+ * @date 2015-04-14
+ */
+
 #include "entities_circle.h"
 
 static inline DxfCircle *circle_new_item()
