@@ -1532,37 +1532,49 @@ void set_probe_type (CONFIG *p, char data)
 
 inline gshort group_get_gain(gint grp)
 {
+#if FPGA_VERSION > 1
     gshort gain = GROUP_VAL_POS(grp, gain);
     if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
             || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
         gain >>= 1;
     }
     return gain;
+#else
+    return GROUP_VAL_POS(grp, gain);
+#endif
 }
 inline void group_set_gain(gint grp, gshort val)
 {
+#if FPGA_VERSION > 1
     if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
             || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
         val <<= 1;
     }
+#endif
     GROUP_VAL_POS(grp, gain) = val;
 }
 
 inline gshort group_get_refgain(gint grp)
 {
+#if FPGA_VERSION > 1
     gshort gain = GROUP_VAL_POS(grp, refgain);
     if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
             || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
         gain >>= 1;
     }
     return gain;
+#else
+    return GROUP_VAL_POS(grp, refgain);
+#endif
 }
 inline void group_set_refgain(gint grp, gshort val)
 {
+#if FPGA_VERSION > 1
     if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
             || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
         val <<= 1;
     }
+#endif
     GROUP_VAL_POS(grp, refgain) = val;
 }
 

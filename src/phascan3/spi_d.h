@@ -1,6 +1,8 @@
-
-/*345678901234567890123456789012345678901234567890123456789012345678901234567890
- *      10        20        30        40        50        60        70        80
+/**
+ * @file spi_d.h
+ * @brief spi接口
+ * @author JakeYang <add358@gmail.com>
+ * @date 2015-10-16
  */
 
 #ifndef __SPI_D_H_
@@ -33,7 +35,7 @@ typedef struct _Group_data
 #if HIGH_POWER
 	unsigned int	compress_rato:14;		/* bit:7-20  压缩比	*/
 	unsigned int	gain:11;				/* bit:21-31 Gain	*/
-#elif V3_2
+#elif (FPGA_VERSION > 1)
     unsigned int    compress_rato:12;       /* bit:7-18 压缩比 */
     unsigned int    TT9:2;                  /* 保留两位 */
     unsigned int    gain:11;                /* bit:21-31 Gain */
