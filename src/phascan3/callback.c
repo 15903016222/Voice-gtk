@@ -5971,6 +5971,9 @@ void data_501 (GtkMenuItem *menuitem, gpointer data) /* Probe/Part->Select->Grou
 {
 	char temp_value ;
 	int group = get_current_group(pp->p_config);
+    gshort gain = group_get_gain(group);
+    gshort refgain = group_get_refgain(group);
+
 	temp_value = (char) (GPOINTER_TO_UINT (data));
 #if HIGH_POWER
 #else
@@ -5985,6 +5988,11 @@ void data_501 (GtkMenuItem *menuitem, gpointer data) /* Probe/Part->Select->Grou
 #endif
 	/*group mode 选择UT,UT1,UT2时，focal law 不可用*/
 	GROUP_VAL_POS(group ,  group_mode) = temp_value;
+
+    /*更新增益值*/
+    group_set_gain(group, gain);
+    group_set_refgain(group, refgain);
+
 	UT_group_config_settting (group) ;
 	if(temp_value == PA_SCAN)
 	{
