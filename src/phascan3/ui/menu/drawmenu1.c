@@ -703,12 +703,19 @@ void DrawMenu231()
 	pp->x_pos = 570, pp->y_pos = 250-26;
 	if (GROUP_VAL_POS( grp , SizingCurves.mode_pos) == 0)  /* MODE 为Setup 时候 */
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1))
+        if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1)) {
+            int status = 0;
+#if FPGA_VERSION > 1
+            if ( UT1_SCAN == GROUP_VAL_POS( grp, group_mode) || UT2_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+                status = 8;
+            }
+#endif
 			draw3_pop_tt (data_231, NULL,
 					menu_content[CURVE_POS+GROUP_VAL_POS( grp , SizingCurves.curve_pos)],
-					menu_content + CURVE_POS, 4, 1, GROUP_VAL_POS( grp , SizingCurves.curve_pos), 0);
-		else
+                    menu_content + CURVE_POS, 4, 1, GROUP_VAL_POS( grp , SizingCurves.curve_pos), status);
+        } else {
 			draw3_popdown (menu_content[CURVE_POS+GROUP_VAL_POS( grp , SizingCurves.curve_pos)], 1, 0);
+        }
 	}
 	else if (GROUP_VAL_POS( grp , SizingCurves.mode_pos) == 1)  /* MODE 为 Edit的时候 */
 	{
