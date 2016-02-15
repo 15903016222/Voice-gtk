@@ -749,8 +749,14 @@ double GetGainLimit(int nGroupId_)
 #if HIGH_POWER
 	return 120;
 #else
-	return 80;
+    if (PA_SCAN == GROUP_VAL_POS(nGroupId_, group_mode)
+                 || UT_SCAN == GROUP_VAL_POS(nGroupId_, group_mode)) {
+        return PA_MAX_GAIN;
+    } else {
+        return UT_MAX_GAIN;
+    }
 #endif
+    /*
 	unsigned char dac_point_qty = GROUP_VAL_POS(nGroupId_ , SizingCurves.dac_point_qty) ;
 	int _nBeamNo = TMP(beam_num[nGroupId_]) ;
 
@@ -773,6 +779,7 @@ double GetGainLimit(int nGroupId_)
 	if(ret < 0) ret = 0 ;
 	if(ret > 80)  ret = 80 ;
 	return ret;
+    */
 }
 
 

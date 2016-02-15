@@ -2080,7 +2080,12 @@ void DrawMenu235()
 			{
                 cur_value =group_get_refgain(grp)/100.0;
                 lower = (group_get_refgain(grp)- group_get_gain(grp))/100.0;
-				upper = 80 + lower;
+                if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
+                             || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+                    upper = PA_MAX_GAIN + lower;
+                } else {
+                    upper = UT_MAX_GAIN + lower;
+                }
 				step = tmpf;
 				digit = 1;
 				pos = 5;

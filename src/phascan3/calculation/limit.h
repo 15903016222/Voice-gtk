@@ -8,6 +8,17 @@
 #ifndef LIMIT_H_
 #define LIMIT_H_
 
+#include "../version.h"
+
+#define PA_MAX_GAIN     (80)
+
+#if FPGA_VERSION > 1
+#define UT_MAX_GAIN     (110)
+#else
+#define UT_MAX_GAIN     PA_MAX_GAIN
+#endif
+
+
 #define DATA_SAVE_BLOCK_SIZE    1024
 
 extern int    ConfirmGainOffsetOfAllBeamInLimit(int grp) ;

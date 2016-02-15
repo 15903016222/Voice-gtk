@@ -220,7 +220,13 @@ void CalibrationGain()
 		{
             cur_value = (group_get_gain(grp) - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp)) / 100.0;
             lower = 0.0 - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
-            upper = GAIN_MAX - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+
+            if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
+                         || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+                upper = PA_MAX_GAIN - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+            } else {
+                upper = UT_MAX_GAIN - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+            }
 			step = tmpf;
 			digit = 1;
 			pos = 2;
@@ -584,7 +590,14 @@ void DrawMenu022UltrasoundSensationStep6()
 	{
         cur_value = (group_get_gain(grp)  - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp)) / 100.0;
         lower = 0.0 - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
-        upper = GAIN_MAX - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+
+        if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
+                     || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+            upper = PA_MAX_GAIN - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+        } else {
+            upper = UT_MAX_GAIN - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+        }
+
 		step = tmpf;
 		digit = 1;
 		pos = 2;
@@ -734,7 +747,13 @@ void DrawMenu022CodeAWSStep4()
 	{
         cur_value = (group_get_gain(grp) - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp)) / 100.0;
         lower = 0.0 - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
-        upper = GAIN_MAX - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+
+        if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
+                     || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+            upper = PA_MAX_GAIN - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+        } else {
+            upper = UT_MAX_GAIN - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0 ;
+        }
 		step = tmpf;
 		digit = 1;
 		pos = 2;

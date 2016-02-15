@@ -10,6 +10,7 @@
 #include "../../draw_dialog.h"
 #include "../../callback.h"
 #include "../../main.h"
+#include "../../calculation/limit.h"
 #include <dirent.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -1516,7 +1517,14 @@ void DrawMenu521()
     if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1)) {
         cur_value = ((int)(group_get_gain(grp)) - (int)(group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp))) / 100.0;
         lower = 0.0 - (group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp)) / 100.0 ;
-        upper = GAIN_MAX - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0;
+
+        if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
+                     || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+            upper = PA_MAX_GAIN - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0;
+        } else {
+            upper = UT_MAX_GAIN - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0;
+        }
+
 		step = tmpf;
 		digit = 1;
 		pos = 1;

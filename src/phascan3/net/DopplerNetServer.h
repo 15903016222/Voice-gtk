@@ -41,7 +41,7 @@ typedef struct
 	unsigned int uiRange;       // unit  : ns
 	unsigned int uiWedgeDelay ;  // unit : ns
 	__attribute__((aligned(8)))
-	double       fGain ;        // range : 0 -  80.0  db
+    double       fGain ;        // range : 0 - 80.0 dB or 0 - 110.0 dB
 	double       fVelocity   ;  // unit : m/s
 
 } CONFIG_UT_GENERAL;

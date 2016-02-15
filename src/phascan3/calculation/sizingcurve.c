@@ -8,6 +8,7 @@
 #include "../drawui.h"
 #include "../callback.h"
 #include "../calibration.h"
+#include "limit.h"
 #include <stdio.h>
 #include <math.h>
 
@@ -98,7 +99,12 @@ double CurrentPointTcgGainLimit(int grp)
 {
     unsigned char point_pos = GROUP_VAL_POS(grp , SizingCurves.point_pos) ;
 	double ret;
-    ret = MIN(40 , 80 - group_get_gain(grp) / 100.0) ;
+    if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
+                 || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+        ret = MIN(40 , PA_MAX_GAIN - group_get_gain(grp) / 100.0) ;
+    } else {
+        ret = MIN(40 , UT_MAX_GAIN - group_get_gain(grp) / 100.0) ;
+    }
 
 	if(point_pos == 0)		ret = 0 ;
 
@@ -161,7 +167,12 @@ double DacAmptitudeMinimumLimit(int grp)
 	double _nResult ;
 	double _nGainLimit;
     int _nBeamNo = TMP(beam_num[grp]) ;
-    _nGainLimit = MIN(40 , 80 - group_get_gain(grp) / 100.0) ;
+    if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
+                 || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+        _nGainLimit = MIN(40 , PA_MAX_GAIN - group_get_gain(grp) / 100.0) ;
+    } else {
+        _nGainLimit = MIN(40 , UT_MAX_GAIN - group_get_gain(grp) / 100.0) ;
+    }
     _nResult = GROUP_VAL_POS(grp , SizingCurves.amplitude[_nBeamNo][0]) / 1000.0 ;
 	_nResult = _nResult /(pow(10 , _nGainLimit / 20.0)) ;
 

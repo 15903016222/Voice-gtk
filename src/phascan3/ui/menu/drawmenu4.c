@@ -9,6 +9,7 @@
 #include "../../drawfb.h"
 #include "../../draw_dialog.h"
 #include "../../callback.h"
+#include "../../calculation/limit.h"
 #include "../../main.h"
 #include <dirent.h>
 #include <unistd.h>
@@ -503,7 +504,14 @@ void DrawMenu024UltrasoundSensationStep5()
 	{
 		cur_value = (_nGain - _nGainR * get_group_db_ref (pp->p_config, grp)) / 100.0;
 		lower = 0.0 - _nGainR * get_group_db_ref (pp->p_config, grp) / 100.0;
-		upper = GAIN_MAX - _nGainR * get_group_db_ref (pp->p_config, grp) / 100.0;
+
+        if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
+                     || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+            upper = PA_MAX_GAIN - _nGainR * get_group_db_ref (pp->p_config, grp) / 100.0;
+        } else {
+            upper = UT_MAX_GAIN - _nGainR * get_group_db_ref (pp->p_config, grp) / 100.0;
+        }
+
 		step = tmpf;
 		digit = 1;
 		pos = 4;

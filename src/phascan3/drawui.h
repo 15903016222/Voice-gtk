@@ -101,7 +101,6 @@
 #define LONGITUDINAL_WAVE	0
 #define SHEAR_WAVE	1
 
-#define GAIN_MAX	80.0
 #define GAINR_OFF	0
 #define GAINR_ON	1
 #define AUTO_FOCAL_OFF	0

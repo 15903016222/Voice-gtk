@@ -23,13 +23,23 @@ int ConfirmGainOffsetOfAllBeamInLimit(int grp)
     int _nGain = group_get_gain(grp) ; // 0 - 8000 (80DB)
 	int i , _nTmpValue;
 	int _nBeamQty = TMP(beam_qty[grp]) ;
+    int maxGain = 0;
 	for(i = 0 ; i < _nBeamQty ; i++)
 	{
 		_nTmpValue = _nGain + GROUP_VAL_POS(grp , gain_offset[i]) * 10;
-		if(_nTmpValue > 8000)
+
+
+        if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
+                     || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+            maxGain = PA_MAX_GAIN * 100;
+        } else {
+            maxGain = UT_MAX_GAIN * 100;
+        }
+
+        if(_nTmpValue > maxGain)
 		{
 			ret = -1 ;
-			GROUP_VAL_POS(grp , gain_offset[i]) = (8000 - _nGain)/10 ;
+            GROUP_VAL_POS(grp , gain_offset[i]) = (maxGain - _nGain)/10 ;
 		}
 	}
 	return ret ;
