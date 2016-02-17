@@ -3631,8 +3631,6 @@ void data_100 (GtkSpinButton *spinbutton, gpointer data) /* 增益Gain P100 */
         group_set_gain(grp, gain);
     }
 
-    TMP(group_spi[grp]).gain = group_get_gain(grp) / 10;
-
 	RefreshGainMark(grp);
 
 	group_data_spi new, *p1;
@@ -3763,7 +3761,9 @@ void data_102 (GtkSpinButton *spinbutton, gpointer data) /*Range 范围 P102 */
 	}
 	// if current value is not changed , return
 	temp_value = rounding(0, temp_value, temp_value1 * 10) ;
-	if(temp_value == get_group_val(p_grp , GROUP_RANGE))   return ;
+    if(temp_value == get_group_val(p_grp , GROUP_RANGE)) {
+        return ;
+    }
 
 	set_group_val(p_grp , GROUP_RANGE , temp_value) ;
 	GROUP_VAL_POS(grp , point_qty) = temp_value1;
@@ -5104,7 +5104,6 @@ void data_235 (GtkSpinButton *spinbutton, gpointer data) /*  reference gain */
     group_set_gain(grp, gain+temp_value);
 
 	RefreshGainMark(grp) ;
-    TMP(group_spi[grp]).gain = group_get_gain(grp) / 10;
 
 	group_data_spi new, *p1;
 	memcpy (&new, &TMP(group_spi[grp]), sizeof (group_data_spi));
@@ -7327,8 +7326,7 @@ static int SetDBEightPercentThread(gpointer data)
 
         group_set_gain(grp, gain);
 
-        TMP(group_spi[grp]).gain = gain / 10;
-		send_group_spi (grp);
+        send_group_spi (grp);
 		i--;
         if(_bRefDB) {
 			markup = g_markup_printf_escaped (

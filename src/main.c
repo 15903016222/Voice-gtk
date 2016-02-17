@@ -1009,7 +1009,11 @@ void init_group_spi (int group)
 	TMP(group_spi[group]).compress_rato	= 
 		((get_group_val (get_group_by_id (pp->p_config, group), GROUP_RANGE) / 10.0) / GROUP_VAL_POS(group, point_qty)) > 1 ? 
 		((get_group_val (get_group_by_id (pp->p_config, group), GROUP_RANGE) / 10.0) / GROUP_VAL_POS(group, point_qty)) : 1;
-    TMP(group_spi[group]).gain			= group_get_gain(group) / 10.0;
+
+
+//    TMP(group_spi[group]).gain			= group_get_gain(group) / 10.0;
+
+
 	TMP(group_spi[group]).tcg_point_qty	= GROUP_VAL_POS(group , SizingCurves.dac_point_qty);
 	if(GROUP_VAL_POS(group , SizingCurves.curve_pos) == 3)
 	{
@@ -1253,7 +1257,8 @@ void RefreshGroupGroupSpi (guint group)
 	TMP(group_spi[group]).compress_rato	=
 		((get_group_val (get_group_by_id (pp->p_config, group), GROUP_RANGE) / 10.0) / GROUP_VAL_POS(group, point_qty)) > 1 ?
 		((get_group_val (get_group_by_id (pp->p_config, group), GROUP_RANGE) / 10.0) / GROUP_VAL_POS(group, point_qty)) : 1;
-    TMP(group_spi[group]).gain			= group_get_gain(group) / 10.0;
+
+//    TMP(group_spi[group]).gain			= group_get_gain(group) / 10.0;
 
 	TMP(group_spi[group]).tcg_point_qty	= GROUP_VAL_POS(group , SizingCurves.dac_point_qty);
 	if(GROUP_VAL_POS(group , SizingCurves.curve_pos) == 3)

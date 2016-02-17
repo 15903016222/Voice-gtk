@@ -1364,8 +1364,8 @@ void CalculateCodeCalibraionAWS()
 
     group_set_gain(grp, (gshort)(_nGainReference));
     group_set_refgain(grp, (gshort)(_nGainReference));
-    TMP(group_spi[grp]).gain   = (gshort)(_nGainReference) / 10 ;
-	send_group_spi (grp);
+
+    send_group_spi (grp);
 
 	set_group_db_ref (pp->p_config, grp , 1) ;
 	markup = g_markup_printf_escaped (

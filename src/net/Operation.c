@@ -883,7 +883,7 @@ void NetSetDisplayInfo(void* pData_)
 void NetSetGainValue(int grp , double nVal_)
 {
     group_set_gain(grp, (gshort)(nVal_ * 100));
-    TMP(group_spi[grp]).gain = nVal_;
+
     RefreshGainMark(grp);
 	pp->pos_pos = MENU3_STOP;
 	draw_menu3(0, NULL);
