@@ -25,7 +25,7 @@
 
 volatile DRAW_UI_P	pp;
 void init_group_spi (int group);
-void send_group_spi (int group);
+void group_spi_send (int group);
 void MultiGroupSendFocalSpi();
 void MultiGroupSendGroupSpi();
 static int fd_lock ;
@@ -750,6 +750,7 @@ void MainInit ()
 	init_mem ();
 	init_spi ();
 	init_serial ();
+    group_spi_init();
 	p_ui->p_beam_data = TMP(dma_data_add); // beam data from FPGA
 	p_config = (CONFIG*)(TMP(dma_data_add) + 8 *1024 * 1024);
 #else
@@ -991,11 +992,6 @@ void send_focal_spi (int group, int reset)
 	}
 }
 
-void send_group_spi (int group)
-{
-	write_group_data (&(pp->p_tmp_config->group_spi[group]), group);
-}
-
 /* 初始化需要发给fpga的group参数 */
 void init_group_spi (int group)
 {
@@ -1011,6 +1007,7 @@ void init_group_spi (int group)
 		((get_group_val (get_group_by_id (pp->p_config, group), GROUP_RANGE) / 10.0) / GROUP_VAL_POS(group, point_qty)) : 1;
 
 
+    group_set_gain(group, group_get_gain(group));
 //    TMP(group_spi[group]).gain			= group_get_gain(group) / 10.0;
 
 
@@ -1258,6 +1255,7 @@ void RefreshGroupGroupSpi (guint group)
 		((get_group_val (get_group_by_id (pp->p_config, group), GROUP_RANGE) / 10.0) / GROUP_VAL_POS(group, point_qty)) > 1 ?
 		((get_group_val (get_group_by_id (pp->p_config, group), GROUP_RANGE) / 10.0) / GROUP_VAL_POS(group, point_qty)) : 1;
 
+    group_set_gain(group, group_get_gain(group));
 //    TMP(group_spi[group]).gain			= group_get_gain(group) / 10.0;
 
 	TMP(group_spi[group]).tcg_point_qty	= GROUP_VAL_POS(group , SizingCurves.dac_point_qty);

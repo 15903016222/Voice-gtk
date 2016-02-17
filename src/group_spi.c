@@ -10,16 +10,28 @@
 
 #include "main.h"
 
+static group_data_spi *group_spi = NULL;
+
+inline void group_spi_init()
+{
+    group_spi = TMP(group_spi);
+}
+
+inline void group_spi_send(gint grp)
+{
+    write_group_data(&group_spi[grp], grp);
+}
+
 inline void group_spi_set_gain(gint grp, gshort val)
 {
 #if (FPGA_VERSION > 1)
     if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
             || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
-        TMP(group_spi[grp]).gain = val << 1;
+        group_spi[grp].gain = val << 1;
     } else {
-        TMP(group_spi[grp]).gain = val;
+        group_spi[grp].gain = val;
     }
 #else
-    TMP(group_spi[grp]).gain = val;
+    group_spi[grp].gain = val;
 #endif
 }

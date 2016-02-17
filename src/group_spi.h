@@ -112,6 +112,14 @@ struct _GroupDataSpi {
 
 };
 
+extern void group_spi_init();
+
+/**
+ * @brief group_spi_send    发送Group数据到FPGA
+ * @param grp               组号
+ */
+extern void group_spi_send(gint grp);
+
 /*get methods*/
 extern guint group_spi_freq_band();
 extern guint group_spi_video_filter();

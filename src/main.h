@@ -8,7 +8,7 @@ extern void ExitApplication (GtkWidget *widget, GdkEventButton *event,	gpointer 
 
 extern void MultiGroupSendFocalSpi();
 extern void MultiGroupSendGroupSpi();
-extern void send_group_spi (int grp);
+
 extern void send_focal_spi (int grp , int reset);
 extern void SettingGroupConfigure (int grp);
 

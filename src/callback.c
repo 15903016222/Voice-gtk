@@ -2162,7 +2162,7 @@ void b3_fun3(gpointer p)
 							!get_group_val (get_group_by_id(pp->p_config, grp), GROUP_VIDEO_FILTER));
 					TMP(group_spi[grp]).video_filter	= 
 						get_group_val (get_group_by_id(pp->p_config, grp), GROUP_VIDEO_FILTER);
-					send_group_spi (grp);
+                    group_spi_send (grp);
 					/* 视频滤波 P123 */
 					break; 
 				default:break;
@@ -3907,7 +3907,7 @@ void data_111 (GtkMenuItem *menuitem, gpointer data) /* 收发模式 Tx/Rx Mode 
 
 	pp->pos_pos = MENU3_STOP;
 	draw_menu3(0, NULL);
-	send_group_spi(grp);
+    group_spi_send(grp);
 	send_focal_spi(grp , SPI_RESET_YES );
 	RefreshScanInfor() ;
 	pp->bRefreshDraw = TRUE ;
@@ -4122,7 +4122,7 @@ void data_121 (GtkMenuItem *menuitem, gpointer data)
 	pp->pos_pos = MENU3_STOP;
 	draw_menu3(0, NULL);
 	set_filter (grp) ;
-	send_group_spi ( grp );
+    group_spi_send ( grp );
 }
 
 void data_122 (GtkMenuItem *menuitem, gpointer data)  /* Rectifier 检波 P122 */
@@ -4139,7 +4139,7 @@ void data_122 (GtkMenuItem *menuitem, gpointer data)  /* Rectifier 检波 P122 *
 	}
 	/* 发送给硬件 */
 	TMP(group_spi[grp]).rectifier = temp_value;
-	send_group_spi (grp);
+    group_spi_send (grp);
 	// because the PF model ruler is -100 to +100 % , and other model is 0 to +100  %
 	// the draw area should refresh
 	if(temp_value == 0 || get_group_val (p_grp, GROUP_RECTIFIER) == 0 )
@@ -4161,7 +4161,7 @@ void data_124 (GtkMenuItem *menuitem, gpointer data)  /* averaging 平均 TAN1 P
 
 	GROUP_VAL_POS(grp , averaging1) = GPOINTER_TO_UINT(data);
 	TMP(group_spi[grp].average) =  GPOINTER_TO_UINT(data);
-	send_group_spi(grp);
+    group_spi_send(grp);
 	pp->pos_pos = MENU3_STOP;
 	draw_menu3(0, NULL);
 }
@@ -4173,7 +4173,7 @@ void data_125 (GtkSpinButton *spinbutton, gpointer data) /*抑制 Reject P125 */
 
 	/*发送给硬件*/
 	TMP(group_spi[grp]).reject = get_reject(pp->p_config) * 40.95;	
-	send_group_spi (grp);
+    group_spi_send (grp);
 }
 
 void data_130 (GtkSpinButton *spinbutton, gpointer data) /*scan offset */
@@ -4360,7 +4360,7 @@ void data_1451 (GtkSpinButton *spinbutton, gpointer data) /* Sum Gain ->user_def
 	}
 	GROUP_VAL_POS(grp , sum_gain) =  _nGroupSumGain ;
     TMP(group_spi[grp]).sum_gain  =  _nGroupSumGain ;
-    send_group_spi (grp) ;
+    group_spi_send (grp) ;
 }
 
 
@@ -4379,7 +4379,7 @@ void data_145 (GtkMenuItem *menuitem, gpointer data) /* Sum Gain ->Atuo*/
 			_nGroupSumGain	= 6400 / LAW_VAL_POS(grp, Elem_qty);
 		GROUP_VAL_POS(grp , sum_gain) =  _nGroupSumGain ;
 	    TMP(group_spi[grp]).sum_gain  =  _nGroupSumGain ;
-	    send_group_spi (grp) ;
+        group_spi_send (grp) ;
 		gtk_spin_button_set_value (GTK_SPIN_BUTTON (pp->sbutton[5]), 20 * log10(_nGroupSumGain / 16.0));
 		MENU_STATUS = MENU3_STOP;
 		draw_menu3(0, NULL);
@@ -4504,7 +4504,7 @@ void data_2021 (GtkMenuItem *menuitem, gpointer data)	/* 闸门同步 */
 
 	pp->pos_pos = MENU3_STOP;
 	draw_menu3(0, NULL);
-	send_group_spi (group);
+    group_spi_send (group);
 	UpdateGateForSpiSending(grp);
 	send_focal_spi (group , SPI_RESET_NO) ;
 	pp->bGateSynchro  = IsGateSynchro() ;
@@ -4575,7 +4575,7 @@ void data_2031 (GtkMenuItem *menuitem, gpointer data)	/* 波峰或者前沿 测�
 
 	change_language (get_language(pp->p_config), pp);//初始化语言 language init
 	draw_field_name ();
-	send_group_spi (group);
+    group_spi_send (group);
 	gtk_widget_queue_draw (pp->vboxtable);
 }
 
@@ -4609,7 +4609,7 @@ void data_204 (GtkSpinButton *spinbutton, gpointer data) /* 闸门高度 P204 */
 		TMP(group_spi[grp]).gate_i_height	= _nTmpValue;
 	}
 
-	send_group_spi (grp);
+    group_spi_send (grp);
 	gtk_widget_queue_draw (pp->vboxtable);
 }
 
@@ -5495,7 +5495,7 @@ void data_330 (GtkMenuItem *menuitem, gpointer data) /* Measurements->Thickness-
 
 	TMP(group_spi[grp]).thickness_source = GPOINTER_TO_UINT (data);//
 	//发送group参数
-	send_group_spi(grp);
+    group_spi_send(grp);
 
 	pp->pos_pos = MENU3_STOP;
 	draw_menu3(0, NULL);
@@ -7326,7 +7326,7 @@ static int SetDBEightPercentThread(gpointer data)
 
         group_set_gain(grp, gain);
 
-        send_group_spi (grp);
+        group_spi_send (grp);
 		i--;
         if(_bRefDB) {
 			markup = g_markup_printf_escaped (

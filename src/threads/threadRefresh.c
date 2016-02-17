@@ -573,7 +573,7 @@ void ResponseForThicknessChanged()
 	gdk_threads_enter();
 	DrawDisplayWindowFrame() ;
 	gdk_threads_leave();
-	send_group_spi(_nGroupId);
+    group_spi_send(_nGroupId);
 	//RefreshScanInfor();
 	TMP(scan)   = 0 ;
 	TMP(index)  = 0 ;
@@ -668,7 +668,7 @@ void ResponseForDataLoad()
 void ResponseForPulseWidthChanged()
 {
 	int grp = get_current_group (pp->p_config) ;
-	send_group_spi (grp);
+    group_spi_send (grp);
 
 	if(TMP(freeze))
 		FreezeScreen(TRUE) ;

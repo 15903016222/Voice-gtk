@@ -889,7 +889,7 @@ void NetSetGainValue(int grp , double nVal_)
 	draw_menu3(0, NULL);
 
     init_group_spi(grp)  ;
-    send_group_spi(grp)  ;
+    group_spi_send(grp)  ;
 
 }
 
