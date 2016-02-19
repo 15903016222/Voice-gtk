@@ -11,7 +11,6 @@ SRC_DIR=$(PHASCAN_DIR)/src
 SCRIPT_DIR=$(PHASCAN_DIR)/script
 
 ifdef _PC_
-SYSROOT_DIR= /
 TARGET=main
 BUILD_DIR ?= $(PHASCAN_DIR)/build/$(BRANCH)
 else
@@ -25,8 +24,9 @@ SUBDIRS = $(shell cd $(SRC_DIR) && find . -type d)
 OBJS = $(patsubst %.c,$(BUILD_DIR)/%.o,$(C_SRCS))
 
 INSTALL = install
+
+ifndef _PC_
 CROSS_COMPILE ?= arm-angstrom-linux-gnueabi-
-CC=$(CROSS_COMPILE)gcc
 INC_DIRS = -I $(SYSROOT_DIR)/usr/include/libxml2 \
 	   -I $(SYSROOT_DIR)/usr/include/webkit-1.0 \
 	   -I $(SYSROOT_DIR)/usr/include/libsoup-2.4 \
@@ -43,7 +43,6 @@ INC_DIRS = -I $(SYSROOT_DIR)/usr/include/libxml2 \
 	   -I $(SYSROOT_DIR)/usr/lib/glib-2.0/include  \
 	   -I $(SRC_DIR)/dxflib/ \
 	   -I $(SRC_DIR)/gdxf/
-
 LDFLAGS= -lpthread \
 	 -lgdk-x11-2.0 \
 	 -lgtk-x11-2.0 \
@@ -67,12 +66,19 @@ LDFLAGS= -lpthread \
 	 -lxml2 \
 	 -lfakekey \
 	 -rdynamic
+else
+
+INC_DIRS = $(shell pkg-config --cflags gtk+-2.0 webkit-1.0) -I $(SRC_DIR)/dxflib -I $(SRC_DIR)/gdxf
+LDFLAGS = $(shell pkg-config --libs gtk+-2.0 webkit-1.0) -lpthread -ljpeg -lxml2 -lpng12 -lX11 -lm -lfakekey
+endif
 
 CFLAGS = -g -D_REENTRANT -DARM -pthread $(INC_DIRS)
 
 ifdef RELEASE
 	CFLAGS = -O2 -D_REENTRANT -DARM -pthread $(INC_DIRS)
 endif
+
+CC=$(CROSS_COMPILE)gcc
 
 VERSION=$(shell $(SCRIPT_DIR)/tag.sh)
 
