@@ -1537,7 +1537,9 @@ inline gshort group_get_gain(gint grp)
 inline void group_set_gain(gint grp, gshort val)
 {
     GROUP_VAL_POS(grp, gain) = val;
+#if ARM
     group_spi_set_gain(grp, (val)/10);
+#endif
 }
 
 inline gshort group_get_refgain(gint grp)

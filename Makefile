@@ -27,6 +27,7 @@ INSTALL = install
 
 ifndef _PC_
 CROSS_COMPILE ?= arm-angstrom-linux-gnueabi-
+CFLAG_ARM=-DARM
 INC_DIRS = -I $(SYSROOT_DIR)/usr/include/libxml2 \
 	   -I $(SYSROOT_DIR)/usr/include/webkit-1.0 \
 	   -I $(SYSROOT_DIR)/usr/include/libsoup-2.4 \
@@ -72,10 +73,10 @@ INC_DIRS = $(shell pkg-config --cflags gtk+-2.0 webkit-1.0) -I $(SRC_DIR)/dxflib
 LDFLAGS = $(shell pkg-config --libs gtk+-2.0 webkit-1.0) -lpthread -ljpeg -lxml2 -lpng12 -lX11 -lm -lfakekey
 endif
 
-CFLAGS = -g -D_REENTRANT -DARM -pthread $(INC_DIRS)
+CFLAGS = -g -D_REENTRANT $(CFLAG_ARM) $(INC_DIRS)
 
 ifdef RELEASE
-	CFLAGS = -O2 -D_REENTRANT -DARM -pthread $(INC_DIRS)
+	CFLAGS = -O2 -D_REENTRANT $(CFLAG_ARM) $(INC_DIRS)
 endif
 
 CC=$(CROSS_COMPILE)gcc
