@@ -14,12 +14,15 @@
 #ifndef __BASE_const_H_
 #define __BASE_const_H_
 
+#define APP_NAME    "Phascan"
+
+#define SOURCE_DIR  "/home/tt/TT/source"
+
+#define LOGO_FILE   SOURCE_DIR"/system/logo.png"
+
 /* language choose 语言选择 */
 #define ENGLISH_	0
 #define CHINESE_	1
-
-/* version 版本信息 */
-#define PA_VERSION "DPL PA 3.1"
 
 /* GROUP qty 数量 */
 #define setup_MAX_GROUP_QTY	8

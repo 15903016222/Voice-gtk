@@ -84,28 +84,49 @@ void menu942(MENU_UNION menu_union)//9 ,4 ,2 ,0
 
 }
 
+const static gchar *authors[] = {
+    "Jake Yang <yanghuanjie@cndoppler.cn>",
+    NULL
+};
+
+static void phascan_about()
+{
+    GtkWidget *dialog = gtk_about_dialog_new();
+
+    gtk_window_set_decorated(GTK_WINDOW(dialog), FALSE);
+    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);
+
+    gtk_about_dialog_set_name(GTK_ABOUT_DIALOG(dialog), "About Phascan");
+
+    gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(dialog), APP_NAME);
+
+    gchar *version = g_strdup_printf("%d.%d.%d", APP_MAJOR, APP_MINOR, APP_MICRO);
+    gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(dialog), version);
+    g_free(version);
+
+    gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(dialog), "CopyRight©2010-2016 Doppler All rights reserved");
+    gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(dialog), "PHASCAN has a powerful detection capability, can achieve a variety of scanning mode and focus mode, which greatly improves the detection reliability.");
+
+    gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(dialog), "http://www.cndoppler.cn");
+    gtk_about_dialog_set_authors(GTK_ABOUT_DIALOG(dialog), authors);
+
+    GdkPixbuf *logo = gdk_pixbuf_new_from_file(LOGO_FILE, NULL);
+    gtk_about_dialog_set_logo(GTK_ABOUT_DIALOG(dialog), logo);
+
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+}
+
 void menu943(MENU_UNION menu_union)//9 ,4 ,3 ,0
 {
-	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == menu_union.pos.menu3))
-	{
-		gCurrentMenuPos.key = menu_union.key;
-		menuSetLabel(menu_union.pos.menu3 ,LABELBUTTON_MODE_DATA3 ,LABELBUTTON_STATUS_PRESS
-				,getMainLabelString(menu_union)
-				,__TIME__);
+    if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == menu_union.pos.menu3)) {
+        gCurrentMenuPos.key = menu_union.key;
 
-		if(menu4FuncTrans(menu_union ,NULL))
-		{
-			pp->pos_pos = MENU3_STOP;
-			draw_menu2(0);
-			draw_menu3(0, NULL);
-		}
-	}
-	else
-	{
-		menuSetLabel(menu_union.pos.menu3 ,LABELBUTTON_MODE_DATA3 ,LABELBUTTON_STATUS_RELEASE
-				,getMainLabelString(menu_union)
-				,__DATE__);
-	}
+        phascan_about();
+
+    } else {
+        menuSetDataWithMap(menu_union, LABELBUTTON_STATUS_RELEASE);
+    }
 }
 
 void menuCommon(MENU_UNION menu_union)

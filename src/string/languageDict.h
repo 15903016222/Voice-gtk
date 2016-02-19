@@ -361,7 +361,7 @@ static languageStruct stringDict[] =
 	/*_STRING_Index_t,*/{"Index","步进轴"},
 	/*_STRING_Channel,*/{"Channel","通道"},
 	/*_STRING_Comments,*/{"Comments","注释"},
-	/*_STRING_Program_Time,*/{"Program Time","程序生成时间"},
+    /*_STRING_ABOUT,*/{"About","关于"},
 	/*_STRING_Reset_Config,*/{"Reset Config","清除设置"},
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
