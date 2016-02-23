@@ -24,3 +24,4 @@ for tag in `git tag`; do
 done
 
 echo ${MAJOR}.${MINOR}.${MICRO}
+
