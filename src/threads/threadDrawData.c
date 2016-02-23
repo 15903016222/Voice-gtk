@@ -327,8 +327,8 @@ void RedrawCalc()
 		pp->nPointQty[i] = GROUP_VAL_POS(i , point_qty) ;
 	}
 	// wait for data stable
-	usleep(500000);
-	pp->bRefreshDraw   = TRUE ;
+//	usleep(500000);
+    pp->bRefreshDraw   = TRUE ;
 	draw_frame_thread(0);
 	pp->bRefreshDraw   = FALSE ;
     pthread_mutex_unlock(&draw_thread_mutex);
