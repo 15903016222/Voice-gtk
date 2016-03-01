@@ -2,6 +2,7 @@
 # copyright by JakeYang
 #
 
+FPGA ?= 1
 
 BRANCH=$(shell git branch | grep "*" | awk -F' ' '{print $$2}')
 COMMIT=$(shell git log --pretty=format:'%h'|head -1)
@@ -99,7 +100,7 @@ version:
 	"#define APP_MINOR ($(VERSION_MINOR))\n"\
 	"#define APP_MICRO ($(VERSION_MICRO))\n"\
 	"#define GIT_COMMIT \"$(COMMIT)\"\n\n"\
-	"#define FPGA_VERSION (2)\n"\
+	"#define FPGA_VERSION (${FPGA})\n"\
 	"\n#endif" > ${SRC_DIR}/version.h
 
 prepare: version
@@ -122,6 +123,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 
 help:
 	@echo make params:
-	@echo "_PC_=1    - build pc target"
-	@echo "RELEASE=1 - build release target"
+	@echo "_PC_=1            - build pc target"
+	@echo "RELEASE=1         - build release target"
+	@echo "FPGA = \"number\" - Specify the version of  FPGA board, eg: 1 or 2"
 
