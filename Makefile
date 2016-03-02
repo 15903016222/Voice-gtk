@@ -3,7 +3,7 @@
 #
 
 FPGA ?= 1
-
+SHELL=/bin/bash
 BRANCH=$(shell git branch | grep "*" | awk -F' ' '{print $$2}')
 COMMIT=$(shell git log --pretty=format:'%h'|head -1)
 
