@@ -88,7 +88,7 @@ VERSION_MAJOR=$(shell echo $(VERSION) | awk -F"." '{print $$1}')
 VERSION_MINOR=$(shell echo $(VERSION) | awk -F"." '{print $$2}')
 VERSION_MICRO=$(shell echo $(VERSION) | awk -F"." '{print $$3}')
 
-all: prepare build
+all: version build
 
 version:
 	@if [ "${VERSION_MICRO}" == "" ];then \
@@ -103,12 +103,8 @@ version:
 	"#define FPGA_VERSION (${FPGA})\n"\
 	"\n#endif" > ${SRC_DIR}/version.h
 
-prepare: version
-	@mkdir -p $(BUILD_DIR); \
-		cd $(BUILD_DIR) ; \
-		mkdir -p $(SUBDIRS)
-
 build: $(OBJS)
+
 	$(CC) -o $(BUILD_DIR)/$(TARGET) $(OBJS) $(LDFLAGS)
 
 install:
@@ -119,6 +115,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p `dirname $@`
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 help:
