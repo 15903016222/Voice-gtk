@@ -811,6 +811,8 @@ void MainInit ()
 
 	RefreshScanInfor() ;
 	pp->bRefreshDraw = TRUE ;
+    StartPause();
+    StartPause();
 }
 
 int main (int argc, char *argv[])

@@ -309,19 +309,6 @@ void AuthorizetionWindow()
 {
 	CheckVersion();
 	MainInit ();
-	return ;
-
-    GtkWidget *window ;
-    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_decorated (GTK_WINDOW (window), FALSE);			/*不可以装饰*/
-    gtk_window_set_default_size (GTK_WINDOW(window), 800, 600);		/*设置窗口大小*/
-    GdkPixbuf* frame = NULL ;
-    frame =  loadAllPixbuffers(AUTHORIZE_WINDOW) ;
-    if(frame)
-    	changeWidgetBackGroudPicture(window , frame);
-    gtk_widget_show(window);
-    g_pAuthorizeWindow = window ;
-    //g_timeout_add (5000, (GSourceFunc) time_out, window);
 }
 
 int ComparePermissionString(char* szPermission_)
