@@ -877,7 +877,7 @@ void UltraSoundCalibrationCallbackSensation()
 	((pp->cstart_qty) < 6) ? (pp->cstart_qty) ++ : ((pp->cstart_qty) = 1);
 	if(PA_SCAN != get_group_by_id (pp->p_config, get_current_group (pp->p_config))->group_mode)//UT
 	{
-		//声速和锲块延迟
+        //声速和楔块延迟
 		return ;
 	}
 	if((pp->cstart_qty) == 2)

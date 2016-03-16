@@ -63,7 +63,7 @@ static languageStruct stringDict[] =
 	/*_STRING_Wedge_Delay,*/{"Wedge Delay","延迟"},	//#
 	/*_STRING_Scale_Factor,*/{"Scale Factor","压缩系数"},	//#
 	/*_STRING_Select_Probe,*/{"Select Probe","选择探头"},	//#
-	/*_STRING_Select_Wedge,*/{"Select Wedge","选择锲块"},	//#
+    /*_STRING_Select_Wedge,*/{"Select Wedge","选择楔块"},	//#
 	/*_STRING_Select_Entry,*/{"Select Entry","选择记录"},	//#
 	/*_STRING_Select,*/{"Select","选择"},	//#
 	/*_STRING_Probe_Model,*/{"Probe Model","型号"},	//#
