@@ -2599,12 +2599,21 @@ void DrawMenu645()
 
 void DrawMenu705()
 {
-	draw3_popdown(NULL,5,1);
-	if( ((get_inspec_type (pp->p_config)==0) && (get_inspec_source (pp->p_config)==0)) || ((get_inspec_type (pp->p_config)==2)&&(get_inspec_source (pp->p_config)==0)&& ((get_inspec_index (pp->p_config)==0)||(get_inspec_index (pp->p_config)==3))) )
-	{
-		gtk_widget_set_sensitive(pp->eventbox30[5],FALSE);
-		gtk_widget_set_sensitive(pp->eventbox31[5],FALSE);
-	}
+    draw3_popdown(NULL,5,1);
+
+    if (pp->pos_pos == MENU3_PRESSED && CUR_POS == 5) {
+        enc_set_preset(pp->p_config, get_cur_encoder(pp->p_config), TRUE);
+        gtk_widget_set_sensitive(pp->eventbox30[5],FALSE);
+        gtk_widget_set_sensitive(pp->eventbox31[5],FALSE);
+        RefreshScanInfor();
+        pp->bRefreshDraw = TRUE;
+    } else if ( ! enc_get_preset(pp->p_config, get_cur_encoder(pp->p_config)) ) {
+        gtk_widget_set_sensitive(pp->eventbox30[5],TRUE);
+        gtk_widget_set_sensitive(pp->eventbox31[5],TRUE);
+    } else {
+        gtk_widget_set_sensitive(pp->eventbox30[5],FALSE);
+        gtk_widget_set_sensitive(pp->eventbox31[5],FALSE);
+    }
 }
 
 void DrawMenu715()

@@ -63,8 +63,13 @@ void draw_field_value ()
 	if(pp->nEncoderType)
 	{
 		_nStepPerMM =  pp->p_config->encoder1[0].Resolution / 1000.0 ;
-		markup_encoder = g_markup_printf_escaped ("<span foreground='white' font_desc='10'>X: %.1f mm</span>",
+        if (enc_get_preset(pp->p_config, get_cur_encoder(pp->p_config))) {
+            markup_encoder = g_markup_printf_escaped ("<span foreground='white' font_desc='10'>X: %.1f mm</span>",
+                    TMP(measure_data[0][4])/_nStepPerMM + get_enc_origin(pp->p_config, get_cur_encoder(pp->p_config))/1000.0);
+        } else {
+            markup_encoder = g_markup_printf_escaped ("<span foreground='white' font_desc='10'>X: %.1f mm</span>",
 				TMP(measure_data[0][4])/_nStepPerMM);
+        }
 	}
 	else//Encoder scan time
 	{

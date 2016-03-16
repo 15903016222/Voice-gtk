@@ -6797,21 +6797,19 @@ void data_703 (GtkSpinButton *spinbutton, gpointer data) /* Resolution */
 
 void data_704 (GtkSpinButton *spinbutton, gpointer data) /* Origin */
 {
-	int _nTmpValue ;
-	int _nEncNo = get_cur_encoder(pp->p_config);
-	_nTmpValue = (unsigned int)(gtk_spin_button_get_value (spinbutton) * 1000.0) ;
-	if(_nTmpValue == get_enc_origin (pp->p_config, _nEncNo) )
-	{
+    int tmp ;
+    int encId = get_cur_encoder(pp->p_config);
+    tmp = (unsigned int)(gtk_spin_button_get_value (spinbutton) * 1000.0) ;
+    if(tmp == get_enc_origin (pp->p_config, encId) ) {
 		return ;
 	}
-	if(get_enc_resolution(pp->p_config , _nEncNo))
-	{
-		set_enc_origin(pp->p_config , _nTmpValue , _nEncNo);
+
+    if(get_enc_resolution(pp->p_config , encId)) {
+        set_enc_origin(pp->p_config , tmp , encId);
+    } else {
+        set_enc_origin(pp->p_config , 0 , encId);
 	}
-	else
-	{
-		set_enc_origin(pp->p_config , 0 , _nEncNo);
-	}
+    enc_set_preset(pp->p_config, encId, FALSE);
 	// reset scan
 	RefreshScanInfor() ;
 	pp->bRefreshDraw = TRUE ;
@@ -7579,7 +7577,7 @@ void reset_encoder ()
 	usleep(10000);
 
 	output_set_parameter(0 ,OUTPUT_OTHER_COMMAND_ENCODE_Y , _nEncTypeY , 0 );
-	output_set_parameter(0 ,OUTPUT_OTHER_COMMAND_ENCODE_X , _nEncTypeX , 0 );
+    output_set_parameter(0 ,OUTPUT_OTHER_COMMAND_ENCODE_X , _nEncTypeX , 0 );
 	output_write_one_reg_to_spi(0,OUTPUT_OTHER_COMMAND_ENCODE_Y);
 
 }
@@ -7628,7 +7626,11 @@ int RefreshScanInfor()
 
 		steps_per_mm = pp->p_config->encoder1[_nScanSource - 1].Resolution / 1000.0 ;
 		pp->ScanInfor.StepsPerResolution = steps_per_mm * _nRangeStep  ;
-		pp->ScanInfor.ScanZeroOffset =  -(_nRangeStart / _nRangeStep) ;
+        if (enc_get_preset(pp->p_config, get_cur_encoder(pp->p_config))) {
+            pp->ScanInfor.ScanZeroOffset = -(_nRangeStart - get_enc_origin(pp->p_config, get_cur_encoder(pp->p_config))/1000.0)/_nRangeStep;
+        } else {
+            pp->ScanInfor.ScanZeroOffset =  -(_nRangeStart / _nRangeStep);
+        }
 		// if store size needed is larger than 256M
 		// return  ERROR
 		if(pp->ScanInfor.ScanStepQty > pp->ScanInfor.MaxStoreIndex )

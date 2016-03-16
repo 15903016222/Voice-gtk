@@ -700,6 +700,10 @@ extern unsigned int	get_enc_resolution (CONFIG *p, int enc_id);
 extern void		set_enc_resolution (CONFIG *p, unsigned int data, int enc_id);
 extern unsigned int	get_enc_origin (CONFIG *p, int enc_id);
 extern void		set_enc_origin (CONFIG *p, unsigned int data, int enc_id);
+
+extern gboolean enc_get_preset(CONFIG *p, gint enc_id);
+extern void enc_set_preset(CONFIG *p, gint enc_id, gboolean val);
+
 /* 设置 scan inspection 属性 */
 extern unsigned char	get_inspec_type (CONFIG *p);			
 extern void		set_inspec_type (CONFIG *p, unsigned char data);

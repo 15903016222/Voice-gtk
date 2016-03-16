@@ -1103,6 +1103,18 @@ void set_enc_origin (CONFIG *p, unsigned int data, int enc_id)
 	p->encoder1[enc_id].Origin = data;
 }
 
+inline gboolean enc_get_preset(CONFIG *p, gint enc_id)
+{
+    g_return_val_if_fail(("enc preset", (enc_id == 1 || enc_id == 0)), false);
+    return p->encoder1[enc_id].Preset;
+}
+
+inline void enc_set_preset(CONFIG *p, gint enc_id, gboolean val)
+{
+    g_return_if_fail(("enc preset", (enc_id == 1 || enc_id == 0)));
+    p->encoder1[enc_id].Preset = val;
+}
+
 /* 设置scan属性 */
 unsigned char get_inspec_type (CONFIG* p)
 {
