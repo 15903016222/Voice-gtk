@@ -12,23 +12,18 @@
 #include <sys/ioctl.h>
 #include <math.h>
 
+#include "core/gpio.h"
+
+
 #include "callback.h"
 #include "drawui.h"
 #define ARRAY_DEVICE	"/dev/spidev1.0"
-#define GPIO_DEVICE		"/dev/tt"
-
-#define GPIO61_LOW	0x6000
-#define GPIO61_HIGH	0x6001
-#define GPIO43_LOW	0x6002
-#define GPIO43_HIGH	0x6003
-
 
 #include "spi_d.h"
 #define TT_DEBUG 0
 #define DEBUG 0
 
 int fd_array;
-static int fd_gpio;
 
 /* n为siezof(p)/4 */
 void little_to_big(unsigned int *p, int n)
@@ -126,12 +121,6 @@ void init_spi ()
 {
 	int val = 0x01;
 
-	if ((fd_gpio = open (GPIO_DEVICE, O_RDWR)) == -1)
-	{
-		perror(GPIO_DEVICE);
-		return ;
-	}
-
 	if ((fd_array = open(ARRAY_DEVICE, O_RDWR)) == -1) 
 	{
 		perror(ARRAY_DEVICE);
@@ -154,10 +143,12 @@ void init_spi ()
 		perror("ioctl spi read error4\n");
 		return ;
 	}
-	ioctl (fd_gpio, GPIO61_LOW, &val);
-	ioctl (fd_gpio, GPIO61_HIGH, &val);
-	ioctl (fd_gpio, GPIO43_LOW, &val);
-	ioctl (fd_gpio, GPIO43_HIGH, &val);
+
+    gpio_set_pin(GPIO_61, PIN_LOW);
+    gpio_set_pin(GPIO_61, PIN_HIGH);
+    gpio_set_pin(GPIO_43, PIN_LOW);
+    gpio_set_pin(GPIO_43, PIN_HIGH);
+
 	return ;
 }
 
@@ -186,10 +177,13 @@ int write_focal_data (focal_data_spi *p, unsigned int beam_num , int reset)
 	p1->addr = 0x1;
 	little_to_big ((unsigned int *)(p1), sizeof(focal_data_spi) / 4);
 #if ARM
-	int i;
-	if (reset) ioctl (fd_gpio, GPIO43_LOW, &i);
-	i = write (fd_array, (unsigned char *)(p1), sizeof(focal_data_spi));
-	if (reset) ioctl (fd_gpio, GPIO43_HIGH, &i);
+    if (reset) {
+        FreezingFPGA(TRUE);
+    }
+    write (fd_array, (unsigned char *)(p1), sizeof(focal_data_spi));
+    if (reset) {
+        FreezingFPGA(FALSE);
+    }
 #endif
 	return 0;
 }
@@ -397,18 +391,13 @@ void MultiGroupSendAllGroupSpi()
     }
 }
 
-
 void FreezingFPGA(int bFreeze_)
 {
 #if ARM
-	int i;
-	if(bFreeze_)
-	{
-	    ioctl (fd_gpio, GPIO43_LOW, &i);
-	}
-	else
-	{
-		ioctl (fd_gpio, GPIO43_HIGH, &i);
+    if(bFreeze_) {
+        gpio_set_pin(GPIO_43, PIN_LOW);
+    } else {
+        gpio_set_pin(GPIO_43, PIN_HIGH);
 	}
 #endif
 }

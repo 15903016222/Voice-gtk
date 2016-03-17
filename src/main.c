@@ -22,6 +22,7 @@
 #include <sys/types.h>
 #include <gdk/gdkkeysyms.h>
 #include "globalData.h"
+#include "core/core.h"
 
 volatile DRAW_UI_P	pp;
 void init_group_spi (int group);
@@ -746,6 +747,7 @@ void MainInit ()
 	pp = p_ui;
 
 #if ARM
+    core_init();
 	init_fb ();
 	init_mem ();
 	init_spi ();
