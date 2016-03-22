@@ -1198,7 +1198,11 @@ void menu002(MENU_UNION menu_union)//0 ,0 ,2 ,0
 			case WIZARD_GROUP_STEP_PROBE_PE:		wizardGroup_select_probe_press(menu_union);		break;
 			case WIZARD_GROUP_STEP_WEDGE_PE:		wizardGroup_select_wedge_press(menu_union);		break;
 			case WIZARD_GROUP_STEP_POSITION:		wizardGroup_scan_offset_press(menu_union);		break;
-			case WIZARD_GROUP_STEP_FINISH:			wizardGroup_continue_press(menu_union);			break;
+            case WIZARD_GROUP_STEP_FINISH: {
+                wizardGroupHandler_finish(NULL);
+                wizardGroup_continue_press(menu_union);
+            }
+                break;
 			default:
 				break;
 			}

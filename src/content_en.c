@@ -420,13 +420,15 @@ const gchar *all_menu_content_en[] =
 #endif
 
 	"50 Low", "100 High",								/* 28 Voltage  */
-	"Auto", "UserDef",								/* 30 PW       */	
-	"Auto Max", "Max/2", "Optimum","UserDef",					/* 32 PRF      */
+    "Auto", "UserDef",                                  /* 30 PW       */
+    "Auto Max", "Max/2", "Optimum","UserDef",           /* 32 PRF      */
+    "None", "Auto", "1-2 MHz", "2-3MHz", "3-6MHz",
+    "6-10MHz", ">=10MHz",                               /* 36 UT filter */
 	"None  0.5-20.0 MHz", "Auto", "1 MHz", "1.5-2.5MHz", "3-5MHz",
 	"7.5MHz", ">=10MHz", "5MHz", "7.5MHz", "10MHz", "12MHz",
-	"15MHz", "20MHz", "HR", "HR 10 MHz", "None",					/* 36 filter   */
+    "15MHz", "20MHz", "HR", "HR 10 MHz", "None",		/* 36 filter   */
 	"RF", "HW+", "HW-", "FW",							/* 52 rectifier*/
-	"1", "2", "4", "8", "16",								/* 56 averaging*/
+    "1", "2", "4", "8", "16",                           /* 56 averaging*/
 	"Off", "On",									/* 61 db_ref   */
 	"Auto", "160", "320", "640", "UserDef",						/* 63 points_qty*/
 	"Auto", "UserDef",								/* 68 sum_gain  */

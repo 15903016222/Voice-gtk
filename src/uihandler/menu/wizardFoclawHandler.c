@@ -93,10 +93,13 @@ int wizardFocallawHandler_generate(void* pPara)
 
 	GROUP _tmpGroup ;
 	memcpy(&_tmpGroup  ,  &(pp->p_config->group[popGetLastPos(menu_group_select)]) ,sizeof(struct _Group));//保存临时数据
+    gint tmpPulserWidth = GROUP_VAL_POS(popGetLastPos(menu_group_select), pulser_width1);
 	//生成时把数据从临时变量g_tmp_group_struct里导回
 	memcpy(&(pp->p_config->group[popGetLastPos(menu_group_select)])
 			,&g_tmp_group_struct,sizeof(struct _Group));//保存临时数据
 //		pMenuData->data = WIZARD_FOCLAW_STEP_START;
+    GROUP_VAL_POS(popGetLastPos(menu_group_select), pulser_width1) = tmpPulserWidth;
+
 
 	if(CheckGroupConfigureAvailable())
 	{

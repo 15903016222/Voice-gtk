@@ -793,7 +793,7 @@ extern void			set_probe_type (CONFIG *p, char data);
 
 
 
-/*Group参数操作接口，将取代下面老旧的接口*/
+/*Group参数操作接口*/
 extern gshort group_get_gain(gint grp);
 extern void group_set_gain(gint grp, gshort val);
 
@@ -802,6 +802,13 @@ extern void group_set_refgain(gint grp, gshort val);
 
 extern gint group_get_start(gint grp);
 extern void group_set_start(gint grp, gint val);
+
+/**
+ * @brief group_get_mode 获取组模式
+ * @param grp           组号
+ * @return              返回组模式
+ */
+extern gint group_get_mode(gint grp);
 
 /* Group 参数的保存读取 */
 extern int	get_group_point_qty_pos	(CONFIG *p, int group_id);

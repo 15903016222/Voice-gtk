@@ -482,7 +482,12 @@ void fprintfReportGroupSetup(FILE* fp ,int group)
     fprintf(fp,"<td %s>%d</td>\n" ,tableTdStyle ,(int)((get_group_val (p_grp, GROUP_RANGE) * 0.1) / GROUP_VAL_POS(grp ,point_qty)));//Scale Factor
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ OFF_ON + get_group_val (p_grp ,GROUP_VIDEO_FILTER)]);//Video Filter
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ RECTIFIER + (get_group_val (p_grp ,GROUP_RECTIFIER))]);//Rectification
-    fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ FILTER + get_group_val (p_grp ,GROUP_FILTER)]);//Band-Pass Filter
+    gint filter = FILTER;
+    if (group_get_mode(get_current_group(pp->p_config)) == UT1_SCAN
+            || group_get_mode(get_current_group(pp->p_config)) == UT2_SCAN) {
+        filter = UT_FILTER;
+    }
+    fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ filter + get_group_val (p_grp ,GROUP_FILTER)]);//Band-Pass Filter
 //    fprintf(fp,"<td %s>N/A</td>\n" ,tableTdStyle);//Scale Type
 //    fprintf(fp,"<td %s>N/A</td>\n" ,tableTdStyle);//Pretrig.
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//空
