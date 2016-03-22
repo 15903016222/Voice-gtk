@@ -1571,6 +1571,10 @@ inline void group_set_start(gint grp, gint val)
 {
     GROUP_VAL_POS(grp, start) = val;
 }
+inline gint group_get_mode(gint grp)
+{
+    return GROUP_VAL_POS(grp, group_mode);
+}
 
 /* GROUP 参数的保存读取*/
 /**

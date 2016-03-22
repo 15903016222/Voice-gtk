@@ -609,21 +609,26 @@ void DrawMenu111()
 
 void DrawMenu121()
 {
+    gint filter = FILTER;
+    if (group_get_mode(get_current_group(pp->p_config)) == UT1_SCAN
+            || group_get_mode(get_current_group(pp->p_config)) == UT2_SCAN) {
+        filter = UT_FILTER;
+    }
 	pp->x_pos = 516, pp->y_pos = 201 - 26;
 	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1))
 	{
 		if (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_FILTER_POS))
 			draw3_pop_tt (data_121, NULL,
-					menu_content[FILTER + get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_FILTER_POS)],
-					menu_content + FILTER , 7, 1, get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_FILTER_POS), 0);
+                    menu_content[filter + get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_FILTER_POS)],
+                    menu_content + filter , 7, 1, get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_FILTER_POS), 0);
 		else
 			draw3_pop_tt (data_121, NULL, "None",
-					menu_content + FILTER , 7, 1, get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_FILTER_POS), 0);
+                    menu_content + filter , 7, 1, get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_FILTER_POS), 0);
 	}
 	else
 	{
 		if (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_FILTER_POS))
-			draw3_popdown (menu_content[FILTER + get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_FILTER_POS)], 1, 0);
+            draw3_popdown (menu_content[filter + get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_FILTER_POS)], 1, 0);
 		else
 			draw3_popdown ("None", 1, 0);
 	}
