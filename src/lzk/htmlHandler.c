@@ -415,8 +415,8 @@ void fprintfReportGroupProbe(FILE* fp ,int group)
 void fprintfReportGroupSetup(FILE* fp ,int group)
 {
     int i;
-	gint grp = get_current_group (pp->p_config);
-	GROUP *p_grp = get_group_by_id (pp->p_config, grp);
+//	gint group = get_current_group (pp->p_config);
+    GROUP *p_grp = get_group_by_id (pp->p_config, group);
 	const char* unitUT = NULL ,*unit = NULL;
 	int velocity = get_group_val (p_grp ,GROUP_VELOCITY);
 	double dbVelocity = velocity / 200000.0;
@@ -431,7 +431,7 @@ void fprintfReportGroupSetup(FILE* fp ,int group)
 		multiplier = 0.03937;
 	}
 	unsigned char utUnit;
-	switch(utUnit = GROUP_VAL_POS( grp , ut_unit))
+    switch(utUnit = GROUP_VAL_POS( group , ut_unit))
 	{
 	case UT_UNIT_TRUE_DEPTH:
 	case UT_UNIT_SOUNDPATH:
@@ -463,8 +463,8 @@ void fprintfReportGroupSetup(FILE* fp ,int group)
     fprintf(fp,"</tr>\n\n");
 
     fprintf(fp,"<tr>\n");
-    fprintf(fp,"<td %s>%.2f μs</td>\n" ,tableTdStyle ,GROUP_VAL_POS(grp , beam_delay[TMP(beam_num[grp])]) * 0.001);//Beam Delay
-    fprintf(fp,"<td %s>%.2f %s</td>\n" ,tableTdStyle ,group_get_start (grp) * 0.001 * dbVelocity ,unit);//Start (Half Path)
+    fprintf(fp,"<td %s>%.2f μs</td>\n" ,tableTdStyle ,GROUP_VAL_POS(group , beam_delay[TMP(beam_num[group])]) * 0.001);//Beam Delay
+    fprintf(fp,"<td %s>%.2f %s</td>\n" ,tableTdStyle ,group_get_start (group) * 0.001 * dbVelocity ,unit);//Start (Half Path)
     fprintf(fp,"<td %s>%.2f %s</td>\n" ,tableTdStyle ,get_group_val (p_grp ,GROUP_RANGE) * 0.001 * dbVelocity ,unit);//Range (Half Path)
     fprintf(fp,"<td %s>%d</td>\n" ,tableTdStyle ,GROUP_VAL_POS(0 , prf1) / 10);//PRF
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ GROUP_MODE_P +(GROUP_VAL_POS(group,group_mode))]);//Type
@@ -479,7 +479,7 @@ void fprintfReportGroupSetup(FILE* fp ,int group)
     fprintf(fp,"</tr>\n\n");
 
     fprintf(fp,"<tr>\n");
-    fprintf(fp,"<td %s>%d</td>\n" ,tableTdStyle ,(int)((get_group_val (p_grp, GROUP_RANGE) * 0.1) / GROUP_VAL_POS(grp ,point_qty)));//Scale Factor
+    fprintf(fp,"<td %s>%d</td>\n" ,tableTdStyle ,(int)((get_group_val (p_grp, GROUP_RANGE) * 0.1) / GROUP_VAL_POS(group ,point_qty)));//Scale Factor
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ OFF_ON + get_group_val (p_grp ,GROUP_VIDEO_FILTER)]);//Video Filter
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ RECTIFIER + (get_group_val (p_grp ,GROUP_RECTIFIER))]);//Rectification
     gint filter = FILTER;
@@ -501,13 +501,13 @@ void fprintfReportGroupSetup(FILE* fp ,int group)
     fprintf(fp,"</tr>\n\n");
 
     fprintf(fp,"<tr>\n");
-    if (PA_SCAN == pp->p_config->group[grp].group_mode
-            || UT_SCAN == pp->p_config->group[grp].group_mode) {
-        fprintf(fp,"<td %s>%s V</td>\n" ,tableTdStyle ,menu_content[PA_VOLTAGE + 2 + get_voltage (pp->p_config, grp)]);//Voltage
+    if (PA_SCAN == pp->p_config->group[group].group_mode
+            || UT_SCAN == pp->p_config->group[group].group_mode) {
+        fprintf(fp,"<td %s>%s V</td>\n" ,tableTdStyle ,menu_content[PA_VOLTAGE + 2 + get_voltage (pp->p_config, group)]);//Voltage
     } else {
-        fprintf(fp,"<td %s>%s V</td>\n" ,tableTdStyle ,menu_content[UT_VOLTAGE + 3 + get_voltage (pp->p_config, grp)]);//Voltage
+        fprintf(fp,"<td %s>%s V</td>\n" ,tableTdStyle ,menu_content[UT_VOLTAGE + 3 + get_voltage (pp->p_config, group)]);//Voltage
     }
-    fprintf(fp,"<td %s>%.1f dB</td>\n" ,tableTdStyle ,group_get_gain(grp) / 100.0);//Gain
+    fprintf(fp,"<td %s>%.1f dB</td>\n" ,tableTdStyle ,group_get_gain(group) / 100.0);//Gain
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ TX_RX_MODE + get_group_val (p_grp, GROUP_TX_RX_MODE)]);//Mode
     int material = get_part_material(group);
     int sw = velocity > get_material_sw(material) ? velocity - get_material_sw(material) :get_material_sw(material) - velocity;
@@ -580,8 +580,8 @@ void fprintfReportGroupSetup(FILE* fp ,int group)
 void fprintfReportGroupCalculator(FILE* fp ,int group)
 {
     int i;
-	gint grp = get_current_group (pp->p_config);
-	GROUP *p_grp = get_group_by_id (pp->p_config, grp);
+//	gint group = get_current_group (pp->p_config);
+    GROUP *p_grp = get_group_by_id (pp->p_config, group);
     int txRxMode = get_group_val(p_grp, GROUP_TX_RX_MODE);
     fprintf(fp,"<br />\n");
 
@@ -920,8 +920,8 @@ void fprintfReportGroup(FILE* fp ,int group)
 	if (get_report_format_setup(pp->p_config))
 		fprintfReportGroupSetup(fp ,group);
 
-	gint grp = get_current_group (pp->p_config);
-	GROUP *p_grp = get_group_by_id (pp->p_config, grp);
+//	gint grp = get_current_group (pp->p_config);
+    GROUP *p_grp = get_group_by_id (pp->p_config, group);
 	if((3 != get_group_val(p_grp, GROUP_TX_RX_MODE))//not tofd
 			&&(1 == GROUP_VAL_POS(group,group_mode)))//pa
 	{
