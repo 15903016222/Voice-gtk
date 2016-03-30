@@ -273,7 +273,7 @@ int Is_PATOFD_DisplayValidate()
         if(GROUP_VAL_POS(i , group_mode) == PA_SCAN)
         {
         	_nPAGroupQty++ ;
-        } else if(GROUP_VAL_POS( i , tx_rxmode1 ) == TOFD) {
+        } else if(group_get_rx_tx_mode(i) == TOFD) {
             _nTOFDGroupQty++;
         } else {
         	_nUTGroupQty++ ;

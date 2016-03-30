@@ -297,7 +297,7 @@ void menu343(MENU_UNION menu_union)//3 ,4 ,3 ,0
 				else
 					pMenuData->step = 1.0;
 			}
-            if(TOFD == GROUP_VAL_POS(grp, tx_rxmode1)) {
+            if(TOFD == group_get_rx_tx_mode(grp)) {
     			pMenuData->current_value = GROUP_VAL_POS(grp , field_distance[250]);
             } else {
     			pMenuData->current_value = 0;
@@ -319,7 +319,7 @@ void menu343(MENU_UNION menu_union)//3 ,4 ,3 ,0
 		if(pMenuData)
 		{
 			pMenuData->unit = UNITS_MM;
-            if(TOFD == GROUP_VAL_POS(grp, tx_rxmode1)) {
+            if(TOFD == group_get_rx_tx_mode(grp)) {
     			pMenuData->current_value = GROUP_VAL_POS(grp , field_distance[250]);
             } else {
     			pMenuData->current_value = 0;

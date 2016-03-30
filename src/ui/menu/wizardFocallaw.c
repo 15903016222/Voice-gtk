@@ -287,7 +287,7 @@ static void wizardFocallaw_focal_type_press(MENU_UNION menu_union)
 	{
 		if (get_auto_focal (pp->p_config) == AUTO_FOCAL_ON)
 		{
-			if ( PITCH_CATCH == g_tmp_group_struct.tx_rxmode1 )
+            if ( PITCH_CATCH == g_tmp_group_struct.rx_tx_mode )
 			{
 				pMenuData->itemStatus = 0x0c;
 			}

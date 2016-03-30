@@ -1648,7 +1648,7 @@ void DrawMenu025TOFD()
 void DrawMenu025Ultrasound()
 {
 	int grp = get_current_group(pp->p_config);
-	if(GROUP_VAL_POS(grp , tx_rxmode1) == TOFD)
+    if(group_get_rx_tx_mode(grp) == TOFD)
 	{
 		DrawMenu025TOFD();
 	}

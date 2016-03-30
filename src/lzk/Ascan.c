@@ -1785,8 +1785,7 @@ extern void TofdHandler(int i ,int grp ,int width ,int _nDataOffset ,int _nDataS
 void ascanDrawConfig(ascanStruct* pAscanData)
 {
 	int group = pAscanData->group;
-	GROUP* pGroup = get_group_by_id (pp->p_config, group);
-	if(TMP(dataRecalling) && (TOFD == get_group_val (pGroup, GROUP_TX_RX_MODE)))
+    if(TMP(dataRecalling) && (TOFD == group_get_rx_tx_mode(group)))
 	{
 		int _nTempValue = TMP(scan);
 		int _nIndex ;

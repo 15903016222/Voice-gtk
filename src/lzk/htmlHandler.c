@@ -508,7 +508,7 @@ void fprintfReportGroupSetup(FILE* fp ,int group)
         fprintf(fp,"<td %s>%s V</td>\n" ,tableTdStyle ,menu_content[UT_VOLTAGE + 3 + get_voltage (pp->p_config, group)]);//Voltage
     }
     fprintf(fp,"<td %s>%.1f dB</td>\n" ,tableTdStyle ,group_get_gain(group) / 100.0);//Gain
-    fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ TX_RX_MODE + get_group_val (p_grp, GROUP_TX_RX_MODE)]);//Mode
+    fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ TX_RX_MODE + group_get_rx_tx_mode(group)]);//Mode
     int material = get_part_material(group);
     int sw = velocity > get_material_sw(material) ? velocity - get_material_sw(material) :get_material_sw(material) - velocity;
     int lw = velocity > get_material_lw(material) ? velocity - get_material_lw(material) :get_material_lw(material) - velocity;
@@ -581,8 +581,7 @@ void fprintfReportGroupCalculator(FILE* fp ,int group)
 {
     int i;
 //	gint group = get_current_group (pp->p_config);
-    GROUP *p_grp = get_group_by_id (pp->p_config, group);
-    int txRxMode = get_group_val(p_grp, GROUP_TX_RX_MODE);
+    int txRxMode = group_get_rx_tx_mode(group);
     fprintf(fp,"<br />\n");
 
     fprintf(fp,"%s\n"  ,getReportDictString(REPORTSTRINGDICT_TITLE ,3));
@@ -921,8 +920,7 @@ void fprintfReportGroup(FILE* fp ,int group)
 		fprintfReportGroupSetup(fp ,group);
 
 //	gint grp = get_current_group (pp->p_config);
-    GROUP *p_grp = get_group_by_id (pp->p_config, group);
-	if((3 != get_group_val(p_grp, GROUP_TX_RX_MODE))//not tofd
+    if((TOFD != group_get_rx_tx_mode(group))//not tofd
 			&&(1 == GROUP_VAL_POS(group,group_mode)))//pa
 	{
 		fprintfReportGroupCalculator(fp ,group);

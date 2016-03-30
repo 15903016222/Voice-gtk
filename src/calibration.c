@@ -477,9 +477,10 @@ void esc_calibration()
 	gtk_widget_set_sensitive(pp->menubar,TRUE);
 	gtk_widget_queue_draw (pp->status_area);
 	GROUP_VAL_POS(get_current_group(pp->p_config) , ascan_envelope)  = FALSE;
-	if(pp->echotype_pos == 0)
-	{
-		GROUP_VAL_POS(grp , ut_unit) = UT_UNIT_TRUE_DEPTH;
+    if(pp->echotype_pos == 0) {
+        if (group_get_rx_tx_mode(grp) != TOFD) {
+			GROUP_VAL_POS(grp , ut_unit) = UT_UNIT_TRUE_DEPTH;
+        }		
 		UpdateGateForSpiSending(grp) ;
 		send_focal_spi (grp , SPI_RESET_NO);		
 	}
@@ -1138,7 +1139,7 @@ void UltraSoundCalibrationCallback021()
 {
 	//pp->clb_flag = 1 ; // draw calibration area need it to be setted
 	int grp = get_current_group(pp->p_config);
-	if(GROUP_VAL_POS(grp , tx_rxmode1) == TOFD)
+    if(group_get_rx_tx_mode(grp) == TOFD)
 	{
 		pp->cmode_pos = 0 ;
 		UltraSoundCalibrationTOFDCallback021();
@@ -1751,7 +1752,7 @@ int CalibrationCallback025()
 			switch(pp->cmode_pos)
 			{
 				case 0: // ultrasound
-					if((pp->cstart_qty == 5) && (GROUP_VAL_POS(_nGroupId , tx_rxmode1) == TOFD) )//Restart
+                    if((pp->cstart_qty == 5) && (group_get_rx_tx_mode(_nGroupId) == TOFD) )//Restart
 					{
 						pp->cstart_qty = 2  ;
 						ret = TRUE ;

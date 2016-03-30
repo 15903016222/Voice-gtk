@@ -216,7 +216,7 @@ void DrawMenu120()
 			case 2:	tmpf = 100.0; break;
 			default:break;
 		}
-		if (GROUP_VAL_POS(grp , tx_rxmode1) == PULSE_ECHO )
+        if (group_get_rx_tx_mode(grp) == PULSE_ECHO )
 			/* 脉冲回波模式不可以调节 */
 		{
 			gtk_widget_set_sensitive (pp->eventbox30[0], FALSE);
@@ -752,7 +752,7 @@ void DrawMenu620()
 	{
 		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 0))
 		{
-			if (GROUP_VAL_POS(grp , tx_rxmode1 ) == PITCH_CATCH )
+            if (group_get_rx_tx_mode(grp) == PITCH_CATCH )
 			{
 				menu_status = 0x0c;
 			}

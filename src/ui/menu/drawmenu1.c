@@ -179,6 +179,10 @@ void DrawMenu021UltraSound()
 	}
 	else
 	{
+        if ( UT_UNIT_TRUE_DEPTH == GROUP_VAL_POS( grp , ut_unit) && TOFD == group_get_rx_tx_mode(grp)) {
+            gtk_widget_set_sensitive(pp->eventbox30[1],FALSE);
+            gtk_widget_set_sensitive(pp->eventbox31[1],FALSE);
+        }
 		if( (pp->cstart_qty >1) && (pp->cstart_qty < 4) )
 			draw3_popdown_offset (NULL, 1, 1, 19 );
 		else if (pp->cstart_qty == 4)
@@ -187,7 +191,7 @@ void DrawMenu021UltraSound()
 		}
 		else if (pp->cstart_qty == 5)
 		{
-			if(GROUP_VAL_POS(grp , tx_rxmode1) == TOFD)
+            if(group_get_rx_tx_mode(grp) == TOFD)
 			{
 				draw3_popdown_offset (NULL, 1, 1, 32 );//
 				//draw3_popdown_offset (NULL, 1, 1, 48 );//
@@ -574,7 +578,6 @@ void DrawMenu101()
 void DrawMenu111()
 {
 	int grp = get_current_group (pp->p_config);
-	GROUP *p_grp = get_group_by_id (pp->p_config, grp);
 
 	pp->x_pos = 478, pp->y_pos = 224 ;
 	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1))
@@ -582,23 +585,23 @@ void DrawMenu111()
 		/* PA时候如何能够选择 TT PC */
 		if (GROUP_VAL_POS (grp , group_mode) == PA_SCAN)
 			draw3_pop_tt (data_111, NULL,
-					menu_content[TX_RX_MODE + 4 + get_group_val (p_grp, GROUP_TX_RX_MODE)],
-					menu_content + TX_RX_MODE, 3, 1, get_group_val (p_grp, GROUP_TX_RX_MODE), 0x0);
+                    menu_content[TX_RX_MODE + 4 + group_get_rx_tx_mode (grp)],
+                    menu_content + TX_RX_MODE, 3, 1, group_get_rx_tx_mode (grp), 0x0);
 		else //if (GROUP_VAL (group_mode) == UT_SCAN)
 		{
 			unsigned int status = gTofdEnable ? 0 : 0x8 ;
 			draw3_pop_tt (data_111, NULL,
-					menu_content[TX_RX_MODE + 4 + get_group_val (p_grp, GROUP_TX_RX_MODE)],
+                    menu_content[TX_RX_MODE + 4 + group_get_rx_tx_mode (grp)],
 #if HIGH_POWER
-					menu_content + TX_RX_MODE, 4, 1, get_group_val (p_grp, GROUP_TX_RX_MODE), 0xc);
+                    menu_content + TX_RX_MODE, 4, 1, group_get_rx_tx_mode (grp), 0xc);
 #else
-					menu_content + TX_RX_MODE, 4, 1, get_group_val (p_grp, GROUP_TX_RX_MODE), status);
+                    menu_content + TX_RX_MODE, 4, 1, group_get_rx_tx_mode (grp), status);
 #endif
 		}
 
 	}
 	else
-		draw3_popdown (menu_content[TX_RX_MODE + 4 + get_group_val (p_grp, GROUP_TX_RX_MODE)], 1, 0);
+        draw3_popdown (menu_content[TX_RX_MODE + 4 + group_get_rx_tx_mode(grp)], 1, 0);
 
 	if(!gPithCatchEnable && GROUP_VAL_POS (grp , group_mode) <= PA_SCAN)
 	{

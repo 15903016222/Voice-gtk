@@ -549,11 +549,11 @@ static void wizardGroup_tx_rx_mode_press(MENU_UNION menu_union)
 	}
 }
 
-//#define wizardGroup_tx_rx_mode_update(x) menuPopdownWithMap((x) ,get_group_val (&g_tmp_group_struct, GROUP_TX_RX_MODE))
+//#define wizardGroup_tx_rx_mode_update(x) menuPopdownWithMap((x) ,g_tmp_group_struct.rx_tx_mode)
 
 static void wizardGroup_tx_rx_mode_update(MENU_UNION menu_union)
 {
-	menuPopdownWithMap((menu_union) ,get_group_val (&g_tmp_group_struct, GROUP_TX_RX_MODE)) ;
+    menuPopdownWithMap((menu_union) ,g_tmp_group_struct.rx_tx_mode) ;
 	if(!gPithCatchEnable && g_tmp_group_struct.group_mode<= PA_SCAN)
 	{
 		gtk_widget_set_sensitive (pp->eventbox30[2], FALSE);
@@ -674,7 +674,7 @@ static void wizardGroup_receive_update(MENU_UNION menu_union)
 
 	if(g_tmp_group_struct.group_mode < UT1_SCAN)//Connection r
 	{
-		if (get_group_val (&g_tmp_group_struct, GROUP_TX_RX_MODE) == PULSE_ECHO)	// 脉冲回波模式不可以调节
+        if (PULSE_ECHO == g_tmp_group_struct.rx_tx_mode)	// 脉冲回波模式不可以调节
 		{
 			menuSetLabel(menu_union.pos.menu3 ,LABELBUTTON_MODE_DISABLE ,LABELBUTTON_STATUS_RELEASE ,NULL ,NULL);
 		}
@@ -699,7 +699,7 @@ int wizardGroup_getProbeMode()
 
 	default:
 //		switch((txrxMode = popGetLastPos(menu_tx_rx_mode)))//
-		switch((txrxMode = get_group_val(&g_tmp_group_struct, GROUP_TX_RX_MODE)))//
+        switch((txrxMode = g_tmp_group_struct.rx_tx_mode))//
 		{
 		case PE://PE
 			probe_mode = 0;
