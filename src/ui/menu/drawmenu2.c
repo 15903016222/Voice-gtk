@@ -1271,7 +1271,7 @@ void DrawMenu022TOFD()
 void DrawMenu022Ultrasound()
 {
 	int grp = get_current_group(pp->p_config);
-	if(GROUP_VAL_POS(grp , tx_rxmode1) == TOFD)
+    if(group_get_rx_tx_mode(grp) == TOFD)
 	{
 		DrawMenu022TOFD();
 	}
@@ -3341,7 +3341,7 @@ void DrawMenu602()
 		case 2:	tmpf = 100.0; break;
 		default:break;
 	}
-	if (get_group_val (p_grp, GROUP_TX_RX_MODE) == PULSE_ECHO)	/* 脉冲回波模式不可以调节 */
+    if (group_get_rx_tx_mode(grp) == PULSE_ECHO)	/* 脉冲回波模式不可以调节 */
 	{
 		gtk_widget_set_sensitive (pp->eventbox30[2], FALSE);
 		gtk_widget_set_sensitive (pp->eventbox31[2], FALSE);

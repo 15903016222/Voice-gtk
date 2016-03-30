@@ -464,7 +464,7 @@ void DrawBscanTOFDInit(int nWndIndex_)
 // encoder type is timer
 #define DATA_HANDLER_LZK(i,x) \
 	{ \
-		if(TMP(dataRecalling) && (TOFD == get_group_val (pGroup, GROUP_TX_RX_MODE))) \
+        if(TMP(dataRecalling) && (TOFD == group_get_rx_tx_mode(_nGroupId))) \
 		{ \
 			TofdHandler(i ,_nGroupId ,x ,_nDataOffset ,_nDataSize);\
 		}\

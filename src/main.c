@@ -90,7 +90,7 @@ void set_config (unsigned int grp)
 	set_group_val (p_grp, GROUP_RECTIFIER, FULL_WAVE);
 	set_group_val (p_grp, GROUP_AVERAGING, 0);
 	set_group_val (p_grp, GROUP_VIDEO_FILTER, NORMAL_ON);
-	set_group_val (p_grp, GROUP_TX_RX_MODE, PULSE_ECHO);
+    group_set_rx_tx_mode(grp, PULSE_ECHO);
 	set_group_val (p_grp, GROUP_FREQ_POS, 12);		/* 0是1Mhz 12AUserdef */
 	set_group_val (p_grp, GROUP_FREQ_VAL, 5000);
 	set_group_val (p_grp, GROUP_PW_POS, 0);			/* 0是Auto */
@@ -360,7 +360,7 @@ void SettingGroupConfigure (int grp)
 	set_group_val (p_grp, GROUP_RECTIFIER, FULL_WAVE);
 	set_group_val (p_grp, GROUP_AVERAGING, 0);
 	set_group_val (p_grp, GROUP_VIDEO_FILTER, NORMAL_ON);
-	set_group_val (p_grp, GROUP_TX_RX_MODE, PULSE_ECHO);
+    group_set_rx_tx_mode(grp, PULSE_ECHO);
 	set_group_val (p_grp, GROUP_FREQ_POS, 12);		/* 0是1Mhz 12AUserdef */
 	set_group_val (p_grp, GROUP_FREQ_VAL, 5000);
 	set_group_val (p_grp, GROUP_PW_POS, 0);			/* 0是Auto */
@@ -900,12 +900,12 @@ void send_focal_spi (int group, int reset)
 			TMP(focal_spi[k]).gate_i_start  = pp->gate_i_start[group][kk];
 			TMP(focal_spi[k]).gate_i_end    = pp->gate_i_end[group][kk]  ;
 			/*UT Settings->Pulser->Tx/Rx mode*/		
-			if (get_group_val (p_grp, GROUP_TX_RX_MODE) == PULSE_ECHO )/*单个探头收发模式*/
+            if (group_get_rx_tx_mode(group) == PULSE_ECHO )/*单个探头收发模式*/
 			{
 				pulser   =  GROUP_VAL_POS(group , pulser1) ;//get_group_val ( &pp->p_config->group[group], GROUP_PULSER );
 				receiver = pulser;
 			}
-			else// if (get_group_val (p_grp, GROUP_TX_RX_MODE) == PITCH_CATCH)
+            else// if (group_get_rx_tx_mode(group) == PITCH_CATCH)
 			{
 				pulser   = GROUP_VAL_POS(group , pulser1) ;  //get_group_val ( &pp->p_config->group[group], GROUP_PULSER );
 				receiver = GROUP_VAL_POS(group , receiver1) ; //get_group_val ( &pp->p_config->group[group], GROUP_RECEIVER );
@@ -962,12 +962,12 @@ void send_focal_spi (int group, int reset)
 			TMP(focal_spi[k]).gate_i_start  = pp->gate_i_start[group][kk];
 			TMP(focal_spi[k]).gate_i_end    = pp->gate_i_end[group][kk];
 			/*UT Settings->Pulser->Tx/Rx mode*/
-			if (get_group_val (p_grp, GROUP_TX_RX_MODE) == PULSE_ECHO )/*单个探头收发模式*/
+            if (group_get_rx_tx_mode(group) == PULSE_ECHO )/*单个探头收发模式*/
 			{  
 				pulser   = get_group_val ( &pp->p_config->group[group], GROUP_PULSER );
 				receiver = pulser;
 			}	
-			else// if (get_group_val (p_grp, GROUP_TX_RX_MODE) == PITCH_CATCH)
+            else// if (group_get_rx_tx_mode(group) == PITCH_CATCH)
 			{
 				pulser   = get_group_val ( &pp->p_config->group[group], GROUP_PULSER );
 				receiver = get_group_val ( &pp->p_config->group[group], GROUP_RECEIVER );
@@ -1143,12 +1143,12 @@ void RefreshGroupFocalLawSpi (int group)
 			TMP(focal_spi[k]).gate_i_start  = pp->gate_i_start[group][kk];
 			TMP(focal_spi[k]).gate_i_end    = pp->gate_i_end[group][kk]  ;
 			/*UT Settings->Pulser->Tx/Rx mode*/
-			if (get_group_val (p_grp, GROUP_TX_RX_MODE) == PULSE_ECHO )/*单个探头收发模式*/
+            if (group_get_rx_tx_mode(group) == PULSE_ECHO )/*单个探头收发模式*/
 			{
 				pulser   =  GROUP_VAL_POS(group , pulser1) ;//get_group_val ( &pp->p_config->group[group], GROUP_PULSER );
 				receiver = pulser;
 			}
-			else// if (get_group_val (p_grp, GROUP_TX_RX_MODE) == PITCH_CATCH)
+            else// if (group_get_rx_tx_mode(group) == PITCH_CATCH)
 			{
 				pulser   = GROUP_VAL_POS(group , pulser1) ;  //get_group_val ( &pp->p_config->group[group], GROUP_PULSER );
 				receiver = GROUP_VAL_POS(group , receiver1) ; //get_group_val ( &pp->p_config->group[group], GROUP_RECEIVER );
@@ -1207,12 +1207,12 @@ void RefreshGroupFocalLawSpi (int group)
 			TMP(focal_spi[k]).gate_i_start  = pp->gate_i_start[group][kk];
 			TMP(focal_spi[k]).gate_i_end    = pp->gate_i_end[group][kk];
 			/*UT Settings->Pulser->Tx/Rx mode*/
-			if (get_group_val (p_grp, GROUP_TX_RX_MODE) == PULSE_ECHO )/*单个探头收发模式*/
+            if (group_get_rx_tx_mode(group) == PULSE_ECHO )/*单个探头收发模式*/
 			{
 				pulser   = get_group_val ( &pp->p_config->group[group], GROUP_PULSER );
 				receiver = pulser;
 			}
-			else// if (get_group_val (p_grp, GROUP_TX_RX_MODE) == PITCH_CATCH)
+            else// if (group_get_rx_tx_mode(group) == PITCH_CATCH)
 			{
 				pulser   = get_group_val ( &pp->p_config->group[group], GROUP_PULSER );
 				receiver = get_group_val ( &pp->p_config->group[group], GROUP_RECEIVER );

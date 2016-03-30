@@ -583,7 +583,7 @@ void NetGetUtPulser(void* pData_ , int nGroupId_)
 	CONFIG_UT_PULSER* _pInfo = (CONFIG_UT_PULSER*)pData_ ;
 
 	_pInfo->uiPulserFir     = GROUP_VAL_POS(nGroupId_ , pulser1) ;
-	_pInfo->eTRMode         = GROUP_VAL_POS(nGroupId_ , tx_rxmode1);
+    _pInfo->eTRMode         = group_get_rx_tx_mode(nGroupId_);
 	_pInfo->fFequency      = GROUP_VAL_POS(nGroupId_ , frequency1)/1000.0;
 
 	_pInfo->eVoltage        = get_voltage(pp->p_config, nGroupId_) ;
@@ -601,7 +601,7 @@ void NetSetUtPulser(void* pData_ , int nGroupId_)
 	CONFIG_UT_PULSER* _pInfo = (CONFIG_UT_PULSER*)pData_ ;
 
 	GROUP_VAL_POS(nGroupId_ , pulser1)    = _pInfo->uiPulserFir  ;
-	GROUP_VAL_POS(nGroupId_ , tx_rxmode1) = _pInfo->eTRMode   ;
+    group_set_rx_tx_mode(nGroupId_, _pInfo->eTRMode);
 	GROUP_VAL_POS(nGroupId_ , frequency1) = _pInfo->fFequency * 1000;
 
 	set_voltage(pp->p_config, nGroupId_ , _pInfo->eVoltage)  ;

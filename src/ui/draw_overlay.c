@@ -297,7 +297,7 @@ void DrawCursorBSCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 	double xx[NUMOFPOINT];
 	struct DefectStruct defect;
 
-	if(get_group_val (pGroup, GROUP_TX_RX_MODE) == TOFD)//tofd
+    if(group_get_rx_tx_mode(grp) == TOFD)//tofd
 	{
 		tofd.pcs = GROUP_VAL_POS(grp , field_distance[254]);//mm
 		tofd.t0 = pGroup->wedge_delay / 1000.0;//pGroup->wedge.Probe_delay / 1000.0;//楔块延时 us
@@ -365,7 +365,7 @@ void DrawCursorBSCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 	g_free (str);
 
 	//tofd抛物线
-	if(TOFD == get_group_val (pGroup, GROUP_TX_RX_MODE))//tofd
+    if(TOFD == group_get_rx_tx_mode(grp))//tofd
 	{
 		defect.t = GROUP_VAL_POS(grp , u_reference) / 1000.0;//us
 
@@ -501,7 +501,7 @@ void DrawCursorBSCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 	g_free (str);
 
 	//tofd抛物线
-	if(TOFD == get_group_val (pGroup, GROUP_TX_RX_MODE))//tofd
+    if(TOFD == group_get_rx_tx_mode(grp))//tofd
 	{
 		defect.t = GROUP_VAL_POS(grp , u_measure) / 1000.0;//us
 
@@ -1026,7 +1026,7 @@ void DrawCursorTOFDB(GtkWidget *widget , gpointer data , cairo_t *cr)
 	double yy[NUMOFPOINT];
 	struct DefectStruct defect;
 
-	if(get_group_val (pGroup, GROUP_TX_RX_MODE) == TOFD)//tofd
+    if(group_get_rx_tx_mode(grp) == TOFD)//tofd
 	{
 		tofd.pcs = GROUP_VAL_POS(grp , field_distance[254]);//mm
 		tofd.t0 = pGroup->wedge_delay / 1000.0;//pGroup->wedge.Probe_delay / 1000.0;//楔块延时 us
@@ -1103,7 +1103,7 @@ void DrawCursorTOFDB(GtkWidget *widget , gpointer data , cairo_t *cr)
 	g_free (str);
 
 	//tofd抛物线
-	if(TOFD == get_group_val (pGroup, GROUP_TX_RX_MODE))//tofd
+    if(TOFD == group_get_rx_tx_mode(grp))//tofd
 	{
 		defect.t = GROUP_VAL_POS(grp , u_reference) / 1000.0;//us
 		cairo_set_source_rgba(cr,0.84,0.67,0.945,1.0);/*显示当前值的紫色框*/
@@ -1250,7 +1250,7 @@ void DrawCursorTOFDB(GtkWidget *widget , gpointer data , cairo_t *cr)
 	g_free (str);
 
 	//tofd抛物线
-	if(TOFD == get_group_val (pGroup, GROUP_TX_RX_MODE))//tofd
+    if(TOFD == group_get_rx_tx_mode(grp))//tofd
 	{
 		defect.t = GROUP_VAL_POS(grp , u_measure) / 1000.0;//us
 		cairo_set_source_rgba(cr,0.84,0.67,0.945,1.0);/*显示当前值的紫色框*/

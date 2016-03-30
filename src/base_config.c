@@ -1571,9 +1571,19 @@ inline void group_set_start(gint grp, gint val)
 {
     GROUP_VAL_POS(grp, start) = val;
 }
+
 inline gint group_get_mode(gint grp)
 {
     return GROUP_VAL_POS(grp, group_mode);
+}
+
+inline gint group_get_rx_tx_mode(gint grp)
+{
+    return GROUP_VAL_POS(grp, rx_tx_mode);
+}
+inline void group_set_rx_tx_mode(gint grp, gint val)
+{
+    GROUP_VAL_POS(grp, rx_tx_mode) = val;
 }
 
 /* GROUP 参数的保存读取*/
@@ -1596,7 +1606,6 @@ int get_group_val (GROUP *p, int type)
 		case GROUP_RECTIFIER:tt = p->rectifier1;break;
 		case GROUP_AVERAGING: tt = p->averaging1;break;	/*0:1 1:2 2:4 3:8 4:16*/
 		case GROUP_VIDEO_FILTER: tt = get_bit_value (p->on_off_status, 1);break;
-		case GROUP_TX_RX_MODE: tt = p->tx_rxmode1;break;
 		case GROUP_FREQ_VAL:tt = p->frequency1;break;
 		case GROUP_FREQ_POS:tt = p->freq_pos1;break;
 		case GROUP_PW_POS:tt = p->pw_pos1;break;
@@ -1626,7 +1635,6 @@ void set_group_val (GROUP *p, int type, int val)
 		case GROUP_RECTIFIER: p->rectifier1 = (unsigned char)(val);break;
 		case GROUP_AVERAGING: p->averaging1 = (unsigned char)(val);break;	/*0:1 1:2 2:4 3:8 4:16*/
 		case GROUP_VIDEO_FILTER: p->on_off_status = set_bit_value (p->on_off_status, 1, val);break;
-		case GROUP_TX_RX_MODE: p->tx_rxmode1 = (unsigned char)(val);break;
 		case GROUP_FREQ_VAL: p->frequency1 = (unsigned short)(val);break;
 		case GROUP_FREQ_POS: p->freq_pos1 = (unsigned char)(val);break;
 		case GROUP_PW_POS:p->pw_pos1 = (unsigned char)(val);break;

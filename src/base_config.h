@@ -27,7 +27,6 @@
 #define GROUP_RECTIFIER		0x100b
 #define GROUP_AVERAGING		0x100c
 #define GROUP_VIDEO_FILTER	0x100d
-#define GROUP_TX_RX_MODE	0x100e
 #define GROUP_FREQ_VAL		0x100f
 #define GROUP_FREQ_POS		0x1010
 #define GROUP_PW_VAL		0x1011
@@ -344,7 +343,7 @@ struct _Group
 	unsigned char   sum_gain_pos;	/**/
 	unsigned char	gate_pos;		/* A , B , I 当前修改的是哪个闸门 */
 	unsigned char	filter_pos1;	/*  */
-	unsigned char	tx_rxmode1;		/* 收发模式 */
+    unsigned char	rx_tx_mode;		/* 收发模式 */
 	unsigned char	freq_pos1;		/* 频率选择模式是指定还是自己输入 */
 	unsigned char	pw_pos1;		/* 脉冲宽度选择模式 */
 	unsigned char	prf_pos1;		/* 脉冲宽度选择模式 */
@@ -809,6 +808,9 @@ extern void group_set_start(gint grp, gint val);
  * @return              返回组模式
  */
 extern gint group_get_mode(gint grp);
+
+extern gint group_get_rx_tx_mode(gint grp);
+extern void group_set_rx_tx_mode(gint grp, gint val);
 
 /* Group 参数的保存读取 */
 extern int	get_group_point_qty_pos	(CONFIG *p, int group_id);

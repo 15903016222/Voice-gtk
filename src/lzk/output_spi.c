@@ -390,7 +390,7 @@ void output_init(unsigned int nChannelEnableFlag_)
 			{
 				output_data.damping_ut1     = 3 ;
 			}
-			if(GROUP_VAL_POS(i , tx_rxmode1) != PULSE_ECHO) // PE
+            if(group_get_rx_tx_mode(i) != PULSE_ECHO) // PE
 			{
 				output_data.twin_on_off_ut1 = 1 ;
 			}
@@ -401,7 +401,7 @@ void output_init(unsigned int nChannelEnableFlag_)
 			{
 				output_data.damping_ut2     = 3 ;
 			}
-			if(GROUP_VAL_POS(i , tx_rxmode1) != PULSE_ECHO) // PE
+            if(group_get_rx_tx_mode(i) != PULSE_ECHO) // PE
 			{
 				output_data.twin_on_off_ut2= 1 ;
 			}

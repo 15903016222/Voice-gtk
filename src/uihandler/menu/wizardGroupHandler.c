@@ -203,7 +203,7 @@ int wizardGroupHandler_finish(void* pPara)
 	//*******************************************************************
 	// 星号内代码为临时的，当前UT 双晶控制协议存在问题，
 	int group = pp->p_config->groupId  ;
-	int _nTmpModel = GROUP_VAL_POS(group , tx_rxmode1) ;
+    int _nTmpModel = group_get_rx_tx_mode(group);
 	if (_nTmpModel == PULSE_ECHO )
 	{
 		if(GROUP_VAL_POS(group , group_mode) == UT1_SCAN)
@@ -384,7 +384,7 @@ int wizardHandlerGroup_group_mode(void* p_para)
 			g_tmp_group_struct.law_info.Last_tx_elem     =   1 ;
 			g_tmp_group_struct.law_info.Last_rx_elem     =   1 ;
 			g_tmp_group_struct.group_mode = para;
-		    g_tmp_group_struct.tx_rxmode1 = 1 ; // PE Mode
+            g_tmp_group_struct.rx_tx_mode = PULSE_ECHO ; // PE Mode
 		}
 	}
 	return TRUE;
@@ -461,7 +461,7 @@ int wizardHandlerGroup_pulse(void* p_para)
 	{
 		float para = *(float*)p_para + 0.5;
 		set_group_val (&g_tmp_group_struct, GROUP_PULSER, (int)para);
-		if (get_group_val (&g_tmp_group_struct, GROUP_TX_RX_MODE) == PULSE_ECHO)
+        if (g_tmp_group_struct.rx_tx_mode == PULSE_ECHO)
 			set_group_val (&g_tmp_group_struct, GROUP_RECEIVER, (int)para);
 	}
 	return TRUE;
@@ -482,8 +482,8 @@ int wizardHandlerGroup_tx_rx_mode(void* p_para)
 	if(NULL != p_para)
 	{
 		int para = *(int*)p_para;
-		set_group_val (&g_tmp_group_struct, GROUP_TX_RX_MODE,  para);
-		if (get_group_val (&g_tmp_group_struct, GROUP_TX_RX_MODE) == PULSE_ECHO)
+        g_tmp_group_struct.rx_tx_mode = para;
+        if (PULSE_ECHO == g_tmp_group_struct.rx_tx_mode)
 			set_group_val (&g_tmp_group_struct,
 					GROUP_RECEIVER, get_group_val (&g_tmp_group_struct, GROUP_PULSER));
 	}

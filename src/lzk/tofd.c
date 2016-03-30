@@ -279,8 +279,7 @@ void TofdHandler(int i ,int grp ,int width ,int _nDataOffset ,int _nDataSize)
 int MenuHandler_TofdStraightening(void* p_para)
 {
 	int group = get_current_group(pp->p_config);
-	GROUP* pGroup = get_group_by_id (pp->p_config, group);
-	if(TOFD == get_group_val (pGroup, GROUP_TX_RX_MODE))//tofd
+    if(TOFD == group_get_rx_tx_mode(group))//tofd
 	{
         if(0 == gTofdS[group].straighteningEnable)
 		{
@@ -304,8 +303,7 @@ int MenuHandler_TofdStraightening(void* p_para)
 int MenuHandler_TofdRemoveLateralWave(void* p_para)
 {
 	int group = get_current_group(pp->p_config);
-	GROUP* pGroup = get_group_by_id (pp->p_config, group);
-	if(TOFD == get_group_val (pGroup, GROUP_TX_RX_MODE))//tofd
+    if(TOFD == group_get_rx_tx_mode(group))//tofd
 	{
         if(0 == gTofdS[group].removeLateralWaveEnable)
 		{
@@ -402,7 +400,7 @@ void SetDefaultTOFTCal()
 {
     int i;
 	for (i = 0 ; i < get_group_qty(pp->p_config); i++) {
-        if(TOFD == GROUP_VAL_POS(i, tx_rxmode1)) {
+        if(TOFD == group_get_rx_tx_mode(i)) {
             GROUP_VAL_POS(i, field_distance[252]) = 0;
         }
     }
@@ -437,8 +435,7 @@ int MenuHandler_TofdDepthCal(void* p_para)
 {
     double depth, _fPcs;
 	int group = get_current_group(pp->p_config);
-	GROUP* pGroup = get_group_by_id (pp->p_config, group);
-	if(TOFD == get_group_val (pGroup, GROUP_TX_RX_MODE))//tofd
+    if(TOFD == group_get_rx_tx_mode(group))//tofd
 	{
         if (GROUP_VAL_POS(group , field_distance[252]) > 0.1) {
             GROUP_VAL_POS(group , field_distance[252]) = 0;
