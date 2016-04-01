@@ -809,7 +809,16 @@ void MainInit ()
 	MultiGroupSendGroupSpi();
 	MultiGroupSendFocalSpi();
 
+    if (get_inspec_source(pp->p_config) != SCAN_TIME) {
+        enc_set_preset(pp->p_config, get_cur_encoder(pp->p_config), FALSE);
+    }
+
 	RefreshScanInfor() ;
+
+    if (get_inspec_source(pp->p_config) != SCAN_TIME) {
+        enc_set_preset(pp->p_config, get_cur_encoder(pp->p_config), TRUE);
+    };
+
 	pp->bRefreshDraw = TRUE ;
     StartPause();
     StartPause();

@@ -12,6 +12,8 @@
 #include "../../string/_string.h"
 #include "../../map/menuMap.h"
 
+#include <math.h>
+
 /*
 void menu940(MENU_UNION menu_union)//9 ,4 ,0 ,0
 {
