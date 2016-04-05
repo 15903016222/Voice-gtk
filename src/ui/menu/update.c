@@ -87,7 +87,7 @@ void menu942(MENU_UNION menu_union)//9 ,4 ,2 ,0
 }
 
 const static gchar *authors[] = {
-    "Jake Yang <yanghuanjie@cndoppler.cn>",
+//    "Jake Yang <yanghuanjie@cndoppler.cn>",
     NULL
 };
 
@@ -102,12 +102,14 @@ static void phascan_about()
 
     gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(dialog), APP_NAME);
 
-    gchar *version = g_strdup_printf("%d.%d.%d", APP_MAJOR, APP_MINOR, APP_MICRO);
-    gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(dialog), version);
-    g_free(version);
+//    gchar *version = g_strdup_printf("%d.%d.%d-%s", , GIT_COMMIT);
+//    gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(dialog), version);
+//    g_free(version);
 
     gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(dialog), "CopyRight©2010-2016 Doppler All rights reserved");
-    gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(dialog), "PHASCAN has a powerful detection capability, can achieve a variety of scanning mode and focus mode, which greatly improves the detection reliability.");
+    gchar *msg = g_strdup_printf("%d.%d.%d (%s)\nPHASCAN has a powerful detection capability, can achieve a variety of scanning mode and focus mode, which greatly improves the detection reliability.",APP_MAJOR, APP_MINOR, APP_MICRO, GIT_COMMIT);
+    gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(dialog), msg);
+    g_free(msg);
 
     gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(dialog), "http://www.cndoppler.cn");
     gtk_about_dialog_set_authors(GTK_ABOUT_DIALOG(dialog), authors);
