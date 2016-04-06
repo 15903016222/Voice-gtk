@@ -4222,10 +4222,7 @@ void DrawTCGCalibration(unsigned char WinIndex, unsigned short *pFrameBuffer , u
 
 void draw_scan(unsigned char WinIndex, unsigned short *pFrameBuffer , unsigned int pBeamData)
 {
-    unsigned char scan_type ;
-	scan_type = TMP(_scan_type[WinIndex])  ;
-
-	switch (scan_type)
+    switch (TMP(_scan_type[WinIndex]))
 	{
 		case A_SCAN:
 			//draw_a_scan(WinIndex, pFrameBuffer , pBeamData) ;
