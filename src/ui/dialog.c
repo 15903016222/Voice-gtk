@@ -373,8 +373,8 @@ int fileCopyProgressBar(GtkWidget* fatherWidget,
 	int ret;
 	pthread_t tid3;
     struct ProgressData *parData = g_malloc(sizeof(struct ProgressData));  
-    char *note = NULL;
-    const char *args[3];
+    const char *note = NULL;
+    const void *args[3];
     char command[256];
     memset(command, 0, sizeof(command));
     memset(parData, 0, sizeof(struct ProgressData));

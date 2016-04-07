@@ -1798,20 +1798,24 @@ void ascanDrawConfig(ascanStruct* pAscanData)
 			_nIndex =    _nTempValue * 10  / pp->p_config->inspection_scan_resolution ;
 		}
 
-		int k ;
-		int _nDataOffset = DMA_DATA_OFFSET ;
-		for ( k = 0 ; k < group ; k++)
-		{
-			_nDataOffset += (pp->nPointQty[k] + 32) * TMP(beam_qty[k]);
-		}
+        if (!ScanDataMark[_nIndex]) {
+            return;
+        }
 
-		SCAN_INFO_P _pScanInfor;
-		_pScanInfor = &pp->ScanInfor ;
-		int _nDataSize   =   _pScanInfor->DataSize;
-		int width = pAscanData->wave.end - pAscanData->wave.start;
+        int k ;
+        int _nDataOffset = DMA_DATA_OFFSET ;
+        for ( k = 0 ; k < group ; k++)
+        {
+            _nDataOffset += (pp->nPointQty[k] + 32) * TMP(beam_qty[k]);
+        }
 
-		TofdHandler(_nIndex ,group ,width ,_nDataOffset ,_nDataSize);
-		memcpy(pAscanData->wave.dispData ,TMP(scan_data[group]) ,width);
+        SCAN_INFO_P _pScanInfor;
+        _pScanInfor = &pp->ScanInfor ;
+        int _nDataSize   =   _pScanInfor->DataSize;
+        int width = pAscanData->wave.end - pAscanData->wave.start;
+
+        TofdHandler(_nIndex ,group ,width ,_nDataOffset ,_nDataSize);
+        memcpy(pAscanData->wave.dispData ,TMP(scan_data[group]) ,width);
 	}
 	else
 	{
