@@ -209,8 +209,8 @@ void TofdGetPara(int grp)
 		double resolution = get_area_scanresolution(pp->p_config) / 1000.0;//mm
 
         double tofdRefLine = gTofdS[grp].refLine ;//mm
-		double s_reference = GROUP_VAL_POS(grp , s_reference)/100.0 ;//mm
-		double s_measure   = GROUP_VAL_POS(grp , s_measure)/100.0 ;//mm
+        double s_reference = GROUP_VAL_POS(grp , s_reference)/100.0 - GROUP_VAL_POS(grp, scan_offset)/10.0;//mm
+        double s_measure   = GROUP_VAL_POS(grp , s_measure)/100.0 - GROUP_VAL_POS(grp, scan_offset)/10.0;//mm
 
         gTofdS[grp].intAveragePos = tofdRefLine > end ?0 :(int)((tofdRefLine - start) / resolution) + 1;
         gTofdS[grp].intSr = s_reference > end ?0 :(int)((s_reference - start) / resolution) + 1;
