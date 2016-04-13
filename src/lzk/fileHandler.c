@@ -425,10 +425,10 @@ typedef struct _DRAW_PACK_
 	//st_PART	part;
 	int nScanStart ;
 	int nScanEnd   ;
-	int nScanResolution ;
-	int nInspecStart    ;
-	int nInspecEnd      ;
-	int nInspecResolution ;
+    int nScanResolution;
+    int nInspecStart;
+    int nInspecEnd;
+    int nEncOrigin;
 	int nEncodeType ;
 	unsigned char bScanMark[1024 * 256] ;
 }DRAW_INFO_PACK;
@@ -488,6 +488,7 @@ int saveInspectData(const char* filename)
 			_DrawInfor.nScanStart      =  _nScanStart     ;
 			_DrawInfor.nScanEnd        =  _nScanEnd       ;
 			_DrawInfor.nScanResolution =  _nScanResolution;
+            _DrawInfor.nEncOrigin = get_enc_origin(pp->p_config, get_cur_encoder(pp->p_config));
 			memcpy((void*)_DrawInfor.bScanMark , (void*)ScanDataMark , _nScanStepQty);
 
 			if(WriteDataToFile(&fileHead, sizeof(fileHeadStruct), 1 , _pFile))  return -1;
@@ -655,6 +656,10 @@ int ReadDataFileSetup(const char* dataFile)
 				pp->p_config->inspection_scan_start  = _DrawInfor.nScanStart   ;
 				pp->p_config->inspection_scan_end    = _DrawInfor.nScanEnd    ;
 				pp->p_config->inspection_scan_resolution = _DrawInfor.nScanResolution ;
+                set_enc_origin(pp->p_config, _DrawInfor.nEncOrigin, get_cur_encoder(pp->p_config));
+                if (_DrawInfor.nEncOrigin != 0) {
+                    enc_set_preset(pp->p_config, get_cur_encoder(pp->p_config), TRUE);
+                }
 			}
 			else
 			{
