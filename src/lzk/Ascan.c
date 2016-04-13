@@ -1798,7 +1798,13 @@ void ascanDrawConfig(ascanStruct* pAscanData)
 			_nIndex =    _nTempValue * 10  / pp->p_config->inspection_scan_resolution ;
 		}
 
-        if (!ScanDataMark[_nIndex]) {
+        if ( _nIndex > pp->ScanInfor.MaxStoreIndex ) {
+            _nIndex = pp->ScanInfor.MaxStoreIndex;
+        } else if (_nIndex < 0 ) {
+            _nIndex = 0;
+        }
+
+        if ( !ScanDataMark[_nIndex] ) {
             return;
         }
 
