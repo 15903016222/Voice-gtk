@@ -9,7 +9,7 @@ COMMIT=$(shell git log --pretty=format:'%h'|head -1)
 
 PHASCAN_DIR=$(PWD)
 SRC_DIR=$(PHASCAN_DIR)/src
-SCRIPT_DIR=$(PHASCAN_DIR)/script
+TOOL_DIR=$(PHASCAN_DIR)/tool
 
 ifdef _PC_
 TARGET=main
@@ -82,7 +82,7 @@ endif
 
 CC=$(CROSS_COMPILE)gcc
 
-VERSION=$(shell $(SCRIPT_DIR)/tag.sh)
+VERSION=$(shell $(TOOL_DIR)/tag.sh)
 
 VERSION_MAJOR=$(shell echo $(VERSION) | awk -F"." '{print $$1}')
 VERSION_MINOR=$(shell echo $(VERSION) | awk -F"." '{print $$2}')
