@@ -46,15 +46,20 @@ static void report_header(lua_State *L, const ReportHeader *hdr)
 
 static void report_users(lua_State *L, const ReportUsers *users)
 {
+    const ReportUsers *it = users;
+    ReportUser *user = NULL;
+    gint i = 0;
+
     lua_pushstring(L, "Users");
     lua_createtable(L, 0, 0);
 
-    gint i = 0;
-    for (; i < users->count; ++i) {
-        lua_pushinteger(L, i+1);
+    for (; it; it = it->next) {
+        user = it->data;
+        lua_pushinteger(L, ++i);
         lua_createtable(L, 0, 0);
-        set_kv(L, "Name", users->user[i].name);
-        set_kv(L, "Content", users->user[i].content);
+        g_message("%s[%d] (%s, %s)", __func__, __LINE__, user->name, user->content);
+        set_kv(L, "Name", user->name);
+        set_kv(L, "Content", user->content);
         lua_settable(L, -3);
     }
 
@@ -254,11 +259,23 @@ void report_save(const Report *report)
     lua_createtable(L, 0, 0);
 
     report_header(L, &report->header);
-    report_users(L, &report->users);
+    report_users(L, report->users);
     report_groups(L);
     report_defect(L);
 
     lua_pcall(L, 3, 0, 0);
 
     lua_close(L);
+}
+
+void *report_free(Report *r, GDestroyNotify free_user)
+{
+    if (free_user) {
+        g_slist_free_full(r->users, free_user);
+    } else {
+        g_slist_free(r->users);
+    }
+
+
+    g_free(r);
 }

@@ -20,7 +20,8 @@ extern "C"
 #define INSPECTION_VERSION  ("1.0")
 
 typedef struct _ReportHeader ReportHeader;
-typedef struct _ReportUsers ReportUsers;
+typedef struct _ReportUser ReportUser;
+typedef GSList ReportUsers;
 typedef struct _Report Report;
 
 struct _ReportHeader {
@@ -30,25 +31,31 @@ struct _ReportHeader {
     gchar *reportFile;          /* the name of report file */
 };
 
-#define MAX_USERS 10
 struct _ReportUser{
     const gchar *name;
     const gchar *content;
-};
-struct _ReportUsers {
-    gint count;
-    struct _ReportUser user[MAX_USERS];
 };
 
 struct _Report {
     gchar *tmpl;          /* the name of template file */
     ReportHeader header;
-    ReportUsers users;
+    ReportUsers *users;
 };
 
+static inline Report *report_new()
+{
+    return g_malloc0(sizeof(Report));
+}
 
+extern void *report_free(Report *r, GDestroyNotify free_user);
 
 extern void report_save(const Report *report);
+
+static inline void report_insert_user(Report *report, ReportUser *user)
+{
+    g_return_if_fail( report != NULL && user != NULL );
+    report->users = g_slist_append(report->users, user);
+}
 
 #ifdef __cplusplus
 }

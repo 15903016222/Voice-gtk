@@ -161,11 +161,10 @@ static void callbackFileSave(GtkWidget* dialog ,void* p_para)
 	free(filename);
 }
 
-static Report *create_report(gchar *outputFile)
+static void filling_report(Report *r, gchar *outputFile)
 {
-    Report *r = g_malloc0(sizeof(Report));
+    g_return_if_fail( r != NULL );
     ReportHeader *hdr = &(r->header);
-    ReportUsers *users = &(r->users);
 
     r->tmpl = "/home/root/template.html";
 
@@ -177,21 +176,15 @@ static Report *create_report(gchar *outputFile)
 
     /*users*/
     gint i = 0;
-    for ( ; i < MAX_USERS; ++i) {
+    ReportUser *user = NULL;
+    for ( ; i < 10; ++i) {
         if (get_report_userfield_enable(pp->p_config, i)) {
-            users->user[users->count].name = get_report_userfield_label(pp->p_config, i);
-            users->user[users->count].content = get_report_userfield_content(pp->p_config, i);
-            ++users->count;
+            user = g_malloc0(sizeof(ReportUser));
+            user->name = get_report_userfield_label(pp->p_config, i);
+            user->content = get_report_userfield_content(pp->p_config, i);
+            report_insert_user(r, user);
         }
     }
-
-
-    return r;
-}
-
-static void release_report(Report *r)
-{
-    g_free(r);
 }
 
 extern void callbackButtonClose(GtkWidget* dialog ,void* p_para);
@@ -242,9 +235,11 @@ GtkWidget* reportPreviewNew(GtkWidget* fatherWidget)
 	sprintf(fullFileName ,"%s%s" ,gTmpReportPath ,filename);
 	free(filename);
 
-    Report *report = create_report(fullFileName);
+    Report *report = report_new();
+    filling_report(report, fullFileName);
     report_save(report);
-    release_report(report);
+    report_free(report, g_free);
+
 //	SaveReportFile(fullFileName ,TRUE);
 
 	char tmpHttpPath[256];
