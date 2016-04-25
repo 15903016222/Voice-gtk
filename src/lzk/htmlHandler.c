@@ -253,7 +253,7 @@ void fprintfReportHead(reportParaStruct* pPara)
     fprintf(fp,"</tr>\n\n");
 
     fprintf(fp,"<tr>\n");
-    fprintf(fp,"<td %s>PhaScan</td>\n" ,tableTdStyle);//"Doppler Type"
+    fprintf(fp,"<td %s>Phascan</td>\n" ,tableTdStyle);//"Doppler Type"
 	GetDirName(fileName ,pPara->fileName);
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,fileName);//"Data File Name"
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//空
@@ -1033,6 +1033,8 @@ void SaveReportFile(const char* fullFileName ,int isTmp)
 	MkImageDirName(imageDirName ,fullFileName);
 	pPara->fileName = fullFileName;
 	pPara->isTmp = isTmp;
+
+    g_message("%s(%d)", __func__, __LINE__);
 
 	//文件的头
 	fprintfReportStart(fp);

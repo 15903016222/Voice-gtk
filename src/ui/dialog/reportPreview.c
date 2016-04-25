@@ -9,10 +9,14 @@
 struct mmsghdr;
 #include <webkit/webkit.h>
 
+#include "../globalData.h"
 #include "../ui.h"
 #include "../../string/_string.h"
 #include "../../drawui.h"
 #include "../../lzk/fileHandler.h"
+
+#include "../../report/report.h"
+
 extern GtkWidget* baseDialogNew(GtkWidget* fatherWidget);
 extern void SaveReportFile(const char* filename ,int isTmp);
 
@@ -157,6 +161,27 @@ static void callbackFileSave(GtkWidget* dialog ,void* p_para)
 	free(filename);
 }
 
+static Report *create_report(gchar *outputFile)
+{
+    Report *r = g_malloc0(sizeof(Report));
+    ReportHeader *hdr = &(r->header);
+
+    r->tmpl = "/home/root/template.html";
+
+    /*header*/
+    hdr->deviceType = "Phascan";
+    hdr->saveMode = menu_content[SAVE_MODE+get_file_save_mode (pp->p_config)];
+    hdr->reportFile = outputFile;
+    hdr->setupFile = gData->file.setupfile;
+
+    return r;
+}
+
+static void release_report(Report *r)
+{
+    g_free(r);
+}
+
 extern void callbackButtonClose(GtkWidget* dialog ,void* p_para);
 //extern void Save_Report_File(char *html_file_name);
 //extern void responseDialogFileName(GtkDialog *dialog, gint response_id, gpointer user_data);
@@ -204,7 +229,11 @@ GtkWidget* reportPreviewNew(GtkWidget* fatherWidget)
 	char fullFileName[100];
 	sprintf(fullFileName ,"%s%s" ,gTmpReportPath ,filename);
 	free(filename);
-	SaveReportFile(fullFileName ,TRUE);
+
+    Report *report = create_report(fullFileName);
+    report_save(report);
+    release_report(report);
+//	SaveReportFile(fullFileName ,TRUE);
 
 	char tmpHttpPath[256];
 	memset(tmpHttpPath ,0 ,256);

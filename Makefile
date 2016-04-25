@@ -44,7 +44,8 @@ INC_DIRS = -I $(SYSROOT_DIR)/usr/include/libxml2 \
 	   -I $(SYSROOT_DIR)/usr/include/glib-2.0 \
 	   -I $(SYSROOT_DIR)/usr/lib/glib-2.0/include  \
 	   -I $(SRC_DIR)/dxflib/ \
-	   -I $(SRC_DIR)/gdxf/
+	   -I $(SRC_DIR)/gdxf/ \
+	   -I $(PHASCAN_DIR)/include/lua5.1/
 LDFLAGS= -lpthread \
 	 -lgdk-x11-2.0 \
 	 -lgtk-x11-2.0 \
@@ -67,7 +68,8 @@ LDFLAGS= -lpthread \
 	 -lsoup-2.4 \
 	 -lxml2 \
 	 -lfakekey \
-	 -rdynamic
+	 -rdynamic \
+	 -L$(PHASCAN_DIR)/lib -llua
 else
 
 INC_DIRS = $(shell pkg-config --cflags gtk+-2.0 webkit-1.0) -I $(SRC_DIR)/dxflib -I $(SRC_DIR)/gdxf

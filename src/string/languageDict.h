@@ -308,7 +308,7 @@ static languageStruct stringDict[] =
 	/*_STRING_TT,*/{"TT","TT"},	//#
 	/*_STRING_TOFD_Time_of_Flight_Diffraction,*/{"TOFD Time-of-Flight Diffraction","TOFD 衍射声时"},	//#
 	/*_STRING_TOFD,*/{"TOFD","TOFD"},	//#
-	/*_STRING_PhaScan_Report,*/{"PhaScan Report","PhaScan 报告"},	//#
+    /*_STRING_PhaScan_Report,*/{"Phascan Report","Phascan 报告"},	//#
 	/*_STRING_PE_Pulse_Echo,*/{"PE Pulse-Echo","PE 脉冲回波"},	//#
 	/*_STRING_PE,*/{"PE","PE"},	//#
 	/*_STRING_PC_Pitch_and_Catch,*/{"PC Pitch-and-Catch","PC 一发一收"},	//#
