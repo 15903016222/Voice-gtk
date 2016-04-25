@@ -44,6 +44,192 @@ static void report_header(lua_State *L, const ReportHeader *hdr)
     set_kv(L, "ReportFile", basename(hdr->reportFile));
 }
 
+static void report_users(lua_State *L, const ReportUsers *users)
+{
+    lua_pushstring(L, "Users");
+    lua_createtable(L, 0, 0);
+
+    gint i = 0;
+    for (; i < users->count; ++i) {
+        lua_pushinteger(L, i+1);
+        lua_createtable(L, 0, 0);
+        set_kv(L, "Name", users->user[i].name);
+        set_kv(L, "Content", users->user[i].content);
+        lua_settable(L, -3);
+    }
+
+    lua_settable(L, -3);
+}
+
+static void report_probe(lua_State *L)
+{
+    set_kv(L, "ProbeModel", "5L16-0.6-10-D1");
+    set_kv(L, "ProbeSerial", "D1");
+    set_kv(L, "ProbeFreq", "5.0");
+    set_kv(L, "PeakFreq", "-");
+    set_kv(L, "WedgeModel", "SD1-N55S");
+    set_kv(L, "WedgeAngle", "36.0");
+    set_kv(L, "ProbeAperture", "16");
+    set_kv(L, "LowerFreq_6dB", "-");
+    set_kv(L, "HigherFreq_6dB", "-" );
+    set_kv(L, "CenterFreq_6dB", "-");
+    set_kv(L, "Bandwidth_6dB", "-");
+    set_kv(L, "BandwidthPercent_6dB", "-");
+    set_kv(L, "LowerFreq_20dB", "-");
+    set_kv(L, "HigherFreq_20dB", "-");
+    set_kv(L, "CenterFreq_20dB", "-");
+    set_kv(L, "Bandwidth_20dB", "-");
+    set_kv(L, "BandwidthPercent_20dB", "-");
+}
+
+static void report_setup(lua_State *L)
+{
+    set_kv(L, "BeamDelay", "11.08");
+    set_kv(L, "HalfPathStart", "0.00");
+    set_kv(L, "HalfPathRange", "92.38");
+    set_kv(L, "PRF", "20");
+    set_kv(L, "InspectionType", "PA");
+    set_kv(L, "AveragingFactor", "1");
+    set_kv(L, "SCALE_FACTOR", "9");
+    set_kv(L, "VideoFilter", "On");
+    set_kv(L, "Rectification", "FW");
+    set_kv(L, "BandPassFilter", "None");
+    set_kv(L, "Voltage", "50");
+    set_kv(L, "Gain", "20.0");
+    set_kv(L, "RxTxMode", "PE Pulse-Echo");
+    set_kv(L, "WaveType", "SW");
+    set_kv(L, "SoundVelocity", "3240");
+    set_kv(L, "PulseWidth", "100.0");
+    set_kv(L, "ScanOffset", "0.0");
+    set_kv(L, "IndexOffset", "0.0");
+    set_kv(L, "Skew", "90.0");
+    set_kv(L, "GateIStart", "0.00");
+    set_kv(L, "GateIWidth", "0.00");
+    set_kv(L, "GateIThreshold", "0");
+    set_kv(L, "GateISynchro", "Pulse");
+    set_kv(L, "GateAStart", "0.00");
+    set_kv(L, "GateAWidth", "8.10");
+    set_kv(L, "GateAThreshold", "25");
+    set_kv(L, "GateASynchro", "Pulse");
+    set_kv(L, "GateBStart", "4.05");
+    set_kv(L, "GateBWidth", "4.05");
+    set_kv(L, "GateBThreshold", "20");
+    set_kv(L, "GateBSynchro", "Pulse");
+}
+
+static void report_focallaw(lua_State *L)
+{
+    set_kv(L, "ElementQty", "16");
+    set_kv(L, "FirstTxElement", "1");
+    set_kv(L, "LastTxElement", "16");
+    set_kv(L, "FirstRxElement", "-");
+    set_kv(L, "LastRxElement", "-");
+    set_kv(L, "ElementResolution", "-");
+    set_kv(L, "WaveType", "SW");
+    set_kv(L, "StartAngle", "30.0");
+    set_kv(L, "StopAngle", "60.0");
+    set_kv(L, "AngleResolution", "1.0");
+    set_kv(L, "LawType", "Azimuthal");
+    set_kv(L, "FocalType", "True Depth");
+    set_kv(L, "FocalDepth", "30.00");
+    set_kv(L, "PositionEnd", "-");
+    set_kv(L, "PositionStep", "-");
+}
+
+static void report_part(lua_State *L)
+{
+    set_kv(L, "PartMaterial", "Steel common");
+    set_kv(L, "PartGeometry", "Plate");
+    set_kv(L, "PartThickness", "50");
+}
+
+static void report_scan(lua_State *L)
+{
+    set_kv(L, "ScanStart", "40.00");
+    set_kv(L, "ScanStop", "750.00");
+    set_kv(L, "ScanResolution", "1.00");
+    set_kv(L, "IndexStart", "-");
+    set_kv(L, "IndexStop", "-");
+    set_kv(L, "IndexResolution", "-");
+    set_kv(L, "ScanSynchro", "Time");
+    set_kv(L, "ScanSpeed", "20.00");
+    set_kv(L, "ScanEncoder", "Off");
+    set_kv(L, "ScanEncoderType", "Off");
+    set_kv(L, "ScanEncoderResolution", "Off");
+    set_kv(L, "ScanPolarity", "Off");
+    set_kv(L, "IndexEncoder", "Off");
+    set_kv(L, "IndexEncoderType", "Off");
+    set_kv(L, "IndexEncoderResolution", "Off");
+    set_kv(L, "IndexPolarity", "Off");
+}
+
+static void report_groups(lua_State *L)
+{
+    lua_pushstring(L, "Groups");
+    lua_createtable(L, 0, 0);
+
+//    lua_pushinteger(L, 1);
+//    lua_createtable(L, 0, 0);
+//    report_probe(L);
+//    report_setup(L);
+//    report_focallaw(L);
+//    report_part(L);
+//    report_scan(L);
+//    lua_settable(L, -3);
+
+//    lua_pushinteger(L, 2);
+//    lua_createtable(L, 0, 0);
+//    report_probe(L);
+//    report_setup(L);
+//    report_focallaw(L);
+//    report_part(L);
+//    report_scan(L);
+//    lua_settable(L, -3);
+
+    lua_settable(L, -3);
+}
+
+static void report_defect(lua_State *L)
+{
+    lua_pushstring(L, "Entries");
+    lua_createtable(L, 0, 0);
+
+//    lua_pushinteger(L, 1);
+//    lua_createtable(L, 0, 0);
+//    tmpl_set_var(L, "Scan", "1.0");
+//    tmpl_set_var(L, "Index", "2.0");
+//    tmpl_set_var(L, "Group", "2");
+//    tmpl_set_var(L, "Channel", "1");
+//    tmpl_set_var(L, "A", "0.8");
+//    tmpl_set_var(L, "DA", "ND");
+//    tmpl_set_var(L, "PA", "ND");
+//    tmpl_set_var(L, "SA", "ND");
+//    tmpl_set_var(L, "A", "0.8");
+//    tmpl_set_var(L, "TOFDr", "1.9");
+//    tmpl_set_var(L, "TOFDm", "1.9");
+//    tmpl_set_var(L, "TOFDmr", "0.0");
+//    lua_settable(L, -3);
+
+//    lua_pushinteger(L, 2);
+//    lua_createtable(L, 0, 0);
+//    tmpl_set_var(L, "Scan", "2.0");
+//    tmpl_set_var(L, "Index", "3.0");
+//    tmpl_set_var(L, "Group", "2");
+//    tmpl_set_var(L, "Channel", "1");
+//    tmpl_set_var(L, "A", "0.9");
+//    tmpl_set_var(L, "DA", "ND");
+//    tmpl_set_var(L, "PA", "ND");
+//    tmpl_set_var(L, "SA", "ND");
+//    tmpl_set_var(L, "A", "0.9");
+//    tmpl_set_var(L, "TOFDr", "2.9");
+//    tmpl_set_var(L, "TOFDm", "2.9");
+//    tmpl_set_var(L, "TOFDmr", "1.0");
+//    lua_settable(L, -3);
+
+    lua_settable(L, -3);
+}
+
+
 void report_save(const Report *report)
 {
     g_return_if_fail(report != NULL
@@ -68,7 +254,9 @@ void report_save(const Report *report)
     lua_createtable(L, 0, 0);
 
     report_header(L, &report->header);
-
+    report_users(L, &report->users);
+    report_groups(L);
+    report_defect(L);
 
     lua_pcall(L, 3, 0, 0);
 

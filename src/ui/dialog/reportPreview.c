@@ -165,6 +165,7 @@ static Report *create_report(gchar *outputFile)
 {
     Report *r = g_malloc0(sizeof(Report));
     ReportHeader *hdr = &(r->header);
+    ReportUsers *users = &(r->users);
 
     r->tmpl = "/home/root/template.html";
 
@@ -173,6 +174,17 @@ static Report *create_report(gchar *outputFile)
     hdr->saveMode = menu_content[SAVE_MODE+get_file_save_mode (pp->p_config)];
     hdr->reportFile = outputFile;
     hdr->setupFile = gData->file.setupfile;
+
+    /*users*/
+    gint i = 0;
+    for ( ; i < MAX_USERS; ++i) {
+        if (get_report_userfield_enable(pp->p_config, i)) {
+            users->user[users->count].name = get_report_userfield_label(pp->p_config, i);
+            users->user[users->count].content = get_report_userfield_content(pp->p_config, i);
+            ++users->count;
+        }
+    }
+
 
     return r;
 }
