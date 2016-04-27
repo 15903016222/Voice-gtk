@@ -168,13 +168,13 @@ static void filling_report(Report *r, gchar *outputFile)
 
     r->tmpl = "/home/root/template.html";
 
-    /*header*/
+    /* header */
     hdr->deviceType = "Phascan";
     hdr->saveMode = menu_content[SAVE_MODE+get_file_save_mode (pp->p_config)];
     hdr->reportFile = outputFile;
     hdr->setupFile = gData->file.setupfile;
 
-    /*users*/
+    /* users */
     gint i = 0;
     ReportUser *user = NULL;
     for ( ; i < 10; ++i) {
@@ -185,6 +185,9 @@ static void filling_report(Report *r, gchar *outputFile)
             report_insert_user(r, user);
         }
     }
+
+    /* defects */
+    filling_report_defects(r);
 }
 
 extern void callbackButtonClose(GtkWidget* dialog ,void* p_para);
@@ -240,7 +243,7 @@ GtkWidget* reportPreviewNew(GtkWidget* fatherWidget)
     report_save(report);
     report_free(report, g_free);
 
-//	SaveReportFile(fullFileName ,TRUE);
+//    SaveReportFile(fullFileName ,TRUE);
 
 	char tmpHttpPath[256];
 	memset(tmpHttpPath ,0 ,256);

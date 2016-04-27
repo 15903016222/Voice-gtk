@@ -76,6 +76,7 @@ char* getTableTitle(int i)
 	else if(i <= COLUMN_FIELD8)
 	{
 		int feildNum = GetMesureFeildNum();
+        g_message("%s[%d] num(%d)", __func__, __LINE__, feildNum);
 		const char* pSimpleStr[feildNum];
 		GetMesureFeildString(pSimpleStr ,NULL);
 		unsigned char fieldIndex = getFieldIndex((i - COLUMN_FIELD1) / 4 ,(i - COLUMN_FIELD1) % 4);
@@ -614,6 +615,7 @@ void fprintfTableTitle(FILE* fp ,int enableBit)
 		{
 			memset(str ,0 ,100);
 			title = getTableTitle(i);
+            g_message("%s[%d] title(%s)", __func__, __LINE__, title);
 			changeNewLine(str ,title);
 			g_free(title);
 			if(COLUMN_COMMENTS == i)
@@ -810,7 +812,8 @@ void TableReport(reportParaStruct* pPara)
 	    	if(COLUMN_COMMENTS != i)
 	    		enableBit |= 1 << i;
 	    }
-	    fprintfTableTitle(fp ,enableBit);
+
+        fprintfTableTitle(fp ,enableBit);
 
 		gtk_tree_model_foreach(model ,treeModelForeachBody ,fp);
 
@@ -904,3 +907,47 @@ void tableExport()
 	gtk_widget_show(dialogSave);
 }
 
+static gboolean treeModelForeach(GtkTreeModel *model ,GtkTreePath *path ,GtkTreeIter *iter ,gpointer data)
+{
+    ReportDefect *defect = report_defect_new();
+    gint group = 0;
+    gint channel = 0;
+
+    gtk_tree_model_get(model ,iter,
+                       COLUMN_SCAN,     &defect->scan,
+                       COLUMN_INDEX,    &defect->index,
+                       COLUMN_GROUP,    &group,
+                       COLUMN_CHANNEL,  &channel,
+                       COLUMN_FIELD1,   &defect->fieldValues[0],
+                       COLUMN_FIELD2,   &defect->fieldValues[1],
+                       COLUMN_FIELD3,   &defect->fieldValues[2],
+                       COLUMN_FIELD4,   &defect->fieldValues[3],
+                       COLUMN_FIELD5,   &defect->fieldValues[4],
+                       COLUMN_FIELD6,   &defect->fieldValues[5],
+                       COLUMN_FIELD7,	&defect->fieldValues[6],
+                       COLUMN_FIELD8,   &defect->fieldValues[7],
+                       COLUMN_COMMENTS, &defect->comments,
+                       -1);
+    report_defect_set_group(defect, group);
+    report_defect_set_channel(defect, channel);
+
+    report_defects_add_defect((ReportDefects *)data, defect);
+
+    return FALSE;
+}
+
+void filling_report_defects(Report *r)
+{
+    ReportDefects *defects = report_defects_new();
+    gint i = 0;
+
+    for ( i = COLUMN_FIELD1; i <= COLUMN_FIELD8; ++i) {
+        report_defects_set_field_name(defects, i-COLUMN_FIELD1, getTableTitle(i));
+    }
+
+    GtkTreeView *treeView = GTK_TREE_VIEW(g_object_get_data(G_OBJECT(scrollTable), "treeview"));
+    GtkTreeModel *model = gtk_tree_view_get_model(treeView);
+    gtk_tree_model_foreach(model, treeModelForeach, defects);
+
+    r->defects = defects;
+}

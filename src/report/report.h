@@ -9,19 +9,16 @@
 #ifndef __REPORT_H__
 #define __REPORT_H__
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+#include "report_defects.h"
 
-#include <glib.h>
+G_BEGIN_DECLS
 
 #define REPORT_VERSION     ("1.0")
 #define INSPECTION_VERSION  ("1.0")
 
-typedef struct _ReportHeader ReportHeader;
+typedef struct _ReportHeader ReportHeader;      /* header of report */
 typedef struct _ReportUser ReportUser;
-typedef GSList ReportUsers;
+typedef GSList ReportUsers;                     /* users data of report */
 typedef struct _Report Report;
 
 struct _ReportHeader {
@@ -36,10 +33,12 @@ struct _ReportUser{
     const gchar *content;
 };
 
+
 struct _Report {
     gchar *tmpl;          /* the name of template file */
     ReportHeader header;
     ReportUsers *users;
+    ReportDefects *defects;
 };
 
 static inline Report *report_new()
@@ -57,8 +56,6 @@ static inline void report_insert_user(Report *report, ReportUser *user)
     report->users = g_slist_append(report->users, user);
 }
 
-#ifdef __cplusplus
-}
-#endif
+G_END_DECLS
 
 #endif /* end of include guard */

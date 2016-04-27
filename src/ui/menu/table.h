@@ -8,6 +8,8 @@
 #ifndef TABLE_H_
 #define TABLE_H_
 
+#include "../../report/report.h"
+
 void tableInit();
 void setFieldIndex(int list ,int fieldNO ,unsigned char value) ;
 unsigned char getFieldIndex(int list ,int fieldNO) ;
@@ -28,4 +30,8 @@ typedef struct
 int SaveTableFile(const char* filename ,int isTmp);
 void TableReport(reportParaStruct* pPara);
 void CurrentViewReport(reportParaStruct* pPara);
+
+extern void filling_report_defects(Report *r);
+extern void free_report_defect(gpointer defect);
+
 #endif /* TABLE_H_ */

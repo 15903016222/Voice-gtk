@@ -21,6 +21,13 @@ static inline void set_kv(lua_State *L, const gchar *key, const gchar *val)
     lua_settable(L, -3);
 }
 
+static inline void set_av(lua_State *L, gint index, const gchar *val)
+{
+    lua_pushinteger(L, index);
+    lua_pushstring(L, val);
+    lua_settable(L, -3);
+}
+
 static void report_header(lua_State *L, const ReportHeader *hdr)
 {
     gchar *msg = NULL;
@@ -56,10 +63,11 @@ static void report_users(lua_State *L, const ReportUsers *users)
     for (; it; it = it->next) {
         user = it->data;
         lua_pushinteger(L, ++i);
+
         lua_createtable(L, 0, 0);
-        g_message("%s[%d] (%s, %s)", __func__, __LINE__, user->name, user->content);
         set_kv(L, "Name", user->name);
         set_kv(L, "Content", user->content);
+
         lua_settable(L, -3);
     }
 
@@ -194,44 +202,64 @@ static void report_groups(lua_State *L)
     lua_settable(L, -3);
 }
 
-static void report_defect(lua_State *L)
+static void report_field_names(lua_State *L, const gchar *fieldNames[])
 {
-    lua_pushstring(L, "Entries");
+    g_return_if_fail(fieldNames != NULL);
+    gint i = 0;
+    lua_pushstring(L, "FieldNames");
+    lua_createtable(L, 0, 0);
+    for (; i < MAX_FIELDS; ++i) {
+        set_av(L, i+1, fieldNames[i]);
+    }
+    lua_settable(L, -3);
+}
+
+static void report_defect_field_values(lua_State *L, const gchar **values)
+{
+    gint i = 0;
+    lua_pushstring(L, "FieldValues");
     lua_createtable(L, 0, 0);
 
-//    lua_pushinteger(L, 1);
-//    lua_createtable(L, 0, 0);
-//    tmpl_set_var(L, "Scan", "1.0");
-//    tmpl_set_var(L, "Index", "2.0");
-//    tmpl_set_var(L, "Group", "2");
-//    tmpl_set_var(L, "Channel", "1");
-//    tmpl_set_var(L, "A", "0.8");
-//    tmpl_set_var(L, "DA", "ND");
-//    tmpl_set_var(L, "PA", "ND");
-//    tmpl_set_var(L, "SA", "ND");
-//    tmpl_set_var(L, "A", "0.8");
-//    tmpl_set_var(L, "TOFDr", "1.9");
-//    tmpl_set_var(L, "TOFDm", "1.9");
-//    tmpl_set_var(L, "TOFDmr", "0.0");
-//    lua_settable(L, -3);
-
-//    lua_pushinteger(L, 2);
-//    lua_createtable(L, 0, 0);
-//    tmpl_set_var(L, "Scan", "2.0");
-//    tmpl_set_var(L, "Index", "3.0");
-//    tmpl_set_var(L, "Group", "2");
-//    tmpl_set_var(L, "Channel", "1");
-//    tmpl_set_var(L, "A", "0.9");
-//    tmpl_set_var(L, "DA", "ND");
-//    tmpl_set_var(L, "PA", "ND");
-//    tmpl_set_var(L, "SA", "ND");
-//    tmpl_set_var(L, "A", "0.9");
-//    tmpl_set_var(L, "TOFDr", "2.9");
-//    tmpl_set_var(L, "TOFDm", "2.9");
-//    tmpl_set_var(L, "TOFDmr", "1.0");
-//    lua_settable(L, -3);
+    for (; i<MAX_FIELDS; ++i) {
+        set_av(L, i+1, values[i]);
+    }
 
     lua_settable(L, -3);
+}
+
+static void _report_defects(lua_State *L, const ReportDefects *defects)
+{
+    const GSList *it = defects->defects;
+    ReportDefect *d = NULL;
+    gint i = 0;
+
+    lua_pushstring(L, "Defects");
+    lua_createtable(L, 0, 0);
+
+    for (; it; it = it->next) {
+        d = it->data;
+
+        lua_pushinteger(L, ++i);
+        lua_createtable(L, 0, 0);
+
+        set_kv(L, "Scan", d->scan);
+        set_kv(L, "Index", d->index);
+        set_kv(L, "Group", d->group);
+        set_kv(L, "Channel", d->channel);
+        report_defect_field_values(L, d->fieldValues);
+
+        lua_settable(L, -3);
+    }
+
+    lua_settable(L, -3);
+}
+
+static inline void report_defects(lua_State *L, const ReportDefects *defects)
+{
+    /* field names */
+    report_field_names(L, defects->fieldNames);
+
+    _report_defects(L, defects);
 }
 
 
@@ -251,17 +279,18 @@ void report_save(const Report *report)
     if ( luaL_dofile(L, "./report.lua") != 0 ) {
         g_warning("loading report library failed[2]");
         lua_close(L);
+        return;
     }
 
     lua_getglobal(L, "output");
     lua_pushstring(L, report->tmpl);
     lua_pushstring(L, report->header.reportFile);
-    lua_createtable(L, 0, 0);
+    lua_createtable(L, 0, 0);   /* 1 */
 
     report_header(L, &report->header);
     report_users(L, report->users);
     report_groups(L);
-    report_defect(L);
+    report_defects(L, report->defects);
 
     lua_pcall(L, 3, 0, 0);
 
@@ -276,6 +305,7 @@ void *report_free(Report *r, GDestroyNotify free_user)
         g_slist_free(r->users);
     }
 
+    report_defects_free(r->defects);
 
     g_free(r);
 }

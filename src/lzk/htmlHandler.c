@@ -1034,8 +1034,6 @@ void SaveReportFile(const char* fullFileName ,int isTmp)
 	pPara->fileName = fullFileName;
 	pPara->isTmp = isTmp;
 
-    g_message("%s(%d)", __func__, __LINE__);
-
 	//文件的头
 	fprintfReportStart(fp);
 	//html的head
