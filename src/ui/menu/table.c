@@ -76,7 +76,6 @@ char* getTableTitle(int i)
 	else if(i <= COLUMN_FIELD8)
 	{
 		int feildNum = GetMesureFeildNum();
-        g_message("%s[%d] num(%d)", __func__, __LINE__, feildNum);
 		const char* pSimpleStr[feildNum];
 		GetMesureFeildString(pSimpleStr ,NULL);
 		unsigned char fieldIndex = getFieldIndex((i - COLUMN_FIELD1) / 4 ,(i - COLUMN_FIELD1) % 4);
@@ -615,7 +614,6 @@ void fprintfTableTitle(FILE* fp ,int enableBit)
 		{
 			memset(str ,0 ,100);
 			title = getTableTitle(i);
-            g_message("%s[%d] title(%s)", __func__, __LINE__, title);
 			changeNewLine(str ,title);
 			g_free(title);
 			if(COLUMN_COMMENTS == i)

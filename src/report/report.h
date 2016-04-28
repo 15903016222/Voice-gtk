@@ -9,24 +9,16 @@
 #ifndef __REPORT_H__
 #define __REPORT_H__
 
+#include "report_header.h"
 #include "report_defects.h"
 
 G_BEGIN_DECLS
 
-#define REPORT_VERSION     ("1.0")
-#define INSPECTION_VERSION  ("1.0")
 
-typedef struct _ReportHeader ReportHeader;      /* header of report */
 typedef struct _ReportUser ReportUser;
 typedef GSList ReportUsers;                     /* users data of report */
 typedef struct _Report Report;
 
-struct _ReportHeader {
-    const gchar *setupFile;     /* setup file name */
-    const gchar *saveMode;      /* save mode */
-    const gchar *deviceType;    /* device type */
-    gchar *reportFile;          /* the name of report file */
-};
 
 struct _ReportUser{
     const gchar *name;
@@ -36,7 +28,7 @@ struct _ReportUser{
 
 struct _Report {
     gchar *tmpl;          /* the name of template file */
-    ReportHeader header;
+    ReportHeader *header;
     ReportUsers *users;
     ReportDefects *defects;
 };
@@ -49,6 +41,16 @@ static inline Report *report_new()
 extern void *report_free(Report *r, GDestroyNotify free_user);
 
 extern void report_save(const Report *report);
+
+static inline void report_set_defects(Report *r, ReportDefects *ds)
+{
+    g_return_if_fail( r != NULL && ds != NULL );
+    if ( r->defects ) {
+        report_defects_free(r->defects);
+    }
+    r->defects = ds;
+}
+
 
 static inline void report_insert_user(Report *report, ReportUser *user)
 {

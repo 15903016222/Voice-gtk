@@ -9,7 +9,7 @@
 #ifndef __REPORT_DEFECTS_H__
 #define __REPORT_DEFECTS_H__
 
-#include <glib.h>
+#include "report_base.h"
 
 G_BEGIN_DECLS
 
@@ -51,16 +51,6 @@ static inline ReportDefects *report_defects_new()
 void report_defect_free(ReportDefect *d);
 void report_defects_free(ReportDefects *ds);
 
-static inline void _set_str(gchar **d, const gchar *str)
-{
-    g_return_if_fail( d != NULL && str != NULL );
-    if ( NULL != *d ) {
-        g_free(*d);
-    }
-    *d = g_strdup(str);
-}
-
-
 static inline void report_defects_add_defect(ReportDefects *ds, ReportDefect *d)
 {
     g_return_if_fail( ds != NULL && d != NULL );
@@ -70,19 +60,19 @@ static inline void report_defects_add_defect(ReportDefects *ds, ReportDefect *d)
 static inline void report_defects_set_field_name(ReportDefects *ds, guint field, const gchar *name)
 {
     g_return_if_fail( ds != NULL && field < MAX_FIELDS);
-    _set_str(&ds->fieldNames[field], name);
+    _report_set_str(&ds->fieldNames[field], name);
 }
 
 static inline void report_defect_set_scan(ReportDefect *d, const gchar *scan)
 {
     g_return_if_fail( d != NULL );
-    _set_str(&d->scan, scan);
+    _report_set_str(&d->scan, scan);
 }
 
 static inline void report_defect_set_index(ReportDefect *d, const gchar *index)
 {
     g_return_if_fail( d != NULL );
-    _set_str(&d->index, index);
+    _report_set_str(&d->index, index);
 }
 
 static inline void report_defect_set_group(ReportDefect *d, gint group)
@@ -106,13 +96,13 @@ static inline void report_defect_set_channel(ReportDefect *d, gint channel)
 static inline void report_defect_set_field_value(ReportDefect *d, guint field, const gchar *val)
 {
     g_return_if_fail( d != NULL && field < MAX_FIELDS );
-    _set_str(&d->fieldValues[field], val);
+    _report_set_str(&d->fieldValues[field], val);
 }
 
 static inline void report_defect_comment(ReportDefect *d, const gchar *comment)
 {
     g_return_if_fail(NULL != d);
-    _set_str(&d->comments, comment);
+    _report_set_str(&d->comments, comment);
 }
 
 G_END_DECLS

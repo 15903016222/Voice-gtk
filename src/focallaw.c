@@ -855,7 +855,8 @@ void cid_1d_eaglet(PARAMETER_P data, double angle1, double depth)
 
     c = t0*t;
     if (b<-0.0001) {
-        return 0;
+//        return 0;
+        return;
     } else if (b<0.0001) {
         b = 0;
     }
@@ -887,7 +888,8 @@ void cid_1d_eaglet(PARAMETER_P data, double angle1, double depth)
         memset(p->probe_z[p->k], 0, MAXNUM*sizeof(double));
         p->focus_x[p->k] = 0;
         p->focus_z[p->k] = 0;
-        return -1;
+//        return -1;
+        return;
     } else if (b<0.0001) {
         b=0;
     }
@@ -1073,7 +1075,8 @@ void cod_1d_eaglet(PARAMETER_P data, double angle1, double depth)
 
     c = t0*t;
     if (b<-0.0001) {
-        return 0;
+//        return 0;
+        return;
     } else if (b<0.0001) {
         b = 0;
     }
@@ -1104,7 +1107,8 @@ void cod_1d_eaglet(PARAMETER_P data, double angle1, double depth)
         memset(p->probe_z[p->k], 0, MAXNUM*sizeof(double));
         p->focus_x[p->k] = 0;
         p->focus_z[p->k] = 0;
-        return -1;
+//        return -1;
+        return;
     } else if (b<0.0001) {
         b=0;
     }

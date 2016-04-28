@@ -202,7 +202,7 @@ static void report_groups(lua_State *L)
     lua_settable(L, -3);
 }
 
-static void report_field_names(lua_State *L, const gchar *fieldNames[])
+static void report_field_names(lua_State *L, gchar * const *fieldNames)
 {
     g_return_if_fail(fieldNames != NULL);
     gint i = 0;
@@ -214,7 +214,7 @@ static void report_field_names(lua_State *L, const gchar *fieldNames[])
     lua_settable(L, -3);
 }
 
-static void report_defect_field_values(lua_State *L, const gchar **values)
+static void report_defect_field_values(lua_State *L, gchar * const *values)
 {
     gint i = 0;
     lua_pushstring(L, "FieldValues");
@@ -267,7 +267,8 @@ void report_save(const Report *report)
 {
     g_return_if_fail(report != NULL
             && report->tmpl != NULL
-            && report->header.reportFile != NULL);
+            && report->header != NULL
+            && report->header->reportFile != NULL);
 
     lua_State *L = lua_open();
     if (NULL == L) {
@@ -284,10 +285,10 @@ void report_save(const Report *report)
 
     lua_getglobal(L, "output");
     lua_pushstring(L, report->tmpl);
-    lua_pushstring(L, report->header.reportFile);
+    lua_pushstring(L, report->header->reportFile);
     lua_createtable(L, 0, 0);   /* 1 */
 
-    report_header(L, &report->header);
+    report_header(L, report->header);
     report_users(L, report->users);
     report_groups(L);
     report_defects(L, report->defects);

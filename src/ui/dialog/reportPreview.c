@@ -164,15 +164,16 @@ static void callbackFileSave(GtkWidget* dialog ,void* p_para)
 static void filling_report(Report *r, gchar *outputFile)
 {
     g_return_if_fail( r != NULL );
-    ReportHeader *hdr = &(r->header);
+    ReportHeader *hdr = report_header_new();
 
     r->tmpl = "/home/root/template.html";
 
     /* header */
-    hdr->deviceType = "Phascan";
-    hdr->saveMode = menu_content[SAVE_MODE+get_file_save_mode (pp->p_config)];
-    hdr->reportFile = outputFile;
-    hdr->setupFile = gData->file.setupfile;
+    report_header_set_device_type(hdr, "Phascan");
+    report_header_set_report_file(hdr, outputFile);
+    report_header_set_setup_file(hdr, gData->file.setupfile);
+    report_header_set_save_mode(hdr, menu_content[SAVE_MODE+get_file_save_mode (pp->p_config)] );
+    r->header = hdr;
 
     /* users */
     gint i = 0;

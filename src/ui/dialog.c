@@ -356,7 +356,7 @@ gint progressTimeout(gpointer data)
 
 void CmdOperate(const char **args)
 {
-    struct ProgressData* pdata = args[0];
+    struct ProgressData* pdata = (struct ProgressData *)args[0];
 
     FileCommand(args[1]);
     system("sync");
