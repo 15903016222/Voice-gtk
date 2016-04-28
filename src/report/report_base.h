@@ -13,13 +13,21 @@
 
 G_BEGIN_DECLS
 
-static inline _report_set_str(gchar **var, const gchar *val)
+static inline void _report_set_str(gchar **var, const gchar *val)
 {
     g_return_if_fail( var != NULL && val != NULL );
     if ( *var ) {
         g_free(*var);
     }
     *var = g_strdup(val);
+}
+
+static inline void _report_set_member(gpointer *p, gpointer v, GDestroyNotify f)
+{
+    if (*p) {
+        f(*p);
+    }
+    *p = v;
 }
 
 G_END_DECLS

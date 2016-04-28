@@ -53,7 +53,7 @@ static void report_header(lua_State *L, const ReportHeader *hdr)
 
 static void report_users(lua_State *L, const ReportUsers *users)
 {
-    const ReportUsers *it = users;
+    const GSList *it = users->users;
     ReportUser *user = NULL;
     gint i = 0;
 
@@ -298,14 +298,10 @@ void report_save(const Report *report)
     lua_close(L);
 }
 
-void *report_free(Report *r, GDestroyNotify free_user)
+void *report_free(Report *r)
 {
-    if (free_user) {
-        g_slist_free_full(r->users, free_user);
-    } else {
-        g_slist_free(r->users);
-    }
-
+    report_header_free(r->header);
+    report_users_free(r->users);
     report_defects_free(r->defects);
 
     g_free(r);

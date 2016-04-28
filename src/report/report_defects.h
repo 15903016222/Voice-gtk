@@ -48,8 +48,8 @@ static inline ReportDefects *report_defects_new()
     return g_malloc0(sizeof(ReportDefects));
 }
 
-void report_defect_free(ReportDefect *d);
-void report_defects_free(ReportDefects *ds);
+extern void report_defect_free(ReportDefect *d);
+extern void report_defects_free(ReportDefects *ds);
 
 static inline void report_defects_add_defect(ReportDefects *ds, ReportDefect *d)
 {

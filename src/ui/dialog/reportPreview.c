@@ -173,19 +173,21 @@ static void filling_report(Report *r, gchar *outputFile)
     report_header_set_report_file(hdr, outputFile);
     report_header_set_setup_file(hdr, gData->file.setupfile);
     report_header_set_save_mode(hdr, menu_content[SAVE_MODE+get_file_save_mode (pp->p_config)] );
-    r->header = hdr;
+    report_set_header(r, hdr);
 
     /* users */
     gint i = 0;
+    ReportUsers *users = report_users_new();
     ReportUser *user = NULL;
     for ( ; i < 10; ++i) {
         if (get_report_userfield_enable(pp->p_config, i)) {
-            user = g_malloc0(sizeof(ReportUser));
-            user->name = get_report_userfield_label(pp->p_config, i);
-            user->content = get_report_userfield_content(pp->p_config, i);
-            report_insert_user(r, user);
+            user = report_user_new();
+            report_user_set_name(user, get_report_userfield_label(pp->p_config, i) );
+            report_user_set_content(user, get_report_userfield_content(pp->p_config, i) );
+            report_users_add_user(users, user);
         }
     }
+    report_set_users(r, users);
 
     /* defects */
     filling_report_defects(r);
@@ -242,7 +244,7 @@ GtkWidget* reportPreviewNew(GtkWidget* fatherWidget)
     Report *report = report_new();
     filling_report(report, fullFileName);
     report_save(report);
-    report_free(report, g_free);
+    report_free(report);
 
 //    SaveReportFile(fullFileName ,TRUE);
 

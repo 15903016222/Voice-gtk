@@ -29,4 +29,5 @@ void report_defects_free(ReportDefects *ds)
         g_free(ds->fieldNames[i]);
     }
     g_slist_free_full(ds->defects, (GDestroyNotify)report_defect_free);
+    g_free(ds);
 }

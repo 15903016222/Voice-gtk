@@ -947,5 +947,5 @@ void filling_report_defects(Report *r)
     GtkTreeModel *model = gtk_tree_view_get_model(treeView);
     gtk_tree_model_foreach(model, treeModelForeach, defects);
 
-    r->defects = defects;
+    report_set_defects(r, defects);
 }

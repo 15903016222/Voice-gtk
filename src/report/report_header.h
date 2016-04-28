@@ -37,6 +37,7 @@ static inline void report_header_free(ReportHeader *h)
     g_free(h->saveMode);
     g_free(h->deviceType);
     g_free(h->reportFile);
+    g_free(h);
 }
 
 static inline void report_header_set_setup_file(ReportHeader *h, const gchar *setupFile)
