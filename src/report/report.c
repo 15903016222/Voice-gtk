@@ -74,25 +74,33 @@ static void report_users(lua_State *L, const ReportUsers *users)
     lua_settable(L, -3);
 }
 
-static void report_probe(lua_State *L)
+static void report_group_probe(lua_State *L, ReportProbe *p)
 {
-    set_kv(L, "ProbeModel", "5L16-0.6-10-D1");
-    set_kv(L, "ProbeSerial", "D1");
-    set_kv(L, "ProbeFreq", "5.0");
-    set_kv(L, "PeakFreq", "-");
-    set_kv(L, "WedgeModel", "SD1-N55S");
-    set_kv(L, "WedgeAngle", "36.0");
-    set_kv(L, "ProbeAperture", "16");
-    set_kv(L, "LowerFreq_6dB", "-");
-    set_kv(L, "HigherFreq_6dB", "-" );
-    set_kv(L, "CenterFreq_6dB", "-");
-    set_kv(L, "Bandwidth_6dB", "-");
-    set_kv(L, "BandwidthPercent_6dB", "-");
-    set_kv(L, "LowerFreq_20dB", "-");
-    set_kv(L, "HigherFreq_20dB", "-");
-    set_kv(L, "CenterFreq_20dB", "-");
-    set_kv(L, "Bandwidth_20dB", "-");
-    set_kv(L, "BandwidthPercent_20dB", "-");
+    set_kv(L, "ProbeModel", p->model);
+    set_kv(L, "ProbeSerial", p->serial);
+    set_kv(L, "ProbeFreq", p->freq);
+    set_kv(L, "ProbeAperture", p->aperture);
+}
+
+static void report_group_wedge(lua_State *L, ReportWedge *w)
+{
+    set_kv(L, "WedgeModel", w->model);
+    set_kv(L, "WedgeAngle", w->angle);
+}
+
+static void report_group_fft(lua_State *L, ReportFFT *t)
+{
+    set_kv(L, "PeakFreq", t->peakFreq);
+    set_kv(L, "LowerFreq_6dB", t->lowerFreq_6dB);
+    set_kv(L, "HigherFreq_6dB", t->higherFreq_6dB);
+    set_kv(L, "CenterFreq_6dB", t->centerFreq_6dB);
+    set_kv(L, "Bandwidth_6dB", t->bandwidth_6dB);
+    set_kv(L, "BandwidthPercent_6dB", t->bandwidthPercent_6dB);
+    set_kv(L, "LowerFreq_20dB", t->lowerFreq_20dB);
+    set_kv(L, "HigherFreq_20dB", t->higherFreq_20dB);
+    set_kv(L, "CenterFreq_20dB", t->centerFreq_20dB);
+    set_kv(L, "Bandwidth_20dB", t->bandwidth_20dB);
+    set_kv(L, "BandwidthPercent_20dB", t->bandwidthPercent_20dB);
 }
 
 static void report_setup(lua_State *L)
@@ -176,10 +184,29 @@ static void report_scan(lua_State *L)
     set_kv(L, "IndexPolarity", "Off");
 }
 
-static void report_groups(lua_State *L)
+
+static void report_groups(lua_State *L, ReportGroups *groups)
 {
+    const GSList *item = groups->groups;
+    ReportGroup *group = NULL;
+    gint i = 0;
+
     lua_pushstring(L, "Groups");
     lua_createtable(L, 0, 0);
+
+    for ( ; item; item = item->next ) {
+        group = (ReportGroup *)item->data;
+        lua_pushinteger(L, ++i);
+        lua_createtable(L, 0, 0);
+
+        report_group_probe(L, group->probe);
+        report_group_wedge(L, group->wedge);
+        report_group_fft(L, group->fft);
+
+        lua_settable(L, -3);
+    }
+
+    lua_settable(L, -3);
 
 //    lua_pushinteger(L, 1);
 //    lua_createtable(L, 0, 0);
@@ -198,8 +225,6 @@ static void report_groups(lua_State *L)
 //    report_part(L);
 //    report_scan(L);
 //    lua_settable(L, -3);
-
-    lua_settable(L, -3);
 }
 
 static void report_field_names(lua_State *L, gchar * const *fieldNames)
@@ -277,7 +302,8 @@ void report_save(const Report *report)
     }
     luaL_openlibs(L);
 
-    if ( luaL_dofile(L, "./report.lua") != 0 ) {
+    if ( luaL_dofile(L, "/home/tt/TT/report.lua") != 0
+         && luaL_dofile(L, "/usr/share/phascan/report.lua") != 0 ) {
         g_warning("loading report library failed[2]");
         lua_close(L);
         return;
@@ -290,7 +316,7 @@ void report_save(const Report *report)
 
     report_header(L, report->header);
     report_users(L, report->users);
-    report_groups(L);
+    report_groups(L, report->groups);
     report_defects(L, report->defects);
 
     lua_pcall(L, 3, 0, 0);
@@ -300,8 +326,11 @@ void report_save(const Report *report)
 
 void *report_free(Report *r)
 {
+    g_free(r->tmpl);
+
     report_header_free(r->header);
     report_users_free(r->users);
+    report_groups_free(r->groups);
     report_defects_free(r->defects);
 
     g_free(r);

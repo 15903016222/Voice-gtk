@@ -11,6 +11,7 @@
 
 #include "report_header.h"
 #include "report_users.h"
+#include "report_groups.h"
 #include "report_defects.h"
 
 G_BEGIN_DECLS
@@ -22,6 +23,7 @@ struct _Report {
     gchar *tmpl;          /* the name of template file */
     ReportHeader *header;
     ReportUsers *users;
+    ReportGroups *groups;
     ReportDefects *defects;
 };
 
@@ -34,6 +36,12 @@ extern void *report_free(Report *r);
 
 extern void report_save(const Report *report);
 
+static inline void report_set_template(Report *r, const gchar *tmpl)
+{
+    g_return_if_fail( r != NULL );
+    _report_set_str(&r->tmpl, tmpl);
+}
+
 static inline void report_set_header(Report *r, ReportHeader *hdr)
 {
     g_return_if_fail( r != NULL );
@@ -44,6 +52,12 @@ static inline void report_set_users(Report *r, ReportUsers *users)
 {
     g_return_if_fail( r != NULL );
     _report_set_member((gpointer *)&r->users, users, (GDestroyNotify)report_users_free);
+}
+
+static inline void report_set_groups(Report *r, ReportGroups *grps)
+{
+    g_return_if_fail( r != NULL );
+    _report_set_member((gpointer *)&r->groups, grps, (GDestroyNotify)report_groups_free);
 }
 
 static inline void report_set_defects(Report *r, ReportDefects *ds)

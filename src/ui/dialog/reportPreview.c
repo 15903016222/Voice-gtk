@@ -161,38 +161,6 @@ static void callbackFileSave(GtkWidget* dialog ,void* p_para)
 	free(filename);
 }
 
-static void filling_report(Report *r, gchar *outputFile)
-{
-    g_return_if_fail( r != NULL );
-    ReportHeader *hdr = report_header_new();
-
-    r->tmpl = "/home/root/template.html";
-
-    /* header */
-    report_header_set_device_type(hdr, "Phascan");
-    report_header_set_report_file(hdr, outputFile);
-    report_header_set_setup_file(hdr, gData->file.setupfile);
-    report_header_set_save_mode(hdr, menu_content[SAVE_MODE+get_file_save_mode (pp->p_config)] );
-    report_set_header(r, hdr);
-
-    /* users */
-    gint i = 0;
-    ReportUsers *users = report_users_new();
-    ReportUser *user = NULL;
-    for ( ; i < 10; ++i) {
-        if (get_report_userfield_enable(pp->p_config, i)) {
-            user = report_user_new();
-            report_user_set_name(user, get_report_userfield_label(pp->p_config, i) );
-            report_user_set_content(user, get_report_userfield_content(pp->p_config, i) );
-            report_users_add_user(users, user);
-        }
-    }
-    report_set_users(r, users);
-
-    /* defects */
-    filling_report_defects(r);
-}
-
 extern void callbackButtonClose(GtkWidget* dialog ,void* p_para);
 //extern void Save_Report_File(char *html_file_name);
 //extern void responseDialogFileName(GtkDialog *dialog, gint response_id, gpointer user_data);

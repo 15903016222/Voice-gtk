@@ -13,6 +13,7 @@
 #include "../../string/_string.h"
 #include "../ui.h"
 #include "../../calculation/getMeasureData.h"
+#include "../../globalData.h"
 
 static GtkWidget* scrollTable;
 #if ARM
@@ -934,7 +935,7 @@ static gboolean treeModelForeach(GtkTreeModel *model ,GtkTreePath *path ,GtkTree
     return FALSE;
 }
 
-void filling_report_defects(Report *r)
+static void filling_report_defects(Report *r)
 {
     ReportDefects *defects = report_defects_new();
     gint i = 0;
@@ -949,3 +950,108 @@ void filling_report_defects(Report *r)
 
     report_set_defects(r, defects);
 }
+
+static inline void filling_report_header(Report *r, const gchar *outputFile)
+{
+    ReportHeader *hdr = report_header_new();
+    report_header_set_device_type(hdr, "Phascan");
+    report_header_set_report_file(hdr, outputFile);
+    report_header_set_setup_file(hdr, gData->file.setupfile);
+    report_header_set_save_mode(hdr, menu_content[SAVE_MODE+get_file_save_mode (pp->p_config)] );
+    report_set_header(r, hdr);
+}
+
+static void filling_report_users(Report *r)
+{
+    gint i = 0;
+    ReportUsers *users = report_users_new();
+    ReportUser *user = NULL;
+    for ( ; i < 10; ++i) {
+        if (get_report_userfield_enable(pp->p_config, i)) {
+            user = report_user_new();
+            report_user_set_name(user, get_report_userfield_label(pp->p_config, i) );
+            report_user_set_content(user, get_report_userfield_content(pp->p_config, i) );
+            report_users_add_user(users, user);
+        }
+    }
+    report_set_users(r, users);
+}
+
+static void filling_report_group_probe(ReportGroup *reportGroup, PROBE *probe, gint groupNo)
+{
+    ReportProbe *reportProbe = report_probe_new();
+
+    report_probe_set_model(reportProbe, probe->Model);
+    report_probe_set_serial(reportProbe, probe->Serial);
+    report_probe_set_freq(reportProbe, probe->Frequency*0.001);
+    report_probe_set_aperture(reportProbe, LAW_VAL_POS(groupNo, Elem_qty));
+
+    report_group_set_probe(reportGroup, reportProbe);
+}
+
+static void filling_report_group_wedge(ReportGroup *reportGroup, WEDGE *w)
+{
+    ReportWedge *reportWedge = report_wedge_new();
+
+    report_wedge_set_model(reportWedge, w->Model);
+    report_wedge_set_angle(reportWedge, w->Angle*0.1);
+
+    report_group_set_wedge(reportGroup, reportWedge);
+}
+
+static void filling_report_group_ttf(ReportGroup *reportGroup, struct fftStruct *fft)
+{
+    ReportFFT *reportFFT = report_fft_new();
+
+    report_fft_set_peak_freq(reportFFT, fft->peakPoint * fft->hzPerPoint);
+
+    /* 6dB */
+    report_fft_set_lower_freq_6dB(reportFFT, fft->db6minPoint * fft->hzPerPoint);
+    report_fft_set_higher_freq_6dB(reportFFT, fft->db6maxPoint * fft->hzPerPoint);
+    report_fft_set_center_freq_6dB(reportFFT, FftGetCenterFreq(fft, 6));
+    report_fft_set_bandwidth_6dB(reportFFT, (fft->db6maxPoint - fft->db6minPoint) * fft->hzPerPoint);
+    report_fft_set_bandwidth_percent_6dB(reportFFT, (fft->db6maxPoint > fft->db6minPoint) ? (fft->peakPoint * 100.0 / (fft->db6maxPoint - fft->db6minPoint)):0);
+
+    /* 20dB */
+    report_fft_set_lower_freq_20dB(reportFFT, fft->db20minPoint * fft->hzPerPoint);
+    report_fft_set_higher_freq_20dB(reportFFT, fft->db20maxPoint * fft->hzPerPoint);
+    report_fft_set_center_freq_20dB(reportFFT, FftGetCenterFreq(fft, 20));
+    report_fft_set_bandwidth_20dB(reportFFT, (fft->db20maxPoint - fft->db20minPoint) * fft->hzPerPoint);
+    report_fft_set_bandwidth_percent_20dB(reportFFT, (fft->db20maxPoint > fft->db20minPoint) ? (fft->peakPoint * 100.0 / (fft->db20maxPoint - fft->db20minPoint)):0);
+
+    report_group_set_fft(reportGroup, reportFFT);
+}
+
+static void filling_report_groups(Report *r)
+{
+    ReportGroups *reportGroups = report_groups_new();
+    ReportGroup *reportGroup = NULL;
+    GROUP *pGroup = NULL;
+    gint i = 0;
+
+    for ( ; i < get_group_qty(pp->p_config); ++i ) {
+        pGroup = get_group_by_id(pp->p_config, i);
+        reportGroup = report_group_new();
+
+        filling_report_group_probe(reportGroup, &pGroup->probe, i);
+        filling_report_group_wedge(reportGroup, &pGroup->wedge);
+        filling_report_group_ttf(reportGroup, &gData->fft[i]);
+
+        report_groups_add_group(reportGroups, reportGroup);
+    }
+
+    report_set_groups(r, reportGroups);
+}
+
+void filling_report(Report *r, const gchar *outputFile)
+{
+    g_return_if_fail( r != NULL );
+
+    report_set_template(r, "/home/root/template.html");
+
+    filling_report_header(r, outputFile);
+    filling_report_users(r);
+    filling_report_groups(r);
+    filling_report_defects(r);
+}
+

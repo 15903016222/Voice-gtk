@@ -31,7 +31,6 @@ int SaveTableFile(const char* filename ,int isTmp);
 void TableReport(reportParaStruct* pPara);
 void CurrentViewReport(reportParaStruct* pPara);
 
-extern void filling_report_defects(Report *r);
-extern void free_report_defect(gpointer defect);
+extern void filling_report(Report *r, const gchar *outputFile);
 
 #endif /* TABLE_H_ */

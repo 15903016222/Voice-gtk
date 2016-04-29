@@ -11,6 +11,8 @@
 
 #include "report_base.h"
 
+G_BEGIN_DECLS
+
 typedef struct _ReportUser ReportUser;
 typedef struct _ReportUsers ReportUsers;
 
@@ -63,5 +65,7 @@ static inline void report_user_set_content(ReportUser *user, const gchar *conten
     g_return_if_fail( user != NULL );
     _report_set_str(&user->content, content);
 }
+
+G_END_DECLS
 
 #endif /* end of include guard */
