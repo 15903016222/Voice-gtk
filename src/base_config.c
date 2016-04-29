@@ -1542,11 +1542,11 @@ void set_probe_type (CONFIG *p, char data)
  * Group 参数操作接口
  */
 
-inline gshort group_get_gain(gint grp)
+gshort group_get_gain(gint grp)
 {
     return GROUP_VAL_POS(grp, gain);
 }
-inline void group_set_gain(gint grp, gshort val)
+void group_set_gain(gint grp, gshort val)
 {
     GROUP_VAL_POS(grp, gain) = val;
 #if ARM
@@ -1554,36 +1554,45 @@ inline void group_set_gain(gint grp, gshort val)
 #endif
 }
 
-inline gshort group_get_refgain(gint grp)
+gshort group_get_refgain(gint grp)
 {
     return GROUP_VAL_POS(grp, refgain);
 }
-inline void group_set_refgain(gint grp, gshort val)
+void group_set_refgain(gint grp, gshort val)
 {
     GROUP_VAL_POS(grp, refgain) = val;
 }
 
-inline gint group_get_start(gint grp)
+gint group_get_start(gint grp)
 {
     return GROUP_VAL_POS(grp, start);
 }
-inline void group_set_start(gint grp, gint val)
+void group_set_start(gint grp, gint val)
 {
     GROUP_VAL_POS(grp, start) = val;
 }
 
-inline gint group_get_mode(gint grp)
+gint group_get_mode(gint grp)
 {
     return GROUP_VAL_POS(grp, group_mode);
 }
 
-inline gint group_get_rx_tx_mode(gint grp)
+gint group_get_rx_tx_mode(gint grp)
 {
     return GROUP_VAL_POS(grp, rx_tx_mode);
 }
-inline void group_set_rx_tx_mode(gint grp, gint val)
+void group_set_rx_tx_mode(gint grp, gint val)
 {
     GROUP_VAL_POS(grp, rx_tx_mode) = val;
+}
+
+gint group_get_range(gint grp)
+{
+    return GROUP_VAL_POS(grp, range);
+}
+void group_set_range(gint grp, gint val)
+{
+    GROUP_VAL_POS(grp, range) = val;
 }
 
 /* GROUP 参数的保存读取*/
@@ -1595,7 +1604,7 @@ int get_group_val (GROUP *p, int type)
 	switch (type)
 	{
 //		case GROUP_START:tt = p->start;break;
-		case GROUP_RANGE:tt = p->range;break;
+//		case GROUP_RANGE:tt = p->range;break;
 		case GROUP_WEDGE_DELAY:tt = p->wedge_delay;break;
 		case GROUP_VELOCITY:tt = p->velocity;break;
 		case GROUP_PULSER:tt = p->pulser1;break;
@@ -1624,7 +1633,7 @@ void set_group_val (GROUP *p, int type, int val)
 	switch (type)
 	{
 //		case GROUP_START:p->start = val;break;
-		case GROUP_RANGE:p->range = val;break;
+//		case GROUP_RANGE:p->range = val;break;
 		case GROUP_WEDGE_DELAY:p->wedge_delay = val;break;
 		case GROUP_VELOCITY:p->velocity = val;break;
 		case GROUP_PULSER:p->pulser1 = (unsigned char)(val);break;

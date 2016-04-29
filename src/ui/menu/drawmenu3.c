@@ -1918,10 +1918,10 @@ void DrawMenu203()
 			{
 				switch (TMP(gate_width_reg))
 				{
-					case 0:	tmpf = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) / (double)(GROUP_VAL_POS( grp , point_qty)); break;
-					case 1:	tmpf = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) / 20.0 ; break;
-					case 2:	tmpf = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) / 10.0 ; break;
-					case 3:	tmpf = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) / 4.0 ; break;
+                    case 0:	tmpf = (group_get_range (get_current_group(pp->p_config)) / 1000.0) / (double)(GROUP_VAL_POS( grp , point_qty)); break;
+                    case 1:	tmpf = (group_get_range (get_current_group(pp->p_config)) / 1000.0) / 20.0 ; break;
+                    case 2:	tmpf = (group_get_range (get_current_group(pp->p_config)) / 1000.0) / 10.0 ; break;
+                    case 3:	tmpf = (group_get_range (get_current_group(pp->p_config)) / 1000.0) / 4.0 ; break;
 					default:break;
 				}
 				cur_value = GROUP_GATE_POS(width) / 1000.0 ;

@@ -16,7 +16,7 @@
 #include "base_const.h"
 
 //#define GROUP_START			0x1002
-#define GROUP_RANGE			0x1003
+//#define GROUP_RANGE			0x1003
 #define GROUP_WEDGE_DELAY	0x1004
 #define GROUP_VELOCITY		0x1005
 #define GROUP_PULSER		0x1006
@@ -380,7 +380,7 @@ struct _Group
 
 	/* 基本设置 */
 	int		wedge_delay;	/* 楔款延时 单位 ns		*/
-	int		range;			/* 显示范围 单位 ns		*/
+    int		range;			/* 显示范围 单位 ns		*/
     int		start;			/* 扫描延时 单位 ns		*/
 	int		velocity;		/* 实际声速 单位 0.01m/s*/
 	int		on_off_status;
@@ -811,6 +811,9 @@ extern gint group_get_mode(gint grp);
 
 extern gint group_get_rx_tx_mode(gint grp);
 extern void group_set_rx_tx_mode(gint grp, gint val);
+
+extern gint group_get_range(gint grp);
+extern void group_set_range(gint grp, gint val);
 
 /* Group 参数的保存读取 */
 extern int	get_group_point_qty_pos	(CONFIG *p, int group_id);

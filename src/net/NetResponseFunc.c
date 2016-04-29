@@ -550,7 +550,7 @@ int Response_CMD_GET_VAL_RANGE(USLONG Command, USLONG ParamSize, char* Parameter
 	int err = 0;
 	int _nGroupId = get_current_group(pp->p_config) ;
 	int* _pGain = (int*)Parameter ;
-	*_pGain = GROUP_VAL_POS(_nGroupId , range);
+    *_pGain = group_get_range(_nGroupId);
 	return err;
 }
 int Response_CMD_SET_VAL_RANGE(USLONG Command, USLONG ParamSize, char* Parameter)

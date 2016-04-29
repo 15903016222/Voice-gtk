@@ -103,39 +103,45 @@ static void report_group_fft(lua_State *L, ReportFFT *t)
     set_kv(L, "BandwidthPercent_20dB", t->bandwidthPercent_20dB);
 }
 
-static void report_setup(lua_State *L)
+static void report_group_setup(lua_State *L, ReportSetup *s)
 {
-    set_kv(L, "BeamDelay", "11.08");
-    set_kv(L, "HalfPathStart", "0.00");
-    set_kv(L, "HalfPathRange", "92.38");
-    set_kv(L, "PRF", "20");
-    set_kv(L, "InspectionType", "PA");
-    set_kv(L, "AveragingFactor", "1");
-    set_kv(L, "SCALE_FACTOR", "9");
-    set_kv(L, "VideoFilter", "On");
-    set_kv(L, "Rectification", "FW");
-    set_kv(L, "BandPassFilter", "None");
-    set_kv(L, "Voltage", "50");
-    set_kv(L, "Gain", "20.0");
-    set_kv(L, "RxTxMode", "PE Pulse-Echo");
-    set_kv(L, "WaveType", "SW");
-    set_kv(L, "SoundVelocity", "3240");
-    set_kv(L, "PulseWidth", "100.0");
-    set_kv(L, "ScanOffset", "0.0");
-    set_kv(L, "IndexOffset", "0.0");
-    set_kv(L, "Skew", "90.0");
-    set_kv(L, "GateIStart", "0.00");
-    set_kv(L, "GateIWidth", "0.00");
-    set_kv(L, "GateIThreshold", "0");
-    set_kv(L, "GateISynchro", "Pulse");
-    set_kv(L, "GateAStart", "0.00");
-    set_kv(L, "GateAWidth", "8.10");
-    set_kv(L, "GateAThreshold", "25");
-    set_kv(L, "GateASynchro", "Pulse");
-    set_kv(L, "GateBStart", "4.05");
-    set_kv(L, "GateBWidth", "4.05");
-    set_kv(L, "GateBThreshold", "20");
-    set_kv(L, "GateBSynchro", "Pulse");
+    set_kv(L, "BeamDelay", s->beamDelay);
+    set_kv(L, "HalfPathStart", s->halfPathStart);
+    set_kv(L, "HalfPathRange", s->halfPathRange);
+    set_kv(L, "PRF", s->prf);
+    set_kv(L, "InspectionType",  s->inspectionType);
+    set_kv(L, "AveragingFactor", s->averagingFactor);
+    set_kv(L, "SCALE_FACTOR", s->scaleFactor);
+    set_kv(L, "VideoFilter", s->videoFilter);
+    set_kv(L, "Rectification", s->rectification);
+    set_kv(L, "BandPassFilter", s->bandPassFilter);
+    set_kv(L, "Voltage", s->voltage);
+    set_kv(L, "Gain", s->gain);
+    set_kv(L, "RxTxMode", s->rxTxMode);
+    set_kv(L, "WaveType", s->waveType);
+    set_kv(L, "SoundVelocity", s->soundVelocity);
+    set_kv(L, "PulseWidth", s->pulseWidth);
+    set_kv(L, "ScanOffset", s->scanOffset);
+    set_kv(L, "IndexOffset", s->indexOffset);
+    set_kv(L, "Skew", s->skew);
+    if (s->gateA) {
+        set_kv(L, "GateAStart", s->gateA->start);
+        set_kv(L, "GateAWidth", s->gateA->width);
+        set_kv(L, "GateAThreshold", s->gateA->threshold);
+        set_kv(L, "GateASynchro", s->gateA->synchro);
+    }
+    if (s->gateB) {
+        set_kv(L, "GateBStart", s->gateB->start);
+        set_kv(L, "GateBWidth", s->gateB->width);
+        set_kv(L, "GateBThreshold", s->gateB->threshold);
+        set_kv(L, "GateBSynchro", s->gateB->synchro);
+    }
+    if (s->gateI) {
+        set_kv(L, "GateIStart", s->gateI->start);
+        set_kv(L, "GateIWidth", s->gateI->width);
+        set_kv(L, "GateIThreshold", s->gateI->threshold);
+        set_kv(L, "GateISynchro", s->gateI->synchro);
+    }
 }
 
 static void report_focallaw(lua_State *L)
@@ -202,29 +208,12 @@ static void report_groups(lua_State *L, ReportGroups *groups)
         report_group_probe(L, group->probe);
         report_group_wedge(L, group->wedge);
         report_group_fft(L, group->fft);
+        report_group_setup(L, group->setup);
 
         lua_settable(L, -3);
     }
 
     lua_settable(L, -3);
-
-//    lua_pushinteger(L, 1);
-//    lua_createtable(L, 0, 0);
-//    report_probe(L);
-//    report_setup(L);
-//    report_focallaw(L);
-//    report_part(L);
-//    report_scan(L);
-//    lua_settable(L, -3);
-
-//    lua_pushinteger(L, 2);
-//    lua_createtable(L, 0, 0);
-//    report_probe(L);
-//    report_setup(L);
-//    report_focallaw(L);
-//    report_part(L);
-//    report_scan(L);
-//    lua_settable(L, -3);
 }
 
 static void report_field_names(lua_State *L, gchar * const *fieldNames)

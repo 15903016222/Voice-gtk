@@ -1161,7 +1161,7 @@ void DrawGate_a(GtkWidget *widget , gpointer data , cairo_t *cr)
 	double gate_start  = GROUP_VAL_POS(grp , gate[0].start) / 1000.0;
 
     double sample_start= group_get_start (grp)/ 1000.0 ;
-	double sample_range= get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE)/ 1000.0 ;
+    double sample_range= group_get_range(grp)/ 1000.0 ;
 	// ***************************************************
 	// this value is setting temporary
 	// ***************************************************
@@ -1477,7 +1477,7 @@ void DrawGate_b(GtkWidget *widget , gpointer data , cairo_t *cr)
 	double gate_width  = GROUP_VAL_POS(grp , gate[1].width) / 1000.0;
 	double gate_start  = GROUP_VAL_POS(grp , gate[1].start) / 1000.0;
     double sample_start= group_get_start(grp)/ 1000.0 ;
-	double sample_range= get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE)/ 1000.0 ;
+    double sample_range= group_get_range(grp)/ 1000.0 ;
 	unsigned char UtUnit       = GROUP_VAL_POS(grp , ut_unit)  ;
 	int _nCurrentBeamDelay ;
 	double _nGatePosition ;
@@ -1836,7 +1836,7 @@ void DrawGate_i(GtkWidget *widget , gpointer data , cairo_t *cr)
 	double gate_width  = GROUP_VAL_POS(grp , gate[2].width) / 1000.0;
 	double gate_start  = GROUP_VAL_POS(grp , gate[2].start) / 1000.0;
     double sample_start= group_get_start(grp)/ 1000.0 ;
-	double sample_range= get_group_val (get_group_by_id (pp->p_config, grp ), GROUP_RANGE)/ 1000.0 ;
+    double sample_range= group_get_range(grp)/ 1000.0 ;
 	unsigned char UtUnit       = GROUP_VAL_POS(grp , ut_unit)  ;
 	//unsigned char DisplayGroup = get_display_group(pp->p_config) ;
 	double min_angle ;
@@ -2178,7 +2178,7 @@ void DrawOverLay(GtkWidget* widget , gpointer data , cairo_t* cr)
 	double current_pos ;
 	double thickness = GROUP_VAL_POS(grp , part.Thickness) / 1000.0  ;
     double sample_start = group_get_start(grp) / 1000.0 ;
-	double sample_range = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 1000.0;
+    double sample_range = group_get_range(grp) / 1000.0;
 	double velocity = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_VELOCITY) / 200000.0;
 	double current_angle = TMP(current_angle[grp]);
 	double cos_current_angle = cos(current_angle) ;
@@ -2374,7 +2374,7 @@ void DrawWeldShapeI(GtkWidget* widget , gpointer data , cairo_t* cr)
 	double current_pos ;
 	double thickness    = GROUP_VAL_POS(grp , part.Thickness) / 1000.0  ;
     double sample_start = group_get_start(grp) / 1000.0 ;
-	double sample_range = GROUP_VAL_POS(grp  , range) / 1000.0 ;
+    double sample_range = group_get_range(grp) / 1000.0 ;
 	double velocity     = GROUP_VAL_POS(grp  , velocity) / 200000.0;
 
 	st_PART* p = &(GROUP_VAL_POS(grp , part)) ;
@@ -2478,7 +2478,7 @@ void DrawWeldShapeV(GtkWidget* widget , gpointer data , cairo_t* cr)
 	double current_pos ;
 	double thickness    = GROUP_VAL_POS(grp , part.Thickness) / 1000.0  ;
     double sample_start = group_get_start(grp) / 1000.0 ;
-	double sample_range = GROUP_VAL_POS(grp  , range) / 1000.0 ;
+    double sample_range = group_get_range(grp) / 1000.0 ;
 	double velocity     = GROUP_VAL_POS(grp  , velocity) / 200000.0;
 
 	st_PART* p = &(GROUP_VAL_POS(grp , part)) ;
@@ -2659,7 +2659,7 @@ void DrawWeldShapeDoubleV(GtkWidget* widget , gpointer data , cairo_t* cr)
 	double current_pos ;
 	double thickness    = GROUP_VAL_POS(grp , part.Thickness)/ 1000.0  ;
     double sample_start = group_get_start(grp) / 1000.0 ;
-	double sample_range = GROUP_VAL_POS(grp  , range) / 1000.0 ;
+    double sample_range = group_get_range(grp) / 1000.0 ;
 	double velocity     = GROUP_VAL_POS(grp  , velocity) / 200000.0;
 
 	st_PART* p = &(GROUP_VAL_POS(grp , part)) ;
@@ -2903,7 +2903,7 @@ void DrawWeldShapeU(GtkWidget* widget , gpointer data , cairo_t* cr)
 	double current_pos ;
 	double thickness    = GROUP_VAL_POS(grp , part.Thickness)/ 1000.0  ;
     double sample_start = group_get_start(grp) / 1000.0 ;
-	double sample_range = GROUP_VAL_POS(grp  , range) / 1000.0 ;
+    double sample_range = group_get_range(grp) / 1000.0 ;
 	double velocity     = GROUP_VAL_POS(grp  , velocity) / 200000.0;
 
 	st_PART* p = &(GROUP_VAL_POS(grp , part)) ;
@@ -3170,7 +3170,7 @@ void DrawWeldShapeVY(GtkWidget* widget , gpointer data , cairo_t* cr)
         double current_pos ;
         double thickness    = GROUP_VAL_POS(grp , part.Thickness)/ 1000.0  ;
         double sample_start = group_get_start(grp) / 1000.0 ;
-        double sample_range = GROUP_VAL_POS(grp  , range) / 1000.0 ;
+        double sample_range = group_get_range(grp) / 1000.0 ;
         double velocity     = GROUP_VAL_POS(grp  , velocity) / 200000.0;
 
         st_PART* p = &(GROUP_VAL_POS(grp , part)) ;
@@ -3410,7 +3410,7 @@ void DrawWeldShapeJ(GtkWidget* widget , gpointer data , cairo_t* cr)
         double current_pos ;
         double thickness    = GROUP_VAL_POS(grp , part.Thickness)/ 1000.0  ;
         double sample_start = group_get_start(grp) / 1000.0 ;
-        double sample_range = GROUP_VAL_POS(grp  , range) / 1000.0 ;
+        double sample_range = group_get_range(grp) / 1000.0 ;
         double velocity     = GROUP_VAL_POS(grp  , velocity) / 200000.0;
 
         st_PART* p = &(GROUP_VAL_POS(grp , part)) ;
@@ -3757,7 +3757,7 @@ void draw_dac_curve_horizontal(cairo_t *cr, int width, int height , int grp)
 	double ref_ampl_offset;
 	int _nBeamNo = TMP(beam_num[grp]);
     double sample_start = group_get_start (grp) / 1000.0 ;
-	double sample_range = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 1000.0;
+    double sample_range = group_get_range(grp) / 1000.0;
 
 	int point_count = (int)GROUP_VAL_POS(grp , SizingCurves.dac_point_qty) ;
 	int point_pos   = GROUP_VAL_POS(grp , SizingCurves.point_pos) ;
@@ -3821,7 +3821,7 @@ void draw_dac_curve_vertical(cairo_t *cr, int width, int height , int grp)
 
 	int _nBeamNo = TMP(beam_num[grp])  ;
     double sample_start = group_get_start (grp) / 1000.0 ;
-	double sample_range = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 1000.0 ;
+    double sample_range = group_get_range(grp) / 1000.0 ;
 	double current_angle = TMP(current_angle[grp]);
 	double cos_current_angle = cos(current_angle) ;
 	if( LAW_VAL_POS(grp, Focal_type) == AZIMUTHAL_SCAN )
@@ -3903,7 +3903,7 @@ void draw_linear_dac_curve_horizontal(cairo_t *cr, int width, int height , int g
 	double point_x[18] , point_y[18] , ref_ampl_offset;
 	int i, j ;
     double sample_start = group_get_start(grp) / 1000.0 ;
-	double sample_range = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 1000.0;
+    double sample_range = group_get_range(grp) / 1000.0;
 
 	int point_count = 10 ;
 	ref_ampl_offset = pow( 10.0, GROUP_VAL_POS(grp , SizingCurves.ref_ampl_offset) / 2000.0 ) ;
@@ -3952,7 +3952,7 @@ void draw_linear_dac_curve_vertical(cairo_t *cr, int width, int height , int grp
 	double ref_ampl_offset , min_angle , max_angle , v_scale ;
 	int draw_start  , draw_range   ;
     double sample_start = group_get_start(grp) / 1000.0 ;
-	double sample_range = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 1000.0 ;
+    double sample_range = group_get_range(grp) / 1000.0 ;
 	double current_angle = TMP(current_angle[grp]);
 	double cos_current_angle = cos(current_angle) ;
 	if( LAW_VAL_POS(grp, Focal_type) == AZIMUTHAL_SCAN )
@@ -4025,7 +4025,7 @@ void draw_tcg_curve_horizontal(cairo_t *cr , int width , int height , int grp)
 	int i ;
 	int _nBeamNo = TMP(beam_num[grp]) ;
     double sample_start = group_get_start(grp) / 1000.0 ;
-	double sample_range = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 1000.0;
+    double sample_range = group_get_range(grp) / 1000.0;
 
 	int point_count = (int)GROUP_VAL_POS(grp , SizingCurves.dac_point_qty) ;
 	double ref_ampl_offset = pow( 10.0, GROUP_VAL_POS(grp , SizingCurves.ref_ampl_offset) / 2000.0 ) ;
@@ -4086,7 +4086,7 @@ void draw_tcg_curve_vertical(cairo_t *cr , int width , int height , int grp)
 	double v_scale   ;
 	int _nBeamNo = TMP(beam_num[grp]) ;
     double sample_start = group_get_start(grp) / 1000.0 ;
-	double sample_range = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 1000.0 ;
+    double sample_range = group_get_range(grp) / 1000.0 ;
 	double current_angle = TMP(current_angle[grp]);
 	double cos_current_angle = cos(current_angle) ;
 	int point_pos = GROUP_VAL_POS(grp , SizingCurves.point_pos)            ;
@@ -5674,7 +5674,7 @@ void SetDrawWindowConfigWnd( DRAW_AREA *p, int type, int mask)
 	double gate_start  ;
 
     double start = group_get_start(grp)/1000.0 ;
-	double range = get_group_val (p_grp, GROUP_RANGE)/1000.0 ;
+    double range = group_get_range(grp)/1000.0 ;
 	double scan_offset   = GROUP_VAL_POS(grp , scan_offset)  / 10.0;
 	double index_offset  = GROUP_VAL_POS(grp , index_offset) / 10.0;
 	int skew_angle       = GROUP_VAL_POS(grp , skew)  ;

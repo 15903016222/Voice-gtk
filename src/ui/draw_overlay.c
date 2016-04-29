@@ -34,7 +34,7 @@ void DrawCursorASCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 	double u_reference = GROUP_VAL_POS(grp , u_reference)/1000.0 ;
 	double u_measure = GROUP_VAL_POS(grp , u_measure)/1000.0 ;
     double sample_start = group_get_start (grp) / 1000.0 ;
-	double sample_range = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 1000.0;
+    double sample_range = group_get_range (grp) / 1000.0;
 	double velocity = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_VELOCITY) / 200000.0;
 
 	double current_angle = TMP(current_angle[grp]);
@@ -154,7 +154,7 @@ void DrawCursorASCANR(GtkWidget *widget , gpointer data , cairo_t *cr)
 	double u_reference = GROUP_VAL_POS(grp , u_reference)/1000.0 ;
 	double u_measure = GROUP_VAL_POS(grp , u_measure)/1000.0 ;
     double sample_start = group_get_start (grp) / 1000.0 ;
-	double sample_range = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 1000.0;
+    double sample_range = group_get_range (grp) / 1000.0;
 	double velocity = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_VELOCITY) / 200000.0;
 	cairo_set_line_width (cr, 0.5);
 	//*************************************************************************************
@@ -279,7 +279,7 @@ void DrawCursorBSCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 	}
 	GROUP* pGroup = get_group_by_id (pp->p_config, grp);
     double sample_start = group_get_start (grp) / 1000.0 ;
-	double sample_range = get_group_val (pGroup, GROUP_RANGE) / 1000.0;
+    double sample_range = group_get_range (grp) / 1000.0;
 	double velocity = get_group_val (pGroup, GROUP_VELOCITY) / 200000.0;
 	double current_angle = TMP(current_angle[grp]);
 	double cos_current_angle = cos(current_angle) ;
@@ -792,7 +792,7 @@ void DrawCursorSSCAN(GtkWidget *widget , gpointer data , cairo_t *cr)
 	double i_reference = GROUP_VAL_POS(grp , i_reference)/100.0 ;
 	double i_measure =GROUP_VAL_POS(grp , i_measure)/100.0 ;
     double sample_start = group_get_start (grp) / 1000.0 ;
-	double sample_range = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 1000.0;
+    double sample_range = group_get_range (grp) / 1000.0;
 	double velocity = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_VELOCITY) / 200000.0;
 	cairo_set_line_width (cr, 0.5);
 	//*************************************************************************************
@@ -1008,7 +1008,7 @@ void DrawCursorTOFDB(GtkWidget *widget , gpointer data , cairo_t *cr)
 	}
 	GROUP* pGroup = get_group_by_id (pp->p_config, grp);
     double sample_start = group_get_start (grp) / 1000.0 ;
-	double sample_range = get_group_val (pGroup, GROUP_RANGE) / 1000.0;
+    double sample_range = group_get_range (grp) / 1000.0;
 	double velocity = get_group_val (pGroup, GROUP_VELOCITY) / 200000.0;
 	double current_angle = TMP(current_angle[grp]);
 	double cos_current_angle = cos(current_angle) ;

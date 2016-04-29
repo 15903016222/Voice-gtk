@@ -3560,13 +3560,13 @@ void DrawAscanHorizontal(unsigned char WinIndex, unsigned short *pFrameBuffer , 
 	GROUP *pGroup = get_group_by_id (pp->p_config, group);
 	if(
         (gAscanData[WinIndex].start != group_get_start(group))
-	||	(gAscanData[WinIndex].range != get_group_val(pGroup, GROUP_RANGE))
+    ||	(gAscanData[WinIndex].range != group_get_range(group))
 	)
 	{
 		ascanResetCurvesWhenStartOrRangeChanged(group);
 	}
     gAscanData[WinIndex].start = group_get_start(group);
-	gAscanData[WinIndex].range = get_group_val(pGroup, GROUP_RANGE);
+    gAscanData[WinIndex].range = group_get_range(group);
 
 	ascanDrawWave(pFrameBuffer ,&gAscanData[WinIndex]);
 //	_ascanDrawWave(pFrameBuffer ,&gAscanData[WinIndex]);
@@ -3649,13 +3649,13 @@ void DrawAscanVertical(unsigned char WinIndex, unsigned short *pFrameBuffer , un
 	GROUP *p_grp = get_group_by_id (pp->p_config, group);
 	if(
         (gAscanData[WinIndex].start != group_get_start(group))
-	||	(gAscanData[WinIndex].range != get_group_val(p_grp, GROUP_RANGE))
+    ||	(gAscanData[WinIndex].range != group_get_range(group))
 	)
 	{
 		ascanResetCurvesWhenStartOrRangeChanged(group);
 	}
     gAscanData[WinIndex].start = group_get_start(group);
-	gAscanData[WinIndex].range = get_group_val(p_grp, GROUP_RANGE);
+    gAscanData[WinIndex].range = group_get_range(group);
 
 	ascanDrawWave(pFrameBuffer ,&gAscanData[WinIndex]);
 
@@ -4324,7 +4324,7 @@ void RefreshDisplayMatrix(unsigned char WinIndex)
 			else if (LAW_VAL_POS(group , Focal_type) == AZIMUTHAL_SCAN)
 			{
 				//_nPointQty = GROUP_VAL_POS(group , point_qty) ;
-				RANGE = GROUP_VAL_POS(group , range) / 1000.0      ;
+                RANGE = group_get_range(group) / 1000.0      ;
 				VELOCITY = GROUP_VAL_POS(group , velocity) / 100.0 ;
                 START  = group_get_start(group) / 1000.0     ;
 				start = START * VELOCITY / 2000.0 ;
@@ -4349,7 +4349,7 @@ void RefreshDisplayMatrix(unsigned char WinIndex)
 			break;
 		case S_SCAN_A:
 			_nPointQty = GROUP_VAL_POS(group , point_qty) ;
-			RANGE = GROUP_VAL_POS(group , range) / 1000.0      ;
+            RANGE = group_get_range(group) / 1000.0      ;
 			VELOCITY = GROUP_VAL_POS(group , velocity) / 100.0 ;
             START  = group_get_start(group) / 1000.0     ;
 		    start = START * VELOCITY / 2000.0 ;
@@ -4387,7 +4387,7 @@ void RefreshDisplayMatrix(unsigned char WinIndex)
 			{
 				bSkewReverse = 0 ;
 			}
-			RANGE = GROUP_VAL_POS(group , range) / 1000.0      ;
+            RANGE = group_get_range(group) / 1000.0      ;
 			VELOCITY = GROUP_VAL_POS(group , velocity) / 100.0 ;
 			range = RANGE * VELOCITY / 2000.0 ;
 
@@ -4437,7 +4437,7 @@ void RefreshDisplayMatrix(unsigned char WinIndex)
 			}
 			else if (LAW_VAL_POS(group , Focal_type) == AZIMUTHAL_SCAN)
 			{
-				RANGE = GROUP_VAL_POS(group , range) / 1000.0      ;
+                RANGE = group_get_range(group) / 1000.0      ;
 				VELOCITY = GROUP_VAL_POS(group , velocity) / 100.0 ;
                 START  = group_get_start(group) / 1000.0  ;
 				start = START * VELOCITY / 2000.0 ;

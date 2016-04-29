@@ -735,7 +735,7 @@ int GetGroupRxTime(int GroupId_)
 	int _nMaxBeamDelay;
 
     _nSampleRange	= (group_get_start(GroupId_) +
-			+ GROUP_VAL_POS(GroupId_ , range)
+            + group_get_range(GroupId_)
 			+ GROUP_VAL_POS(GroupId_ , wedge_delay)) / 10;
 	_nMaxBeamDelay  = GetGroupMaxBeamDelay(GroupId_);
 
@@ -831,15 +831,15 @@ int get_current_proper_point_qty (int grp)
 	int    int_compress_rate   ;
 	int ret ;
 
-	if(GROUP_VAL_POS(grp , range) <= 6400)
+    if(group_get_range(grp) <= 6400)
 	{
-		ret = GROUP_VAL_POS(grp , range) / 10 ;
+        ret = group_get_range(grp) / 10 ;
 	}
 	else
 	{
-		float_compress_rate = GROUP_VAL_POS(grp , range) / 6400.0 ;
-		int_compress_rate   = ( GROUP_VAL_POS(grp , range) % 6400) ? (int) (float_compress_rate + 1) : (int)float_compress_rate ;
-		ret = GROUP_VAL_POS(grp , range) / int_compress_rate ;
+        float_compress_rate = group_get_range(grp) / 6400.0 ;
+        int_compress_rate   = ( group_get_range(grp) % 6400) ? (int) (float_compress_rate + 1) : (int)float_compress_rate ;
+        ret = group_get_range(grp) / int_compress_rate ;
 		ret /= 10 ;
 	}
 
@@ -3698,7 +3698,7 @@ void data_101 (GtkSpinButton *spinbutton, gpointer data) /*Start 扫描延时 P1
     group_set_start(grp, temp_value);
 
     TMP(group_spi[grp]).sample_start	= (group_get_start(grp) + GROUP_VAL_POS(grp , wedge_delay)) / 10;
-	TMP(group_spi[grp]).sample_range	= TMP(group_spi[grp]).sample_start + GROUP_VAL_POS(grp , range) / 10;
+    TMP(group_spi[grp]).sample_range	= TMP(group_spi[grp]).sample_start + group_get_range(grp) / 10;
 
 	_nMaxBeamDelay = GetGroupMaxBeamDelay(grp) ;
 	TMP(group_spi[grp]).rx_time	= TMP(group_spi[grp]).sample_range  + _nMaxBeamDelay + 5;
@@ -3761,19 +3761,19 @@ void data_102 (GtkSpinButton *spinbutton, gpointer data) /*Range 范围 P102 */
 	}
 	// if current value is not changed , return
 	temp_value = rounding(0, temp_value, temp_value1 * 10) ;
-    if(temp_value == get_group_val(p_grp , GROUP_RANGE)) {
+    if(temp_value == group_get_range(grp)) {
         return ;
     }
 
-	set_group_val(p_grp , GROUP_RANGE , temp_value) ;
+    group_set_range(grp, temp_value) ;
 	GROUP_VAL_POS(grp , point_qty) = temp_value1;
 
 	TMP(group_spi[grp]).point_qty = temp_value1 ;
 	TMP(group_spi[grp]).compress_rato	= 
-		((get_group_val (p_grp, GROUP_RANGE) / 10.0) / GROUP_VAL_POS(grp, point_qty)) > 1 ? 
-		((get_group_val (p_grp, GROUP_RANGE) / 10.0) / GROUP_VAL_POS(grp, point_qty)) : 1;
+        ((group_get_range(grp) / 10.0) / GROUP_VAL_POS(grp, point_qty)) > 1 ?
+        ((group_get_range(grp) / 10.0) / GROUP_VAL_POS(grp, point_qty)) : 1;
 	TMP(group_spi[grp]).sample_range	= TMP(group_spi[grp]).sample_start + 
-		get_group_val (p_grp, GROUP_RANGE) / 10;		
+        group_get_range(grp) / 10;
 
 	_nMaxBeamDelay = GetGroupMaxBeamDelay(grp) ;
 	TMP(group_spi[grp]).rx_time	= TMP(group_spi[grp]).sample_range  + _nMaxBeamDelay + 5;
@@ -3797,7 +3797,7 @@ void data_103 (GtkSpinButton *spinbutton, gpointer data) /*楔块延时  P103 */
 	GROUP_VAL_POS(grp , wedge_delay) = temp_value ;
 
     TMP(group_spi[grp]).sample_start	= (group_get_start(grp) + GROUP_VAL_POS(grp , wedge_delay)) / 10;
-	TMP(group_spi[grp]).sample_range	= TMP(group_spi[grp]).sample_start + GROUP_VAL_POS(grp , range) / 10;
+    TMP(group_spi[grp]).sample_range	= TMP(group_spi[grp]).sample_start + group_get_range(grp) / 10;
 	_nMaxBeamDelay = GetGroupMaxBeamDelay(grp) ;
 	TMP(group_spi[grp]).rx_time		= TMP(group_spi[grp]).sample_range  + _nMaxBeamDelay + 5;
 	MultiGroupRefreshIdelTime() ;
@@ -4263,17 +4263,17 @@ void data_1431 (GtkSpinButton *spinbutton, gpointer data) /* point qty P143 */
 	GROUP_VAL_POS(grp , point_qty) = temp_value;
 	TMP(group_spi[grp]).point_qty  = temp_value;//get_point_qty(grp);
 
-	double _nCompressRate = GROUP_VAL_POS(grp , range) / (10 * GROUP_VAL_POS(grp , point_qty))   ;
+    double _nCompressRate = group_get_range(grp) / (10 * GROUP_VAL_POS(grp , point_qty))   ;
 	if(_nCompressRate < 1)
 	{
 		_nCompressRate = 1 ;
 	}
 	_nCompressRate = (int)_nCompressRate ;
-	set_group_val (p_grp, GROUP_RANGE, GROUP_VAL_POS(grp , point_qty) * 10 * _nCompressRate);
+    group_set_range(grp, GROUP_VAL_POS(grp , point_qty) * 10 * _nCompressRate);
 	GROUP_VAL_POS(0 , prf1 )     = get_prf();
 	TMP(group_spi[grp]).compress_rato	=_nCompressRate ;
 	TMP(group_spi[grp]).sample_range	= TMP(group_spi[grp]).sample_start + 
-		get_group_val (p_grp, GROUP_RANGE) / 10;		
+        group_get_range(grp) / 10;
 
 	_nMaxBeamDelay = GetGroupMaxBeamDelay(grp) ;
 	TMP(group_spi[grp]).rx_time		= TMP(group_spi[grp]).sample_range  + _nMaxBeamDelay + 5;
@@ -4306,14 +4306,14 @@ void data_143 (GtkMenuItem *menuitem, gpointer data) /* point qty P143 */
 	//GROUP_VAL_POS(grp , point_qty) = get_point_qty(grp);
 	TMP(group_spi[grp]).point_qty  = GROUP_VAL_POS(grp , point_qty);
 
-	double _nCompressRate = GROUP_VAL_POS(grp , range) / (10 * GROUP_VAL_POS(grp , point_qty)) ;
+    double _nCompressRate = group_get_range(grp) / (10 * GROUP_VAL_POS(grp , point_qty)) ;
 	if(_nCompressRate < 1)
 	{
 		_nCompressRate = 1 ;
 	}
 	_nCompressRate = (int)_nCompressRate ;
 	//if ((GROUP_VAL_POS(grp , point_qty) * _nCompressRate ) >= (get_group_val (p_grp, GROUP_RANGE)))
-	set_group_val (p_grp, GROUP_RANGE, GROUP_VAL_POS(grp , point_qty) * 10 * _nCompressRate);
+    group_set_range(grp, GROUP_VAL_POS(grp , point_qty) * 10 * _nCompressRate);
 	GROUP_VAL_POS(0 , prf1) =  get_prf();
 	if (temp != 4)
 	{
@@ -4322,7 +4322,7 @@ void data_143 (GtkMenuItem *menuitem, gpointer data) /* point qty P143 */
 		gtk_spin_button_set_value (GTK_SPIN_BUTTON (pp->sbutton[3]), GROUP_VAL_POS(grp , point_qty)) ;
 
 		TMP(group_spi[grp]).compress_rato	= _nCompressRate  ;
-		TMP(group_spi[grp]).sample_range	= TMP(group_spi[grp]).sample_start + get_group_val (p_grp, GROUP_RANGE) / 10;
+        TMP(group_spi[grp]).sample_range	= TMP(group_spi[grp]).sample_start + group_get_range(grp) / 10;
 		TMP(group_spi[grp]).rx_time		= TMP(group_spi[grp]).sample_range  + GetGroupMaxBeamDelay(grp) + 5;
 
 		char *markup;
@@ -4795,10 +4795,9 @@ void data_231 (GtkMenuItem *menuitem, gpointer data) /* Gate/Alarm->Sizing Curve
 		set_group_db_ref (pp->p_config, grp , 1) ;
         if (GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][0]) < group_get_start (grp) )
 		{
-            GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][0]) = group_get_start (grp) +
-				get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 10 ;
-			GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][1]) = GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][0]) + get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 10 ;
-			GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][2]) = GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][1]) + get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) / 10 ;
+            GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][0]) = group_get_start (grp) + group_get_range(grp) / 10 ;
+            GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][1]) = GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][0]) + group_get_range(grp) / 10 ;
+            GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][2]) = GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][1]) + group_get_range(grp) / 10 ;
 		}
 		tt_label_show_string (pp->label[0], con2_p[1][0][6], "\n", "(dB)", "white", 10);
 	}
@@ -6199,7 +6198,7 @@ void data_520()
 			gData->fft[group].fFtValid = 0;
 		}//*/
 		if( (RF_WAVE == GROUP_VAL_POS(group , rectifier1))//RF模式
-			&&	 1 == get_group_val (get_group_by_id (pp->p_config, group), GROUP_RANGE) / 10
+            &&	 1 == group_get_range(group) / 10
 					/ GROUP_VAL_POS(group ,point_qty))//factor == 1
 //			&&	(0 != gData->fft[group].fFtValid)	)
 		{

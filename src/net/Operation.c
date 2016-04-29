@@ -548,7 +548,7 @@ void NetGetUtGeneral(void* pData_ , int grp)
 
     _pInfo->fGain  = group_get_gain(grp) / 100.0;
     _pInfo->uiStart= group_get_start(grp);
-    _pInfo->uiRange= GROUP_VAL_POS(grp , range);
+    _pInfo->uiRange= group_get_range(grp);
 
     _pInfo->uiWedgeDelay = GROUP_VAL_POS(grp , wedge_delay) ;
     _pInfo->fVelocity   = GROUP_VAL_POS(grp , velocity) / 100.0 ;
@@ -564,7 +564,7 @@ void NetSetUtGeneral(void* pData_ , int grp)
 
     group_set_gain(grp, (gshort)(_pInfo->fGain*100));
     group_set_start(grp, _pInfo->uiStart);
-    GROUP_VAL_POS(grp , range)= _pInfo->uiRange  ;
+    group_set_range(grp, _pInfo->uiRange);
 
     GROUP_VAL_POS(grp , wedge_delay) = _pInfo->uiWedgeDelay ;
     GROUP_VAL_POS(grp , velocity)    = _pInfo->fVelocity * 100 ;
@@ -786,10 +786,10 @@ void NetSetUtAdvanced(void* pData_ , int nGroupId_)
 
 
 	int _nPointQty = _pInfo->uiPointQty   ;
-	int _nRange = GROUP_VAL_POS(nGroupId_ , range) / 10 ;
+    int _nRange = group_get_range(nGroupId_) / 10 ;
 	_nRange = (_nRange / _nPointQty + 1) * _nPointQty  ;
 
-	GROUP_VAL_POS(nGroupId_ , range) = _nRange * 10 ;
+    group_set_range(nGroupId_, _nRange * 10);
 	GROUP_VAL_POS(nGroupId_ , point_qty) = _nPointQty  ;
 
 	ResetFpgaAll() ;
@@ -919,12 +919,14 @@ void NetSetGroupValueRange(int nGroupId_ , int nVal_)
 
 	int _nValue = ((nVal_ + 5) / 10 ) * 10 ;
 	// if the value is not changed  return
-	if(_nValue == GROUP_VAL_POS(nGroupId_ , range))  return ;
+    if(_nValue == group_get_range(nGroupId_)) {
+        return ;
+    }
 
 	int _nPointQty = GROUP_VAL_POS(nGroupId_ , point_qty);
 	_nValue = (_nValue / _nPointQty + 1) * _nPointQty  ;
 
-	GROUP_VAL_POS(nGroupId_ , range) = _nValue  ;
+    group_set_range(nGroupId_, _nValue);
 
 
 	ResetFpgaAll() ;
@@ -938,10 +940,10 @@ void NetSetGroupValuePointQty(int nGroupId_ , int nVal_)
 {
 	if(nVal_ == GROUP_VAL_POS(nGroupId_ , point_qty))  return ;
 
-	int _nRange = GROUP_VAL_POS(nGroupId_ , range) / 10 ;
+    int _nRange = group_get_range(nGroupId_) / 10 ;
 	_nRange = (_nRange / nVal_ + 1) * nVal_  ;
 
-	GROUP_VAL_POS(nGroupId_ , range) = _nRange * 10 ;
+    group_set_range(nGroupId_, _nRange * 10);
 	GROUP_VAL_POS(nGroupId_ , point_qty) = nVal_  ;
 
 	ResetFpgaAll() ;

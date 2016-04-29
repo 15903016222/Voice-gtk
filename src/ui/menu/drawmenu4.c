@@ -40,7 +40,7 @@ void DrawSampleStart()
 	int digit, pos, unit;
 	int grp = get_current_group (pp->p_config);
     double _nStart    = group_get_start(grp) / 1000.0  ;
-	double _nRange    = GROUP_VAL_POS(grp , range) / 1000.0  ;
+    double _nRange    = group_get_range(grp) / 1000.0  ;
 	double _nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0 ;
 	int _nPointQty = GROUP_VAL_POS(grp , point_qty)     ;
 	double _nCosCurrentAngle = cos(TMP(current_angle[grp]));
@@ -1428,7 +1428,7 @@ void DrawMenu144()
 	gtk_widget_set_sensitive (pp->eventbox30[4], FALSE);
 	gtk_widget_set_sensitive (pp->eventbox31[4], FALSE);
 
-	cur_value = (GROUP_VAL_POS(grp , range)/ 10) / GROUP_VAL_POS( grp , point_qty);
+    cur_value = (group_get_range(grp)/ 10) / GROUP_VAL_POS( grp , point_qty);
 	digit = 0;
 	pos = 4;
 	unit = UNIT_NULL;

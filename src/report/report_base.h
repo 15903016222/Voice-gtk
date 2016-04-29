@@ -20,6 +20,20 @@ static inline void _report_set_str(gchar **var, const gchar *val)
     *var = g_strdup(val);
 }
 
+static inline void _report_set_int(gchar **var, gint val)
+{
+    g_return_if_fail( var != NULL );
+    g_free(*var);
+    *var = g_strdup_printf("%d", val);
+}
+
+static inline void _report_set_double(gchar **var, gchar *format, gdouble val)
+{
+    g_return_if_fail( var != NULL && format != NULL );
+    g_free(*var);
+    *var = g_strdup_printf(format, val);
+}
+
 static inline void _report_set_member(gpointer *p, gpointer v, GDestroyNotify f)
 {
     if (*p) {

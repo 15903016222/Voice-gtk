@@ -41,7 +41,7 @@ void DrawSampleRange()
 	int grp = get_current_group (pp->p_config);
 	int _nPointQty = GROUP_VAL_POS(grp , point_qty);
     double _nStart = group_get_start(grp) / 1000.0   ;
-	double _nRange = GROUP_VAL_POS(grp , range) / 1000.0   ;
+    double _nRange = group_get_range(grp) / 1000.0   ;
 	double _nVelocity = GROUP_VAL_POS(grp , velocity) / 100.0  ;
 	double _nLimitRange  = PrfLimitToGroupSampleRange(grp) / 100.0 ;
 	double _nCosCurrentAngle  = cos(TMP(current_angle[grp]))  ;
@@ -1367,7 +1367,7 @@ void DrawMenu102Eaglet()
 	{
 		if (UNIT_MM == get_unit(pp->p_config))
 		{
-			cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
+            cur_value = (group_get_range(get_current_group(pp->p_config)) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
 			cur_value = cur_value * cos(TMP(current_angle[grp]));
 			if(GROUP_VAL_POS( grp , point_qty_pos)== 0)
 			{
@@ -1402,7 +1402,7 @@ void DrawMenu102Eaglet()
 		}
 		else
 		{
-			cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
+            cur_value = (group_get_range (get_current_group(pp->p_config)) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
 			cur_value = cur_value * cos(TMP(current_angle[grp]));
 			if(GROUP_VAL_POS( grp , point_qty_pos)== 0)
 			{
@@ -1440,7 +1440,7 @@ void DrawMenu102Eaglet()
 	{
 		if (UNIT_MM == get_unit(pp->p_config))
 		{
-			cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
+            cur_value = (group_get_range( get_current_group(pp->p_config)) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
 
 			if(GROUP_VAL_POS( grp , point_qty_pos)== 0)
 			{
@@ -1474,7 +1474,7 @@ void DrawMenu102Eaglet()
 		}
 		else
 		{
-			cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
+            cur_value = (group_get_range( get_current_group(pp->p_config)) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
 			if(GROUP_VAL_POS( grp , point_qty_pos)== 0)
 			{
 				lower =	(32 / 100.0) * 0.03937 * get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0;
@@ -1507,7 +1507,7 @@ void DrawMenu102Eaglet()
 	}
 	else
 	{
-		cur_value = get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0 ;
+        cur_value = group_get_range (get_current_group(pp->p_config)) / 1000.0 ;
 		if(GROUP_VAL_POS( grp , point_qty_pos)== 0)
 		{
 			lower =	32 / 100.0;
@@ -1546,14 +1546,14 @@ void DrawMenu102Eaglet()
 		{
 			if (UNIT_MM == get_unit(pp->p_config))
 			{
-				cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
+                cur_value = (group_get_range ( get_current_group(pp->p_config) ) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
 				cur_value = cur_value * cos(TMP(current_angle[grp]));
 				unit = UNIT_MM;
 				digit = 2;
 			}
 			else
 			{
-				cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
+                cur_value = (group_get_range ( get_current_group(pp->p_config) ) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
 				cur_value = cur_value * cos(TMP(current_angle[grp]));
 				unit = UNIT_INCH;
 				digit = 3;
@@ -1563,20 +1563,20 @@ void DrawMenu102Eaglet()
 		{
 			if (UNIT_MM == get_unit(pp->p_config))
 			{
-				cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
+                cur_value = (group_get_range ( get_current_group(pp->p_config) ) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
 				unit = UNIT_MM;
 				digit = 2;
 			}
 			else
 			{
-				cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
+                cur_value = (group_get_range ( get_current_group(pp->p_config)) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
 				unit = UNIT_INCH;
 				digit = 3;
 			}
 		}
 		else
 		{
-			cur_value = get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0 ;
+            cur_value = group_get_range (get_current_group(pp->p_config)) / 1000.0 ;
 			unit = UNIT_US;
 			digit = 2;
 		}

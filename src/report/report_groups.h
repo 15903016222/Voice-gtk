@@ -12,13 +12,13 @@
 #include "report_probe.h"
 #include "report_wedge.h"
 #include "report_fft.h"
+#include "report_setup.h"
 
 G_BEGIN_DECLS
 
 typedef struct _ReportGroups ReportGroups;
 typedef struct _ReportGroup ReportGroup;
 
-typedef struct _ReportGroupSetup ReportGroupSetup;
 typedef struct _ReportGroupLaw ReportGroupLaw;
 typedef struct _ReportGroupPart ReportGroupPart;
 typedef struct _ReportGroupScan ReportGroupScan;
@@ -27,8 +27,8 @@ struct _ReportGroup {
     ReportProbe *probe;
     ReportWedge *wedge;
     ReportFFT *fft;
+    ReportSetup *setup;
 
-    ReportGroupSetup *setup;
     ReportGroupLaw *law;
     ReportGroupPart *part;
     ReportGroupScan *scan;
@@ -51,7 +51,11 @@ static inline ReportGroup *report_group_new()
 static inline void report_group_free(ReportGroup *grp)
 {
     g_return_if_fail(grp != NULL);
+
     report_probe_free(grp->probe);
+    report_wedge_free(grp->wedge);
+    report_fft_free(grp->fft);
+    report_setup_free(grp->setup);
 
     g_free(grp);
 }
@@ -85,6 +89,12 @@ static inline void report_group_set_fft(ReportGroup *grp, ReportFFT *fft)
 {
     g_return_if_fail( grp != NULL );
     _report_set_member((gpointer *)&grp->fft, fft, (GDestroyNotify)report_fft_free);
+}
+
+static inline void report_group_set_setup(ReportGroup *grp, ReportSetup *setup)
+{
+    g_return_if_fail( grp != NULL );
+    _report_set_member((gpointer *)&grp->setup, setup, (GDestroyNotify)report_setup_free);
 }
 
 G_END_DECLS

@@ -1022,6 +1022,89 @@ static void filling_report_group_ttf(ReportGroup *reportGroup, struct fftStruct 
     report_group_set_fft(reportGroup, reportFFT);
 }
 
+static void filling_report_group_setup(ReportGroup *reportGroup, gint groupNo)
+{
+    GROUP *grp = get_group_by_id(pp->p_config, groupNo);
+    ReportSetup *setup = report_setup_new();
+
+    gint velocity = get_group_val(grp, GROUP_VELOCITY);
+    gdouble dbVelocity = velocity / 200000.0;
+
+    report_setup_set_beam_delay(setup, GROUP_VAL_POS(groupNo , beam_delay[TMP(beam_num[groupNo])]) * 0.001 );
+    report_setup_set_half_path_start( setup, group_get_start (groupNo) * 0.001 * dbVelocity );
+    report_setup_set_half_path_range( setup, group_get_range (groupNo) * 0.001 * dbVelocity );
+    report_setup_set_prf(setup, GROUP_VAL_POS(0 , prf1) / 10);
+
+    report_setup_set_inspection_type(setup, menu_content[ GROUP_MODE_P +(GROUP_VAL_POS(groupNo, group_mode))]);
+
+    report_setup_set_averaging_factor(setup, 1 << get_group_val (get_group_by_id (pp->p_config, groupNo), GROUP_AVERAGING));
+
+    if (PA_SCAN == group_get_mode(groupNo)
+            || UT_SCAN == group_get_mode(groupNo)) {
+        report_setup_set_voltage(setup, menu_content[PA_VOLTAGE + 2 + get_voltage (pp->p_config, groupNo)]);
+    } else {
+        report_setup_set_voltage(setup, menu_content[UT_VOLTAGE + 3 + get_voltage (pp->p_config, groupNo)]);
+    }
+
+    /* Gain */
+    report_setup_set_gain(setup, group_get_gain(groupNo)/100.0);
+
+    /* Tx/Rx Mode */
+    report_setup_set_rx_tx_mode(setup, menu_content[ TX_RX_MODE + group_get_rx_tx_mode(groupNo)]);
+
+    /* Wave Type */
+    gint material = get_part_material(groupNo);
+    gint sw = velocity > get_material_sw(material) ? velocity - get_material_sw(material) :get_material_sw(material) - velocity;
+    gint lw = velocity > get_material_lw(material) ? velocity - get_material_lw(material) :get_material_lw(material) - velocity;
+    if (sw < lw) {
+        report_setup_set_wave_type(setup, getMainDictString(MAINSTRINGDICT_S_WAVE_TYPE ,1));
+    } else {
+        report_setup_set_wave_type(setup, getMainDictString(MAINSTRINGDICT_S_WAVE_TYPE ,0));
+    }
+
+    /* Sound Velocity */
+    report_setup_set_sound_velocity(setup, get_group_val (grp, GROUP_VELOCITY) * 0.01);
+
+    /* Pulse Width */
+    report_setup_set_pulse_width(setup, get_group_val (grp, GROUP_PW_VAL) / (gdouble)PW_DIV);
+
+    /* Scan Offset */
+    report_setup_set_scan_offset(setup, GROUP_VAL_POS(groupNo, scan_offset) * 0.1);
+
+    /* Index Offset */
+    report_setup_set_index_offset(setup, GROUP_VAL_POS(groupNo,index_offset) * 0.1);
+
+    /* Skew */
+    report_setup_set_skew(setup, GROUP_VAL_POS(groupNo, skew) * 0.01);
+
+    /* Gate A */
+    ReportGate *gateA = report_gate_new();
+    report_gate_set_start(gateA, pp->p_config->group[groupNo].gate[0].start * 0.001 * dbVelocity);
+    report_gate_set_width(gateA, pp->p_config->group[groupNo].gate[0].width * 0.001 * dbVelocity);
+    report_gate_set_threshold(gateA, pp->p_config->group[groupNo].gate[0].height);
+    report_gate_set_synchro(gateA, menu_content[SYNCHRO + pp->p_config->group[groupNo].gate[0].synchro]);
+    report_setup_set_gate_a(setup, gateA);
+
+    /* Gate B */
+    ReportGate *gateB = report_gate_new();
+    report_gate_set_start(gateB, pp->p_config->group[groupNo].gate[1].start * 0.001 * dbVelocity);
+    report_gate_set_width(gateB, pp->p_config->group[groupNo].gate[1].width * 0.001 * dbVelocity);
+    report_gate_set_threshold(gateB, pp->p_config->group[groupNo].gate[1].height);
+    report_gate_set_synchro(gateB, menu_content[SYNCHRO + pp->p_config->group[groupNo].gate[1].synchro]);
+    report_setup_set_gate_b(setup, gateB);
+
+    /* Gate I */
+    ReportGate *gateI = report_gate_new();
+    report_gate_set_start(gateI, pp->p_config->group[groupNo].gate[2].start * 0.001 * dbVelocity);
+    report_gate_set_width(gateI, pp->p_config->group[groupNo].gate[2].width * 0.001 * dbVelocity);
+    report_gate_set_threshold(gateI, pp->p_config->group[groupNo].gate[2].height);
+    report_gate_set_synchro(gateI, menu_content[SYNCHRO + pp->p_config->group[groupNo].gate[2].synchro]);
+    report_setup_set_gate_i(setup, gateI);
+
+
+    report_group_set_setup(reportGroup, setup);
+}
+
 static void filling_report_groups(Report *r)
 {
     ReportGroups *reportGroups = report_groups_new();
@@ -1036,6 +1119,7 @@ static void filling_report_groups(Report *r)
         filling_report_group_probe(reportGroup, &pGroup->probe, i);
         filling_report_group_wedge(reportGroup, &pGroup->wedge);
         filling_report_group_ttf(reportGroup, &gData->fft[i]);
+        filling_report_group_setup(reportGroup, i);
 
         report_groups_add_group(reportGroups, reportGroup);
     }

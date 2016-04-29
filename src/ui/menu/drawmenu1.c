@@ -449,9 +449,9 @@ void DrawMenu101()
 
 	switch (TMP(start_reg))
 	{
-		case 0:	tmpf = (GROUP_VAL_POS(grp , range) / 1000.0) / (double)(GROUP_VAL_POS( grp , point_qty)); break;
-		case 1:	tmpf = (GROUP_VAL_POS(grp , range) / 1000.0) / 20.0 ; break;
-		case 2:	tmpf = (GROUP_VAL_POS(grp , range) / 1000.0) / 10.0 ; break;
+        case 0:	tmpf = (group_get_range(grp) / 1000.0) / (double)(GROUP_VAL_POS( grp , point_qty)); break;
+        case 1:	tmpf = (group_get_range(grp) / 1000.0) / 20.0 ; break;
+        case 2:	tmpf = (group_get_range(grp) / 1000.0) / 10.0 ; break;
 		default:break;
 	}
 	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1))
@@ -464,7 +464,7 @@ void DrawMenu101()
                 cur_value = (group_get_start(grp) / 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);   /* 当前显示的范围数值mm */
 				cur_value = cur_value * cos(TMP(current_angle[grp]));
 				lower = 0;
-				upper =	( PrfLimitToGroupSampleRange(grp)/ 100.0 - GROUP_VAL_POS(grp , range)/ 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);
+                upper =	( PrfLimitToGroupSampleRange(grp)/ 100.0 - group_get_range(grp)/ 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);
 				upper = upper * cos(TMP(current_angle[grp])) ;
 				step = tmpf * (GROUP_VAL_POS(grp , velocity) / 200000.0);
 				step = step * cos(TMP(current_angle[grp]));
@@ -478,7 +478,7 @@ void DrawMenu101()
                 cur_value = (group_get_start(grp) / 1000.0) * 0.03937 * (GROUP_VAL_POS(grp , velocity) / 200000.0); /* 当前显示的范围inch */
 				cur_value = cur_value * cos(TMP(current_angle[grp]));
 				lower = 0;
-				upper =	(PrfLimitToGroupSampleRange(grp)/ 100.0 - GROUP_VAL_POS(grp , range) / 1000.0 )
+                upper =	(PrfLimitToGroupSampleRange(grp)/ 100.0 - group_get_range(grp) / 1000.0 )
 								  * 0.03937 * GROUP_VAL_POS(grp , velocity) / 200000.0;
 				upper = upper * cos(TMP(current_angle[grp]));
 				step = tmpf * 0.03937 * GROUP_VAL_POS(grp , velocity) / 200000.0;
@@ -494,7 +494,7 @@ void DrawMenu101()
 			{
                 cur_value = (group_get_start(grp) / 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);   /* 当前显示的范围数值mm */
 				lower = 0;
-				upper =	(PrfLimitToGroupSampleRange(grp)/ 100.0  - GROUP_VAL_POS(grp , range) / 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);
+                upper =	(PrfLimitToGroupSampleRange(grp)/ 100.0  - group_get_range(grp) / 1000.0) * (GROUP_VAL_POS(grp , velocity) / 200000.0);
 				step = tmpf * (GROUP_VAL_POS(grp , velocity) / 200000.0);
 				if (step < 0.01) step = 0.01 ;
 				digit = 2;
@@ -505,7 +505,7 @@ void DrawMenu101()
 			{
                 cur_value = (group_get_start(grp)/ 1000.0) * 0.03937 * (GROUP_VAL_POS(grp , velocity) / 200000.0); /* 当前显示的范围inch */
 				lower = 0;
-				upper =	(PrfLimitToGroupSampleRange(grp)/ 100 - GROUP_VAL_POS(grp , range) / 1000.0 ) * 0.03937 * GROUP_VAL_POS(grp , velocity) / 200000.0;
+                upper =	(PrfLimitToGroupSampleRange(grp)/ 100 - group_get_range(grp) / 1000.0 ) * 0.03937 * GROUP_VAL_POS(grp , velocity) / 200000.0;
 				step = tmpf * 0.03937 * GROUP_VAL_POS(grp , velocity) / 200000.0;
 				digit = 3;
 				pos = 1;
@@ -516,7 +516,7 @@ void DrawMenu101()
 		{
             cur_value = group_get_start(grp) / 1000.0 ;
 			lower =	0 ;
-			upper =	PrfLimitToGroupSampleRange(grp)/ 100.0 - GROUP_VAL_POS(grp , range ) / 1000.0;
+            upper =	PrfLimitToGroupSampleRange(grp)/ 100.0 - group_get_range(grp) / 1000.0;
 			step = tmpf;
 			if (step < 0.01)  (step = 0.01) ;
 			pos = 1;

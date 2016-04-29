@@ -147,7 +147,7 @@ void refresh_linear_dac_pointer_info()
 	delay = GROUP_VAL_POS(grp , SizingCurves.delay ) ; // 10ns
 
     sample_start = group_get_start (grp) ;
-	sample_range = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_RANGE) ;
+    sample_range = group_get_range(grp) ;
 	velocity  = get_group_val (get_group_by_id (pp->p_config, grp), GROUP_VELOCITY) / 20000.0 ;
 	interval = (sample_range - delay + sample_start) / 10 ;
 	interval_db = interval * velocity * material_decorate / 1000.0;
@@ -210,7 +210,7 @@ void AddDacPoint(int nGroupId_)
 	for(i = 0; i < _nBeamQty ; i++)
 	{
 		GROUP_VAL_POS(nGroupId_ , SizingCurves.position[i][_nPointPos]) = GROUP_VAL_POS(nGroupId_ , SizingCurves.position[i][_nPointPos - 1]) +
-				get_group_val (get_group_by_id (pp->p_config, nGroupId_), GROUP_RANGE) / 10 ;
+                group_get_range(nGroupId_) / 10 ;
 		GROUP_VAL_POS(nGroupId_ , SizingCurves.amplitude[i][_nPointPos]) = GROUP_VAL_POS(nGroupId_ , SizingCurves.amplitude[i][_nPointPos - 1]) ;
 	}
 

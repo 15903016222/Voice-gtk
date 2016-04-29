@@ -1576,7 +1576,7 @@ void DrawMenu102()
 	{
 		if (UNIT_MM == get_unit(pp->p_config))
 		{
-			cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
+            cur_value = (group_get_range (get_current_group(pp->p_config)) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
 			cur_value = cur_value * cos(TMP(current_angle[grp]));
 			if(GROUP_VAL_POS( grp , point_qty_pos)== 0)
 			{
@@ -1612,7 +1612,7 @@ void DrawMenu102()
 		}
 		else
 		{
-			cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
+            cur_value = (group_get_range( get_current_group(pp->p_config)) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
 			cur_value = cur_value * cos(TMP(current_angle[grp]));
 			if(GROUP_VAL_POS( grp , point_qty_pos)== 0)
 			{
@@ -1651,7 +1651,7 @@ void DrawMenu102()
 	{
 		if (UNIT_MM == get_unit(pp->p_config))
 		{
-			cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
+            cur_value = (group_get_range( get_current_group(pp->p_config) ) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
 
 			if(GROUP_VAL_POS( grp , point_qty_pos)== 0)
 			{
@@ -1686,7 +1686,7 @@ void DrawMenu102()
 		}
 		else
 		{
-			cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
+            cur_value = (group_get_range ( get_current_group(pp->p_config) ) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
 			if(GROUP_VAL_POS( grp , point_qty_pos)== 0)
 			{
 				lower =	(32 / 100.0) * 0.03937 * get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0;
@@ -1720,7 +1720,7 @@ void DrawMenu102()
 	}
 	else
 	{
-		cur_value = get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0 ;
+        cur_value = group_get_range ( get_current_group(pp->p_config) ) / 1000.0 ;
 		if(GROUP_VAL_POS( grp , point_qty_pos)== 0)
 		{
 			lower =	32 / 100.0;
@@ -1760,7 +1760,7 @@ void DrawMenu102()
 		{
 			if (UNIT_MM == get_unit(pp->p_config))
 			{
-				cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
+                cur_value = (group_get_range ( get_current_group(pp->p_config) ) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
 				cur_value = cur_value * cos(TMP(current_angle[grp]));
 				unit = UNIT_MM;
 				digit = 2;
@@ -1768,7 +1768,7 @@ void DrawMenu102()
 			}
 			else
 			{
-				cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
+                cur_value = (group_get_range ( get_current_group(pp->p_config) ) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
 				cur_value = cur_value * cos(TMP(current_angle[grp]));
 				unit = UNIT_INCH;
 				digit = 3;
@@ -1779,14 +1779,14 @@ void DrawMenu102()
 		{
 			if (UNIT_MM == get_unit(pp->p_config))
 			{
-				cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
+                cur_value = (group_get_range ( get_current_group(pp->p_config)) / 1000.0) * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);   /* 当前显示的范围数值mm */
 				unit = UNIT_MM;
 				digit = 2;
 				pos = 2;
 			}
 			else
 			{
-				cur_value = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
+                cur_value = (group_get_range ( get_current_group(pp->p_config) ) / 1000.0) * 0.03937 * (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0); /* 当前显示的范围inch */
 				unit = UNIT_INCH;
 				digit = 3;
 				pos = 2;
@@ -1794,7 +1794,7 @@ void DrawMenu102()
 		}
 		else
 		{
-			cur_value = get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0 ;
+            cur_value = group_get_range ( get_current_group(pp->p_config) ) / 1000.0 ;
 			unit = UNIT_US;
 			pos = 2;
 			digit = 2;
@@ -1989,10 +1989,10 @@ void DrawMenu202()
 			{
 				switch (TMP(agate_start_reg))
 				{
-					case 0:	tmpf = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) / (double)(GROUP_VAL_POS( grp , point_qty)); break;
-					case 1:	tmpf = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) / 20.0 ; break;
-					case 2:	tmpf = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) / 10.0 ; break;
-					case 3:	tmpf = (get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_RANGE) / 1000.0) / 4.0 ; break;
+                    case 0:	tmpf = (group_get_range (get_current_group(pp->p_config)) / 1000.0) / (double)(GROUP_VAL_POS( grp , point_qty)); break;
+                    case 1:	tmpf = (group_get_range (get_current_group(pp->p_config)) / 1000.0) / 20.0 ; break;
+                    case 2:	tmpf = (group_get_range (get_current_group(pp->p_config)) / 1000.0) / 10.0 ; break;
+                    case 3:	tmpf = (group_get_range (get_current_group(pp->p_config)) / 1000.0) / 4.0 ; break;
 					default:break;
 				}
 				cur_value = GROUP_GATE_POS(start) / 1000.0 ;

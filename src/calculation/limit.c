@@ -125,14 +125,13 @@ int RefreshPointQty()
 	for(i = 0 ; i < _nGroupQty ; i++)
 	{
 		GROUP_VAL_POS(i , point_qty) = GROUP_VAL_POS(i , point_qty) / _nScale ;
-		_nCompressRate = GROUP_VAL_POS(i , range) / (10 * GROUP_VAL_POS(i , point_qty))   ;
+        _nCompressRate = group_get_range(i) / (10 * GROUP_VAL_POS(i , point_qty))   ;
 		if(_nCompressRate < 1)
 		{
 			_nCompressRate = 1 ;
 		}
 		_nCompressRate = (int)_nCompressRate ;
-		GROUP_VAL_POS(i , range)  = GROUP_VAL_POS(i , point_qty) * 10 * _nCompressRate  ;
-
+        group_set_range(i , GROUP_VAL_POS(i , point_qty) * 10 * _nCompressRate);
 	}
 	return -1 ;
 }

@@ -465,7 +465,7 @@ void fprintfReportGroupSetup(FILE* fp ,int group)
     fprintf(fp,"<tr>\n");
     fprintf(fp,"<td %s>%.2f μs</td>\n" ,tableTdStyle ,GROUP_VAL_POS(group , beam_delay[TMP(beam_num[group])]) * 0.001);//Beam Delay
     fprintf(fp,"<td %s>%.2f %s</td>\n" ,tableTdStyle ,group_get_start (group) * 0.001 * dbVelocity ,unit);//Start (Half Path)
-    fprintf(fp,"<td %s>%.2f %s</td>\n" ,tableTdStyle ,get_group_val (p_grp ,GROUP_RANGE) * 0.001 * dbVelocity ,unit);//Range (Half Path)
+    fprintf(fp,"<td %s>%.2f %s</td>\n" ,tableTdStyle ,group_get_range(group) * 0.001 * dbVelocity ,unit);//Range (Half Path)
     fprintf(fp,"<td %s>%d</td>\n" ,tableTdStyle ,GROUP_VAL_POS(0 , prf1) / 10);//PRF
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ GROUP_MODE_P +(GROUP_VAL_POS(group,group_mode))]);//Type
     fprintf(fp,"<td %s>%d</td>\n" ,tableTdStyle ,1 << get_group_val (get_group_by_id (pp->p_config, group), GROUP_AVERAGING));//Averaging Factor
@@ -479,7 +479,7 @@ void fprintfReportGroupSetup(FILE* fp ,int group)
     fprintf(fp,"</tr>\n\n");
 
     fprintf(fp,"<tr>\n");
-    fprintf(fp,"<td %s>%d</td>\n" ,tableTdStyle ,(int)((get_group_val (p_grp, GROUP_RANGE) * 0.1) / GROUP_VAL_POS(group ,point_qty)));//Scale Factor
+    fprintf(fp,"<td %s>%d</td>\n" ,tableTdStyle ,(int)((group_get_range(group) * 0.1) / GROUP_VAL_POS(group ,point_qty)));//Scale Factor
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ OFF_ON + get_group_val (p_grp ,GROUP_VIDEO_FILTER)]);//Video Filter
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ RECTIFIER + (get_group_val (p_grp ,GROUP_RECTIFIER))]);//Rectification
     gint filter = FILTER;
