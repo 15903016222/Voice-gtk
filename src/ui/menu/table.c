@@ -1207,6 +1207,17 @@ static void filling_report_group_law(ReportGroup *reportGroup, gint groupNo)
     report_group_set_law(reportGroup, law);
 }
 
+static void filling_report_group_part(ReportGroup *reportGroup, gint groupNo)
+{
+    ReportPart *part = report_part_new();
+
+    report_part_set_material(part, menu_content[MATERIAL + get_part_material(groupNo)]);
+    report_part_set_geometry(part, menu_content[GEOMETRY + get_part_geometry(groupNo)]);
+    report_part_set_thinckness(part, GROUP_VAL_POS(groupNo, part.Thickness) * 0.001);
+
+    report_group_set_part(reportGroup, part);
+}
+
 static void filling_report_groups(Report *r)
 {
     ReportGroups *reportGroups = report_groups_new();
@@ -1225,6 +1236,7 @@ static void filling_report_groups(Report *r)
         if (group_get_mode(i) == PA_SCAN || group_get_mode(i) == UT_SCAN) {
             filling_report_group_law(reportGroup, i);
         }
+        filling_report_group_part(reportGroup, i);
 
         report_groups_add_group(reportGroups, reportGroup);
     }

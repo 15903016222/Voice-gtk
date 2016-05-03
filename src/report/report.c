@@ -200,11 +200,11 @@ static void report_group_focallaw(lua_State *L, ReportLaw *l)
     lua_settable(L, -3);
 }
 
-static void report_part(lua_State *L)
+static void report_group_part(lua_State *L, ReportPart *p)
 {
-    set_kv(L, "PartMaterial", "Steel common");
-    set_kv(L, "PartGeometry", "Plate");
-    set_kv(L, "PartThickness", "50");
+    set_kv(L, "PartMaterial", p->material);
+    set_kv(L, "PartGeometry", p->geometry);
+    set_kv(L, "PartThickness", p->thickness);
 }
 
 static void report_scan(lua_State *L)
@@ -247,6 +247,7 @@ static void report_groups(lua_State *L, ReportGroups *groups)
         report_group_fft(L, group->fft);
         report_group_setup(L, group->setup);
         report_group_focallaw(L, group->law);
+        report_group_part(L, group->part);
 
         lua_settable(L, -3);
     }
