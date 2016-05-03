@@ -28,7 +28,11 @@ static inline void set_kv(lua_State *L, const gchar *key, const gchar *val)
 static inline void set_av(lua_State *L, gint index, const gchar *val)
 {
     lua_pushinteger(L, index);
-    lua_pushstring(L, val);
+    if (NULL == val) {
+        lua_pushstring(L, "-");
+    } else {
+        lua_pushstring(L, val);
+    }
     lua_settable(L, -3);
 }
 
@@ -115,7 +119,7 @@ static void report_group_setup(lua_State *L, ReportSetup *s)
     set_kv(L, "PRF", s->prf);
     set_kv(L, "InspectionType",  s->inspectionType);
     set_kv(L, "AveragingFactor", s->averagingFactor);
-    set_kv(L, "SCALE_FACTOR", s->scaleFactor);
+    set_kv(L, "ScaleFactor", s->scaleFactor);
     set_kv(L, "VideoFilter", s->videoFilter);
     set_kv(L, "Rectification", s->rectification);
     set_kv(L, "BandPassFilter", s->bandPassFilter);
@@ -150,6 +154,16 @@ static void report_group_setup(lua_State *L, ReportSetup *s)
 
 static void report_group_focallaw(lua_State *L, ReportLaw *l)
 {
+    if (NULL == l) {
+        lua_pushstring(L, "FocalFieldNames");
+        lua_createtable(L, 0, 0);
+        lua_settable(L, -3);
+
+        lua_pushstring(L, "FocalFieldValues");
+        lua_createtable(L, 0, 0);
+        lua_settable(L, -3);
+        return;
+    }
     set_kv(L, "ElementQty", l->elementQty);
     set_kv(L, "FirstTxElement", l->firstTxElement);
     set_kv(L, "LastTxElement", l->lastTxElement);
@@ -162,21 +176,27 @@ static void report_group_focallaw(lua_State *L, ReportLaw *l)
     set_kv(L, "LawType", l->type);
     set_kv(L, "FocalType", l->focalType);
 
-
+    gint i = 0;
     lua_pushstring(L, "FocalFieldNames");
     lua_createtable(L, 0, 0);
-    set_av(L, 1, l->focalFieldNames[0]);
-    set_av(L, 2, l->focalFieldNames[1]);
-    set_av(L, 3, l->focalFieldNames[2]);
-    set_av(L, 4, l->focalFieldNames[3]);
+    for (i=0; i<4; ++i) {
+        if (NULL == l->focalFieldNames[i]) {
+            set_av(L, i+1, "");
+        } else {
+            set_av(L, i+1, l->focalFieldNames[i]);
+        }
+    }
     lua_settable(L, -3);
 
     lua_pushstring(L, "FocalFieldValues");
     lua_createtable(L, 0, 0);
-    set_av(L, 1, l->focalFieldValues[0]);
-    set_av(L, 2, l->focalFieldValues[1]);
-    set_av(L, 3, l->focalFieldValues[2]);
-    set_av(L, 4, l->focalFieldValues[3]);
+    for (i=0; i<4; ++i) {
+        if (NULL == l->focalFieldNames[i]) {
+            set_av(L, i+1, "");
+        } else {
+            set_av(L, i+1, l->focalFieldValues[i]);
+        }
+    }
     lua_settable(L, -3);
 }
 

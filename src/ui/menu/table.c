@@ -1222,7 +1222,9 @@ static void filling_report_groups(Report *r)
         filling_report_group_wedge(reportGroup, &pGroup->wedge);
         filling_report_group_ttf(reportGroup, &gData->fft[i]);
         filling_report_group_setup(reportGroup, i);
-        filling_report_group_law(reportGroup, i);
+        if (group_get_mode(i) == PA_SCAN || group_get_mode(i) == UT_SCAN) {
+            filling_report_group_law(reportGroup, i);
+        }
 
         report_groups_add_group(reportGroups, reportGroup);
     }
