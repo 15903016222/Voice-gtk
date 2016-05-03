@@ -155,6 +155,18 @@ static void report_group_setup(lua_State *L, ReportSetup *s)
 static void report_group_focallaw(lua_State *L, ReportLaw *l)
 {
     if (NULL == l) {
+        set_kv(L, "ElementQty", "-");
+        set_kv(L, "FirstTxElement", "-");
+        set_kv(L, "LastTxElement", "-");
+        set_kv(L, "FirstRxElement", "-");
+        set_kv(L, "LastRxElement", "-");
+        set_kv(L, "ElementResolution", "-");
+        set_kv(L, "StartAngle", "-");
+        set_kv(L, "StopAngle", "-");
+        set_kv(L, "AngleResolution", "-");
+        set_kv(L, "LawType", "-");
+        set_kv(L, "FocalType", "-");
+
         lua_pushstring(L, "FocalFieldNames");
         lua_createtable(L, 0, 0);
         lua_settable(L, -3);
@@ -162,42 +174,43 @@ static void report_group_focallaw(lua_State *L, ReportLaw *l)
         lua_pushstring(L, "FocalFieldValues");
         lua_createtable(L, 0, 0);
         lua_settable(L, -3);
-        return;
-    }
-    set_kv(L, "ElementQty", l->elementQty);
-    set_kv(L, "FirstTxElement", l->firstTxElement);
-    set_kv(L, "LastTxElement", l->lastTxElement);
-    set_kv(L, "FirstRxElement", l->firstRxElement);
-    set_kv(L, "LastRxElement", l->lastRxElement);
-    set_kv(L, "ElementResolution", l->elementResolution);
-    set_kv(L, "StartAngle", l->startAngle);
-    set_kv(L, "StopAngle", l->stopAngle);
-    set_kv(L, "AngleResolution", l->angleResolution);
-    set_kv(L, "LawType", l->type);
-    set_kv(L, "FocalType", l->focalType);
+    } else {
+        gint i = 0;
 
-    gint i = 0;
-    lua_pushstring(L, "FocalFieldNames");
-    lua_createtable(L, 0, 0);
-    for (i=0; i<4; ++i) {
-        if (NULL == l->focalFieldNames[i]) {
-            set_av(L, i+1, "");
-        } else {
-            set_av(L, i+1, l->focalFieldNames[i]);
-        }
-    }
-    lua_settable(L, -3);
+        set_kv(L, "ElementQty", l->elementQty);
+        set_kv(L, "FirstTxElement", l->firstTxElement);
+        set_kv(L, "LastTxElement", l->lastTxElement);
+        set_kv(L, "FirstRxElement", l->firstRxElement);
+        set_kv(L, "LastRxElement", l->lastRxElement);
+        set_kv(L, "ElementResolution", l->elementResolution);
+        set_kv(L, "StartAngle", l->startAngle);
+        set_kv(L, "StopAngle", l->stopAngle);
+        set_kv(L, "AngleResolution", l->angleResolution);
+        set_kv(L, "LawType", l->type);
+        set_kv(L, "FocalType", l->focalType);
 
-    lua_pushstring(L, "FocalFieldValues");
-    lua_createtable(L, 0, 0);
-    for (i=0; i<4; ++i) {
-        if (NULL == l->focalFieldNames[i]) {
-            set_av(L, i+1, "");
-        } else {
-            set_av(L, i+1, l->focalFieldValues[i]);
+        lua_pushstring(L, "FocalFieldNames");
+        lua_createtable(L, 0, 0);
+        for (i=0; i<4; ++i) {
+            if (NULL == l->focalFieldNames[i]) {
+                set_av(L, i+1, "");
+            } else {
+                set_av(L, i+1, l->focalFieldNames[i]);
+            }
         }
+        lua_settable(L, -3);
+
+        lua_pushstring(L, "FocalFieldValues");
+        lua_createtable(L, 0, 0);
+        for (i=0; i<4; ++i) {
+            if (NULL == l->focalFieldNames[i]) {
+                set_av(L, i+1, "");
+            } else {
+                set_av(L, i+1, l->focalFieldValues[i]);
+            }
+        }
+        lua_settable(L, -3);
     }
-    lua_settable(L, -3);
 }
 
 static void report_group_part(lua_State *L, ReportPart *p)
