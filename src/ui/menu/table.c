@@ -1218,6 +1218,49 @@ static void filling_report_group_part(ReportGroup *reportGroup, gint groupNo)
     report_group_set_part(reportGroup, part);
 }
 
+static void filling_report_group_scan(ReportGroup *reportGroup, gint groupNo)
+{
+    ReportScan *scan = report_scan_new();
+
+    report_scan_set_scan_start(scan, get_area_scanstart(pp->p_config) * 0.001);
+    report_scan_set_scan_stop(scan, get_area_scanend (pp->p_config) * 0.001);
+    report_scan_set_scan_resolution(scan, get_area_scanresolution (pp->p_config) * 0.001);
+
+    if (0 != get_inspec_type (pp->p_config)) {
+        /* 二维扫查 */
+        report_scan_set_index_start(scan, get_area_indexstart (pp->p_config) * 0.001);
+        report_scan_set_index_stop(scan, get_area_indexend (pp->p_config) * 0.001);
+        report_scan_set_index_resolution(scan, get_area_indexresolution (pp->p_config) * 0.001);
+    }
+
+    if ( 1 == get_inspec_source (pp->p_config)) {
+        /* Scan Axis */
+        ReportEncoder *enc = report_encoder_new();
+        guchar encNo = get_inspec_source(pp->p_config) - 1;
+        guchar encoderType = get_enc_type(pp->p_config, encNo);
+        guchar encoderType2 = (encoderType >> 3) & 1;
+
+        encoderType = 3 - (encoderType&0x3);
+
+        report_scan_set_scan_synchro(scan, con2_p[7][0][0]);
+
+        report_encoder_set_name(enc, menu_content[I_SCAN + encNo+1]);
+        report_encoder_set_type(enc, menu_content[E_TYPE + encoderType]);
+        report_encoder_set_resolution(enc, get_enc_resolution(pp->p_config, encNo) * 0.001);
+        report_encoder_set_polarity(enc, menu_content[POLARITY + encoderType2]);
+
+        report_scan_set_scan_encoder(scan, enc);
+
+    } else {
+        report_scan_set_scan_synchro(scan, menu_content[I_SCAN]);
+    }
+    report_scan_set_scan_speed(scan, get_inspec_speed (pp->p_config) * 0.001);
+
+
+
+    report_group_set_scan(reportGroup, scan);
+}
+
 static void filling_report_groups(Report *r)
 {
     ReportGroups *reportGroups = report_groups_new();
@@ -1237,6 +1280,7 @@ static void filling_report_groups(Report *r)
             filling_report_group_law(reportGroup, i);
         }
         filling_report_group_part(reportGroup, i);
+        filling_report_group_scan(reportGroup, i);
 
         report_groups_add_group(reportGroups, reportGroup);
     }

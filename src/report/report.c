@@ -82,7 +82,7 @@ static void report_users(lua_State *L, const ReportUsers *users)
     lua_settable(L, -3);
 }
 
-static void report_group_probe(lua_State *L, ReportProbe *p)
+static void report_group_probe(lua_State *L, const ReportProbe *p)
 {
     set_kv(L, "ProbeModel", p->model);
     set_kv(L, "ProbeSerial", p->serial);
@@ -90,13 +90,13 @@ static void report_group_probe(lua_State *L, ReportProbe *p)
     set_kv(L, "ProbeAperture", p->aperture);
 }
 
-static void report_group_wedge(lua_State *L, ReportWedge *w)
+static void report_group_wedge(lua_State *L, const ReportWedge *w)
 {
     set_kv(L, "WedgeModel", w->model);
     set_kv(L, "WedgeAngle", w->angle);
 }
 
-static void report_group_fft(lua_State *L, ReportFFT *t)
+static void report_group_fft(lua_State *L, const ReportFFT *t)
 {
     set_kv(L, "PeakFreq", t->peakFreq);
     set_kv(L, "LowerFreq_6dB", t->lowerFreq_6dB);
@@ -111,7 +111,7 @@ static void report_group_fft(lua_State *L, ReportFFT *t)
     set_kv(L, "BandwidthPercent_20dB", t->bandwidthPercent_20dB);
 }
 
-static void report_group_setup(lua_State *L, ReportSetup *s)
+static void report_group_setup(lua_State *L, const ReportSetup *s)
 {
     set_kv(L, "BeamDelay", s->beamDelay);
     set_kv(L, "HalfPathStart", s->halfPathStart);
@@ -152,7 +152,7 @@ static void report_group_setup(lua_State *L, ReportSetup *s)
     }
 }
 
-static void report_group_focallaw(lua_State *L, ReportLaw *l)
+static void report_group_focallaw(lua_State *L, const ReportLaw *l)
 {
     if (NULL == l) {
         set_kv(L, "ElementQty", "-");
@@ -213,35 +213,50 @@ static void report_group_focallaw(lua_State *L, ReportLaw *l)
     }
 }
 
-static void report_group_part(lua_State *L, ReportPart *p)
+static void report_group_part(lua_State *L, const ReportPart *p)
 {
     set_kv(L, "PartMaterial", p->material);
     set_kv(L, "PartGeometry", p->geometry);
     set_kv(L, "PartThickness", p->thickness);
 }
 
-static void report_scan(lua_State *L)
+static void report_group_scan(lua_State *L, const ReportScan *s)
 {
-    set_kv(L, "ScanStart", "40.00");
-    set_kv(L, "ScanStop", "750.00");
-    set_kv(L, "ScanResolution", "1.00");
-    set_kv(L, "IndexStart", "-");
-    set_kv(L, "IndexStop", "-");
-    set_kv(L, "IndexResolution", "-");
-    set_kv(L, "ScanSynchro", "Time");
-    set_kv(L, "ScanSpeed", "20.00");
-    set_kv(L, "ScanEncoder", "Off");
-    set_kv(L, "ScanEncoderType", "Off");
-    set_kv(L, "ScanEncoderResolution", "Off");
-    set_kv(L, "ScanPolarity", "Off");
-    set_kv(L, "IndexEncoder", "Off");
-    set_kv(L, "IndexEncoderType", "Off");
-    set_kv(L, "IndexEncoderResolution", "Off");
-    set_kv(L, "IndexPolarity", "Off");
+    set_kv(L, "ScanStart", s->scanStart);
+    set_kv(L, "ScanStop", s->scanStop);
+    set_kv(L, "ScanResolution", s->scanResolution);
+    set_kv(L, "IndexStart", s->indexStart);
+    set_kv(L, "IndexStop", s->indexStop);
+    set_kv(L, "IndexResolution", s->indexResolution);
+    set_kv(L, "ScanSynchro", s->scanSynchro);
+    set_kv(L, "ScanSpeed", s->scanSpeed);
+    if (s->scanEncoder) {
+        set_kv(L, "ScanEncoder", s->scanEncoder->name);
+        set_kv(L, "ScanEncoderType", s->scanEncoder->type);
+        set_kv(L, "ScanEncoderResolution", s->scanEncoder->resolution);
+        set_kv(L, "ScanPolarity", s->scanEncoder->polarity);
+    } else {
+        set_kv(L, "ScanEncoder", "-");
+        set_kv(L, "ScanEncoderType", "-");
+        set_kv(L, "ScanEncoderResolution", "-");
+        set_kv(L, "ScanPolarity", "-");
+    }
+
+    if (s->indexEncoder) {
+        set_kv(L, "IndexEncoder", s->indexEncoder->name);
+        set_kv(L, "IndexEncoderType", s->indexEncoder->type);
+        set_kv(L, "IndexEncoderResolution", s->indexEncoder->resolution);
+        set_kv(L, "IndexPolarity", s->indexEncoder->polarity);
+    } else {
+        set_kv(L, "IndexEncoder", "-");
+        set_kv(L, "IndexEncoderType", "-");
+        set_kv(L, "IndexEncoderResolution", "-");
+        set_kv(L, "IndexPolarity", "-");
+    }
 }
 
 
-static void report_groups(lua_State *L, ReportGroups *groups)
+static void report_groups(lua_State *L, const ReportGroups *groups)
 {
     const GSList *item = groups->groups;
     ReportGroup *group = NULL;
@@ -261,6 +276,7 @@ static void report_groups(lua_State *L, ReportGroups *groups)
         report_group_setup(L, group->setup);
         report_group_focallaw(L, group->law);
         report_group_part(L, group->part);
+        report_group_scan(L, group->scan);
 
         lua_settable(L, -3);
     }

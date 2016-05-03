@@ -15,13 +15,12 @@
 #include "report_setup.h"
 #include "report_law.h"
 #include "report_part.h"
+#include "report_scan.h"
 
 G_BEGIN_DECLS
 
 typedef struct _ReportGroups ReportGroups;
 typedef struct _ReportGroup ReportGroup;
-
-typedef struct _ReportGroupScan ReportGroupScan;
 
 struct _ReportGroup {
     ReportProbe *probe;
@@ -30,8 +29,7 @@ struct _ReportGroup {
     ReportSetup *setup;
     ReportLaw *law;
     ReportPart *part;
-
-    ReportGroupScan *scan;
+    ReportScan *scan;
 };
 
 struct _ReportGroups {
@@ -108,6 +106,12 @@ static inline void report_group_set_part(ReportGroup *grp, ReportPart *part)
 {
     g_return_if_fail( grp != NULL );
     _report_set_member((gpointer *)&grp->part, part, (GDestroyNotify)report_part_free);
+}
+
+static inline void report_group_set_scan(ReportGroup *grp, ReportScan *scan)
+{
+    g_return_if_fail( grp != NULL );
+    _report_set_member((gpointer *)&grp->scan, scan, (GDestroyNotify)report_scan_free);
 }
 
 G_END_DECLS
