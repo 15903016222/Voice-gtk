@@ -1170,35 +1170,35 @@ static void filling_report_group_law(ReportGroup *reportGroup, gint groupNo)
     }
 
     /* FocalFiledValues */
+    g_message("%s[%d] group(%d) pos(%d) mode(%d)", __func__, __LINE__, groupNo, LAW_VAL_POS(groupNo, Focal_point_type), rxTxMode);
     switch( LAW_VAL_POS(groupNo, Focal_point_type) ) {
     case 0:
     case 1:
         report_law_set_focal_filed_value(law, 0, LAW_VAL_POS(groupNo, Position_start) * 0.001);//Position Start
         break;
     case 2:
-        switch(rxTxMode) {
-        case 0://pc
-        case 2://tt
-            report_law_set_focal_filed_value(law, 0, LAW_VAL_POS(groupNo, Offset_start) * 0.001);//Offset Start
-            break;
-        case 1://pe
-        default://tofd
-            break;
-        }
+//        switch(rxTxMode) {
+//        case 0://pc
+//        case 2://tt
+        report_law_set_focal_filed_value(law, 0, LAW_VAL_POS(groupNo, Offset_start) * 0.001);//Offset Start
+//            break;
+//        default://pe
+//            break;
+//        }
         break;
     case 3:
-        switch(rxTxMode) {
-        case 0://pc
-        case 2://tt
-            report_law_set_focal_filed_value(law, 0, LAW_VAL_POS(groupNo, Offset_start) * 0.001);    //Offset Start
-            report_law_set_focal_filed_value(law, 1, LAW_VAL_POS(groupNo, Offset_end) * 0.001);      //Offset End
-            report_law_set_focal_filed_value(law, 2, LAW_VAL_POS(groupNo, Depth_start) * 0.001);     //Depth Start
-            report_law_set_focal_filed_value(law, 3, LAW_VAL_POS(groupNo, Depth_end) * 0.001);       //Depth End
-            break;
-        case 1://pe
-        default://tofd
-            break;
-        }
+//        switch(rxTxMode) {
+//        case 0://pc
+//        case 2://tt
+//            g_message("%s[%d]", __func__, __LINE__);
+        report_law_set_focal_filed_value(law, 0, LAW_VAL_POS(groupNo, Offset_start) * 0.001);    //Offset Start
+        report_law_set_focal_filed_value(law, 1, LAW_VAL_POS(groupNo, Offset_end) * 0.001);      //Offset End
+        report_law_set_focal_filed_value(law, 2, LAW_VAL_POS(groupNo, Depth_start) * 0.001);     //Depth Start
+        report_law_set_focal_filed_value(law, 3, LAW_VAL_POS(groupNo, Depth_end) * 0.001);       //Depth End
+        //            break;
+//        default://pe
+//            break;
+//        }
         break;
     default:
         break;
