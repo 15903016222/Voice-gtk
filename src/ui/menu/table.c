@@ -1105,6 +1105,108 @@ static void filling_report_group_setup(ReportGroup *reportGroup, gint groupNo)
     report_group_set_setup(reportGroup, setup);
 }
 
+static void filling_report_group_law(ReportGroup *reportGroup, gint groupNo)
+{
+    ReportLaw *law = report_law_new();
+
+    gint rxTxMode = group_get_rx_tx_mode(groupNo);
+
+    /* Elemnt Qty */
+    report_law_set_element_qty(law, LAW_VAL_POS(groupNo, Elem_qty));
+
+    /* Tx Element */
+    report_law_set_first_tx_element(law, LAW_VAL_POS(groupNo,First_tx_elem));
+    report_law_set_last_tx_element(law, LAW_VAL_POS(groupNo, Last_tx_elem));
+
+    /* Rx Element */
+    switch( rxTxMode ) {
+    case 0: //PC
+    case 2: //TT
+        report_law_set_first_rx_element(law, LAW_VAL_POS(groupNo,First_rx_elem));
+        report_law_set_last_rx_element(law, LAW_VAL_POS(groupNo, Last_rx_elem));
+        break;
+    case 1: //PE
+    case 3: //TOFD
+    default:
+        break;
+    }
+
+    /* Element Resolution */
+    if (LINEAR_SCAN == LAW_VAL_POS(groupNo, Focal_type)) {
+        report_law_set_element_resolution(law, LAW_VAL_POS(groupNo,Elem_step));
+    }
+
+    /* Angle */
+    report_law_set_start_angle(law, LAW_VAL_POS(groupNo, Angle_min) * 0.01);
+    if(AZIMUTHAL_SCAN == LAW_VAL_POS(groupNo , Focal_type)) {
+        report_law_set_stop_angle(law, LAW_VAL_POS(groupNo, Angle_max) * 0.01);
+        report_law_set_angle_resolution(law, LAW_VAL_POS(groupNo, Angle_step)  * 0.01);
+    }
+
+    /* Law Type */
+    report_law_set_type(law, menu_content[L_CONFIG + LAW_VAL_POS(groupNo, Focal_type)]);
+
+    /* Focal Type */
+    report_law_set_focal_type(law, menu_content[FOCAL_POINT_TYPE1 + LAW_VAL_POS(groupNo, Focal_point_type)]);
+
+    /* FocalFiledNames */
+    REPORTSTRINGDICT_ENUM strIndex;
+    switch(LAW_VAL_POS(groupNo, Focal_point_type)) {
+    case 2:
+        strIndex = REPORTSTRINGDICT_FOCALTYPE2;
+        break;
+    case 3:
+        strIndex = REPORTSTRINGDICT_FOCALTYPE3;
+        break;
+    case 0:
+    case 1:
+    default:
+        strIndex = REPORTSTRINGDICT_FOCALTYPE1;
+        break;
+    }
+    int i;
+    for(i = 1 ;i < getReportDictSize(strIndex) - 1 ;++i) {
+        report_law_set_focal_field_name(law, i-1, getReportDictString(strIndex ,i));
+    }
+
+    /* FocalFiledValues */
+    switch( LAW_VAL_POS(groupNo, Focal_point_type) ) {
+    case 0:
+    case 1:
+        report_law_set_focal_filed_value(law, 0, LAW_VAL_POS(groupNo, Position_start) * 0.001);//Position Start
+        break;
+    case 2:
+        switch(rxTxMode) {
+        case 0://pc
+        case 2://tt
+            report_law_set_focal_filed_value(law, 0, LAW_VAL_POS(groupNo, Offset_start) * 0.001);//Offset Start
+            break;
+        case 1://pe
+        default://tofd
+            break;
+        }
+        break;
+    case 3:
+        switch(rxTxMode) {
+        case 0://pc
+        case 2://tt
+            report_law_set_focal_filed_value(law, 0, LAW_VAL_POS(groupNo, Offset_start) * 0.001);    //Offset Start
+            report_law_set_focal_filed_value(law, 1, LAW_VAL_POS(groupNo, Offset_end) * 0.001);      //Offset End
+            report_law_set_focal_filed_value(law, 2, LAW_VAL_POS(groupNo, Depth_start) * 0.001);     //Depth Start
+            report_law_set_focal_filed_value(law, 3, LAW_VAL_POS(groupNo, Depth_end) * 0.001);       //Depth End
+            break;
+        case 1://pe
+        default://tofd
+            break;
+        }
+        break;
+    default:
+        break;
+    }
+
+    report_group_set_law(reportGroup, law);
+}
+
 static void filling_report_groups(Report *r)
 {
     ReportGroups *reportGroups = report_groups_new();
@@ -1120,6 +1222,7 @@ static void filling_report_groups(Report *r)
         filling_report_group_wedge(reportGroup, &pGroup->wedge);
         filling_report_group_ttf(reportGroup, &gData->fft[i]);
         filling_report_group_setup(reportGroup, i);
+        filling_report_group_law(reportGroup, i);
 
         report_groups_add_group(reportGroups, reportGroup);
     }
