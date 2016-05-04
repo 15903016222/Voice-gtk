@@ -908,6 +908,7 @@ void tableExport()
 
 static gboolean treeModelForeach(GtkTreeModel *model ,GtkTreePath *path ,GtkTreeIter *iter ,gpointer data)
 {
+    tableDataSelfDefineStruct *dataSelfDefine = NULL;
     ReportDefect *defect = report_defect_new();
     gint group = 0;
     gint channel = 0;
@@ -926,12 +927,19 @@ static gboolean treeModelForeach(GtkTreeModel *model ,GtkTreePath *path ,GtkTree
                        COLUMN_FIELD7,	&defect->fieldValues[6],
                        COLUMN_FIELD8,   &defect->fieldValues[7],
                        COLUMN_COMMENTS, &defect->comments,
+                       COLUMN_DATA_SELF_DEFINE, &dataSelfDefine,
                        -1);
+
     report_defect_set_group(defect, group);
     report_defect_set_channel(defect, channel);
 
-    report_defects_add_defect((ReportDefects *)data, defect);
+    if (dataSelfDefine->imageBOOL) {
+        gchar *imageFile = g_strdup_printf("%s%s", gTmpReportImagePath, dataSelfDefine->imageFileName);
+        report_defect_set_image(defect, imageFile);
+        g_free(imageFile);
+    }
 
+    report_defects_add_defect((ReportDefects *)data, defect);
     return FALSE;
 }
 
@@ -1170,7 +1178,6 @@ static void filling_report_group_law(ReportGroup *reportGroup, gint groupNo)
     }
 
     /* FocalFiledValues */
-    g_message("%s[%d] group(%d) pos(%d) mode(%d)", __func__, __LINE__, groupNo, LAW_VAL_POS(groupNo, Focal_point_type), rxTxMode);
     switch( LAW_VAL_POS(groupNo, Focal_point_type) ) {
     case 0:
     case 1:
@@ -1190,7 +1197,6 @@ static void filling_report_group_law(ReportGroup *reportGroup, gint groupNo)
 //        switch(rxTxMode) {
 //        case 0://pc
 //        case 2://tt
-//            g_message("%s[%d]", __func__, __LINE__);
         report_law_set_focal_filed_value(law, 0, LAW_VAL_POS(groupNo, Offset_start) * 0.001);    //Offset Start
         report_law_set_focal_filed_value(law, 1, LAW_VAL_POS(groupNo, Offset_end) * 0.001);      //Offset End
         report_law_set_focal_filed_value(law, 2, LAW_VAL_POS(groupNo, Depth_start) * 0.001);     //Depth Start

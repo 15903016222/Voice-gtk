@@ -328,6 +328,9 @@ static void _report_defects(lua_State *L, const ReportDefects *defects)
         set_kv(L, "Index", d->index);
         set_kv(L, "Group", d->group);
         set_kv(L, "Channel", d->channel);
+        if (d->image) {
+            set_kv(L, "Image", d->image);
+        }
         report_defect_field_values(L, d->fieldValues);
 
         lua_settable(L, -3);

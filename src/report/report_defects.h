@@ -27,6 +27,7 @@ struct _ReportDefect{
     gchar *group;
     gchar *channel;
     gchar *fieldValues[MAX_FIELDS];
+    gchar *image;
     gchar *comments;  /* comments about defect */
 };
 
@@ -98,6 +99,8 @@ static inline void report_defect_set_field_value(ReportDefect *d, guint field, c
     g_return_if_fail( d != NULL && field < MAX_FIELDS );
     _report_set_str(&d->fieldValues[field], val);
 }
+
+extern void report_defect_set_image(ReportDefect *d, const gchar *imageName);
 
 static inline void report_defect_comment(ReportDefect *d, const gchar *comment)
 {
