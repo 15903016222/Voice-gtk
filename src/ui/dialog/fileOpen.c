@@ -131,6 +131,12 @@ static void openFile(GtkWidget* dialog ,const char* filename)
             openDataFile(dialog ,filename);
         } else if(0 == g_strcmp0(".dxf" ,str)) {
             openPartFile(dialog ,filename);
+        }  else if( 0 == g_strcmp0(".html", str)) {
+            if (TMP(tmplName)) {
+                g_free(TMP(tmplName));
+            }
+            TMP(tmplName) = g_strdup(filename);
+            gtk_widget_destroy(dialog);
         } else {
             filePreviewFullScreen(dialog ,filename);
         }
@@ -299,4 +305,22 @@ GtkWidget* PartFileOpenNew(GtkWidget* fatherWidget)
 
 	g_object_set_data(G_OBJECT(dialog) ,"callbackRowActivated" ,openFile);
 	return dialog;
+}
+
+GtkWidget *report_file_dialog(GtkWidget *parent)
+{
+    GtkWidget* dialog = filelistDialogNew(parent);
+    labelButtonStruct* labelButtonPara;
+    GtkWidget* buttonOpen = g_object_get_data(G_OBJECT(dialog) ,BUTTON_OPEN);
+    labelButtonPara = (labelButtonStruct*)g_object_get_data(G_OBJECT(buttonOpen) ,"labelButtonPara");
+    gtk_label_set_label(GTK_LABEL(labelButtonPara->label) ,getDictString(_STRING_Open));
+    labelButtonInstallCallback(buttonOpen ,callbackOpen ,dialog ,NULL);
+    labelButtonSetDisplayMode(buttonOpen , LABELBUTTON_MODE_BIGMENU);
+
+    GtkWidget* fileList = g_object_get_data(G_OBJECT(dialog) ,"fileList");
+    GtkWidget* treeview = g_object_get_data(G_OBJECT(fileList) ,"treeview");
+    filelistSetPathAndSuffix(treeview ,"/home/tt/TT/source/system/Template/Report", ".html");
+
+    g_object_set_data(G_OBJECT(dialog) ,"callbackRowActivated" ,openFile);
+    return dialog;
 }

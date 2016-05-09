@@ -1003,15 +1003,32 @@ void DrawMenu800()
 		draw3_popdown (menu_content[F_STORAGE_P+get_file_storage (pp->p_config)], 0, 0);
 }
 
+extern GtkWidget *report_file_dialog(GtkWidget *parent);
+
 void DrawMenu810()
 {
 	pp->x_pos = 502, pp->y_pos = 100;
-	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 0))
-		draw3_pop_tt (data_810, NULL,
-				menu_content[TEMPLA_P+get_report_template (pp->p_config)],
-				menu_content+TEMPLA, 1, 0,get_report_template (pp->p_config), 0);
-	else
-		draw3_popdown (menu_content[TEMPLA_P+get_report_template (pp->p_config)], 0, 0);
+    if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 0)) {
+        GtkWidget* w = report_file_dialog(pp->window);
+        gtk_dialog_run(GTK_DIALOG(w));
+
+        pp->pos_pos = MENU3_STOP;
+        if (TMP(tmplName)) {
+            draw3_popdown (basename(TMP(tmplName)), 0, 0);
+        } else {
+            draw3_popdown (NULL, 0, 0);
+        }
+//		draw3_pop_tt (data_810, NULL,
+//				menu_content[TEMPLA_P+get_report_template (pp->p_config)],
+//				menu_content+TEMPLA, 1, 0,get_report_template (pp->p_config), 0);
+    } else {
+//        draw3_popdown (menu_content[TEMPLA_P+get_report_template (pp->p_config)], 0, 0);
+        if (TMP(tmplName)) {
+            draw3_popdown (basename(TMP(tmplName)), 0, 0);
+        } else {
+            draw3_popdown (NULL, 0, 0);
+        }
+    }
 }
 
 void DrawMenu820()

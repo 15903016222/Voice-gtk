@@ -333,6 +333,9 @@ typedef struct tmp_config
 	int 	beam_delay[setup_MAX_GROUP_QTY][setup_MAX_GROUP_LAW_QTY] ;
 	//unsigned int    nTmpGainOffset[setup_MAX_GROUP_QTY][setup_MAX_GROUP_LAW_QTY];
 	double Junction[setup_MAX_GROUP_QTY];
+
+    /* report template name */
+    gchar *tmplName;
 } TMP_CONFIG, *TMP_CONFIG_P;
 
 /*画图区域*/

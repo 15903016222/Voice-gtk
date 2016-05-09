@@ -1298,7 +1298,7 @@ void filling_report(Report *r, const gchar *outputFile)
 {
     g_return_if_fail( r != NULL );
 
-    report_set_template(r, "/home/root/template.html");
+    report_set_template(r, TMP(tmplName));
 
     filling_report_header(r, outputFile);
     filling_report_users(r);
