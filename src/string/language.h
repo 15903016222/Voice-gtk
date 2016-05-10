@@ -57,9 +57,10 @@ typedef enum{
 	DATA_PATH_DATA,//				"/home/tt/TT/data/InspectData/", //data
 	DATA_PATH_REPORT,//				"/home/tt/TT/data/Report/", //report
 	DATA_PATH_PICTURE,//			"/home/tt/TT/data/Image/",//picture
-    DATA_PATH_CAD,//				"/home/tt/data/Part/",
+    DATA_PATH_CAD,//				"/home/tt/TT/data/Part/",
+    DATA_PATH_TMPL,                 //"/home/tt/TT/source/system/Template/Report/", // report template
 	DATA_PATH_USB,//				"/opt/usbStorage/",//usb
-	DATA_PATH_SETUP_SAMPLE,//		"/home/tt/",//setup sample path
+//	DATA_PATH_SETUP_SAMPLE,//		"/home/tt/",//setup sample path
 	DATA_PATH_DATA_SAMPLE,//		"/home/tt/TT/",//data sample path
 
 	DATA_PATH_MAX,//

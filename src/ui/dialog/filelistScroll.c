@@ -146,26 +146,29 @@ int filelistUpdate(GtkWidget* treeView)
 
 void comboUpdateEntry(GtkWidget* combo ,const char* path)
 {
-	if(GTK_COMBO_BOX(combo))
-	{
-		GtkWidget* entry = gtk_bin_get_child(GTK_BIN(combo));
-		if(GTK_ENTRY(entry))
-		{
-			if(0 != strcmp(path ,gtk_entry_get_text(GTK_ENTRY(entry))))
-			{
-				gtk_entry_set_text(GTK_ENTRY(entry) ,path);
-				int i;
-                for(i = 0 ;i < DATA_PATH_MAX ;++i)
-				{
-					if(0 == strcmp(path ,getDataPath(i)))
-					{
-						gtk_combo_box_set_active(GTK_COMBO_BOX(combo) ,i);
-						break;
-					}
-				}
-			}
-		}
-	}
+
+    if ( ! GTK_IS_COMBO_BOX(combo) ) {
+        return;
+    }
+
+    GtkWidget* entry = gtk_bin_get_child(GTK_BIN(combo));
+
+    if ( ! GTK_IS_ENTRY(entry) ) {
+        return;
+    }
+
+    if(0 == strcmp(path ,gtk_entry_get_text(GTK_ENTRY(entry)))) {
+        return;
+    }
+
+    gtk_entry_set_text(GTK_ENTRY(entry) ,path);
+    int i;
+    for(i = 0 ;i < DATA_PATH_MAX ;++i) {
+        if(0 == strcmp(path ,getDataPath(i))) {
+            gtk_combo_box_set_active(GTK_COMBO_BOX(combo) ,i);
+            break;
+        }
+    }
 }
 
 int filelistSetPath(GtkWidget* treeView ,const char* path)

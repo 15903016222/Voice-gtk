@@ -102,6 +102,9 @@ int fileCopy(const char* fileName ,const char* path ,const char* commandOption)
 		strcat(command,fileName);
 		strcat(command,"\" ");
 		strcat(command,path);
+        strcat(command, " && chmod o-x ");
+        strcat(command, path);
+        strcat(command, strrchr(fileName ,'/'));
 		//printf("copy file:%s to path:%s\n",path,path);
 		return FileCommand(command);
 	}
@@ -119,6 +122,9 @@ int fileMove(const char* fileName ,const char* path)
 		strcat(command,fileName);
 		strcat(command,"\" ");
 		strcat(command,path);
+        strcat(command, " && chmod o-x ");
+        strcat(command, path);
+        strcat(command, strrchr(fileName ,'/'));
 		//printf("move file:%s ==> %s\n",fileName,path);
 		return FileCommand(command);
 	}

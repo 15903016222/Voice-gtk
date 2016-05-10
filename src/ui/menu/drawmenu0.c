@@ -38,6 +38,9 @@
 #include "../../calculation/limit.h"
 #include "../authorization.h"
 #include "../../globalData.h"
+
+#include <libgen.h>
+
 void DrawMenu000()
 {
 

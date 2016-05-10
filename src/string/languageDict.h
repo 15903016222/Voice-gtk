@@ -89,6 +89,7 @@ static languageStruct stringDict[] =
 	/*_STRING_Finish,*/{"Finish","完成"},	//#
 	/*_STRING_Image_,*/{"Image","图片"},	//#
     /*_STRING_CAD,*/ {"CAD", "CAD"}, //#
+    /*_STRING_TMPL,*/ {"Template", "报表模板"},   //#
 	/*_STRING_OD,*/{"OD","凸面"},	//#
 	/*_STRING_Projection,*/{"Projection","投影"},	//#
 	/*_STRING_Copper,*/{"Copper","铜"},	//#

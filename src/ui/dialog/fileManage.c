@@ -150,6 +150,7 @@ static void callbackFileHandler(GtkWidget* dialog ,void* p_para)
 				memcpy(dirName ,fileFullName ,str - fileFullName);
 				strcat(dirName ,"_files");
 			}
+
 			switch(fileHandler)
 			{
 			case FILE_HANDLER_COPY:
@@ -339,7 +340,7 @@ static void callbackComboNotify(GtkComboBox* widget ,gpointer data)
 	GtkTreeIter iter;
 	model = gtk_combo_box_get_model(widget);
 
-    if(gtk_tree_model_get_iter_from_string(model ,&iter ,"5"))
+    if(gtk_tree_model_get_iter_from_string(model ,&iter ,"6"))
 	{
 		if(0 != fileDetectUSB())
             gtk_combo_box_remove_text(GTK_COMBO_BOX(widget) , DATA_PATH_USB);
@@ -381,11 +382,12 @@ static GtkWidget* fileListNew(const char* str)
 	g_signal_connect (G_OBJECT(combo), "changed",	G_CALLBACK (callbackCombo), vbox);
 	g_signal_connect (G_OBJECT(combo), "grab-notify",	G_CALLBACK (callbackComboNotify), vbox);
 
-	gtk_combo_box_append_text(GTK_COMBO_BOX(combo) ,getDictString(_STRING_Setup));
+    gtk_combo_box_append_text(GTK_COMBO_BOX(combo) ,getDictString(_STRING_Setup));
 	gtk_combo_box_append_text(GTK_COMBO_BOX(combo) ,getDictString(_STRING_Data));
 	gtk_combo_box_append_text(GTK_COMBO_BOX(combo) ,getDictString(_STRING_Report));
 	gtk_combo_box_append_text(GTK_COMBO_BOX(combo) ,getDictString(_STRING_Image_));
     gtk_combo_box_append_text(GTK_COMBO_BOX(combo), getDictString(_STRING_CAD));
+    gtk_combo_box_append_text(GTK_COMBO_BOX(combo), getDictString(_STRING_TMPL));
 
 	GtkWidget* scroll = filelistScrollNew();
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
@@ -403,7 +405,7 @@ static GtkWidget* fileListNew(const char* str)
 	gtk_box_pack_start(GTK_BOX(hbox) ,combo ,TRUE ,TRUE ,0);
 
 	gtk_box_pack_start(GTK_BOX(vbox) ,hbox ,FALSE ,FALSE ,0);
-	gtk_box_pack_start(GTK_BOX(vbox) ,scroll ,TRUE ,TRUE ,5);
+    gtk_box_pack_start(GTK_BOX(vbox) ,scroll ,TRUE ,TRUE ,7);
 
 	gtk_widget_show_all(vbox);
 	return vbox;

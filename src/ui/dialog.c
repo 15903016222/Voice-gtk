@@ -390,12 +390,18 @@ int fileCopyProgressBar(GtkWidget* fatherWidget,
         strcat(command, fileName);
         strcat(command, "\" ");
         strcat(command, path);
+        strcat(command, " && chmod o-x ");
+        strcat(command, path);
+        strcat(command, strrchr(fileName ,'/'));
     } else if (strcmp(cmd, "mv") == 0) {
         note = getDictString(_STRING_Move);
         strcat(command, "\"");
         strcat(command, fileName);
         strcat(command, "\" ");
         strcat(command, path);
+        strcat(command, " && chmod o-x ");
+        strcat(command, path);
+        strcat(command, strrchr(fileName ,'/'));
     } else if (strcmp(cmd, "rm") == 0) {
         note = getDictString(_STRING_Delete);
         strcat(command, "\"");

@@ -55,13 +55,13 @@ void webFilePreview(GtkWidget* dialog ,const char* filename)
 	memset(webfile ,0 ,256);
 //	strcpy(webfile ,WEB_PREFIX);
 //	strcat(webfile ,filename);
-	getHttpFileName(webfile ,filename);
+    getHttpFileName(webfile ,filename);
 	webkitRefresh(dialog);
 
 	GtkWidget* fileBrouser = GTK_WIDGET(g_object_get_data(G_OBJECT(dialog) ,"fileBrouser"));
 	GtkWidget* scroll = GTK_WIDGET(g_object_get_data(G_OBJECT(fileBrouser) ,"scroll"));
 	GtkWidget* webkit = GTK_WIDGET(g_object_get_data(G_OBJECT(scroll) ,"webkit"));
-	webkit_web_view_load_uri((WebKitWebView*)webkit ,webfile);
+    webkit_web_view_load_uri((WebKitWebView*)webkit ,webfile);
 }
 
 static void setupFilePreview(GtkWidget* dialog ,const char* filename)
