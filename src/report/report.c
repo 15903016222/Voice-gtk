@@ -362,8 +362,7 @@ void report_save(const Report *report)
     }
     luaL_openlibs(L);
 
-    if ( luaL_dofile(L, "/home/tt/TT/report.lua") != 0
-         && luaL_dofile(L, "/usr/share/phascan/report.lua") != 0 ) {
+    if ( luaL_dofile(L, "/home/tt/TT/scripts/report.lua") != 0 ) {
         g_warning("loading report library failed[2]");
         lua_close(L);
         return;
