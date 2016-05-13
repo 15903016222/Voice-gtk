@@ -24,6 +24,8 @@
 #include "globalData.h"
 #include "core/core.h"
 
+#include "auth/auth.h"
+
 volatile DRAW_UI_P	pp;
 void init_group_spi (int group);
 void group_spi_send (int group);
@@ -833,6 +835,8 @@ int main (int argc, char *argv[])
 #endif
 	gdk_threads_init();
 	gtk_init (&argc, &argv);
+
+    auth();
 
 	AuthorizetionWindow();
 
