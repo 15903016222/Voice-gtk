@@ -2374,37 +2374,25 @@ static void draw_mask()
 
 static void da_call_time (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
-    _my_time_set_p entry_time_p;
-	_my_time_get tmp_time;
-	int i;
-	unsigned char *tmp;
-	char command[256] = "date -s ";
-    int system_value;
-    entry_time_p = (struct __my_time_set *)user_data;
-    //点击了确认
-    if (GTK_RESPONSE_OK == response_id)
-    {
-		tmp = (unsigned char *)&tmp_time;
+    _my_time_set_p entry_time_p = (struct __my_time_set *)user_data;
+    if (GTK_RESPONSE_OK == response_id) {
+        /* 点击了确认 */
+        time_t t = core_time();
+        struct tm *tm = localtime(&t);
+
 		//读取输入框里面的数据
-		for(i=0;i<3;i++)
-		{  
-			*tmp = gtk_spin_button_get_value( (GtkSpinButton *)entry_time_p->entry[i] );
-			tmp++;
-		}
-        //生成命令
-        g_sprintf(command + strlen(command)	,"%d:%d:%d" ,tmp_time.hour,tmp_time.minute,tmp_time.second);
-        //执行命令，修改时间
-        system_value = system(command);
-        system("hwclock -w");
+        tm->tm_hour = gtk_spin_button_get_value( (GtkSpinButton *)entry_time_p->entry[0] );
+        tm->tm_min = gtk_spin_button_get_value( (GtkSpinButton *)entry_time_p->entry[1] );
+        tm->tm_sec = gtk_spin_button_get_value( (GtkSpinButton *)entry_time_p->entry[2] );
+
+        core_set_time(mktime(tm));
+
         //关闭对话框
         gtk_widget_destroy (GTK_WIDGET (dialog));
 		change_keypress_event (KEYPRESS_MAIN);
 		pp->pos_pos = MENU3_STOP  ;
 		draw_menu3(0, NULL);
-    }
-    //点击了取消按钮
-    else if (GTK_RESPONSE_CANCEL == response_id)
-    {
+    } else if (GTK_RESPONSE_CANCEL == response_id) {
         //关闭对话框
 		gtk_widget_destroy (GTK_WIDGET (dialog));
 		change_keypress_event (KEYPRESS_MAIN);
