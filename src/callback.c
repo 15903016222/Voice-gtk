@@ -3,6 +3,7 @@
  *      10        20        30        40        50        60        70        80
  */
 
+#include "core/core.h"
 #include "drawui.h"
 #include "drawfb.h"
 #include "focallaw.h"		/* 计算聚焦法则的头文件 */
@@ -1318,10 +1319,8 @@ void b2_fun0(DRAW_UI_P p, guint pos)
 	if((8 == gCurrentMenuPos.pos.menu1)
 	&&(1 == gCurrentMenuPos.pos.menu2))
 	{
-	    time_t timep;
-	    struct tm *p;
-	    time(&timep);
-	    p=localtime(&timep);
+        time_t timep = core_time();
+        struct tm *p = localtime(&timep);
 	    char str[100];
 	    memset(str ,0 ,100);
 	    sprintf(str ,"Report_%d-%02d-%02d_%02d.%02d.%02d" ,1900 + p->tm_year ,1 + p->tm_mon ,p->tm_mday ,p->tm_hour ,p->tm_min ,p->tm_sec);

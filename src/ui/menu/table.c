@@ -7,6 +7,7 @@
 
 #include <gtk/gtk.h>
 #include <assert.h>
+#include "../core/core.h"
 #include "../../drawui.h"
 #include "../../main.h"
 #include "../../lzk/fileHandler.h"
@@ -965,6 +966,7 @@ static inline void filling_report_header(Report *r, const gchar *outputFile)
     report_header_set_device_type(hdr, "Phascan");
     report_header_set_report_file(hdr, outputFile);
     report_header_set_setup_file(hdr, gData->file.setupfile);
+    report_header_set_report_time(hdr, core_time());
     report_header_set_save_mode(hdr, menu_content[SAVE_MODE+get_file_save_mode (pp->p_config)] );
     report_set_header(r, hdr);
 }

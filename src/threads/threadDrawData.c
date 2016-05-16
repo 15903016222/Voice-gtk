@@ -16,7 +16,6 @@
 #include <gdk/gdk.h>
 #include <glib/gprintf.h>
 #include <stdlib.h>
-#include <time.h>
 #include <string.h>
 #include <math.h>
 #include <stdio.h>

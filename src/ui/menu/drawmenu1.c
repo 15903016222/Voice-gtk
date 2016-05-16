@@ -4,6 +4,7 @@
  *  Created on: 2012-5-9
  *      Author: shensheng
  */
+#include "../core/core.h"
 #include "../../drawui.h"
 #include "../../file_op.h"
 #include "../../drawfb.h"
@@ -18,7 +19,6 @@
 #include <glib/gprintf.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#include <time.h>
 #include <linux/rtc.h>
 #include <string.h>
 #include <assert.h>
@@ -2247,20 +2247,16 @@ void DrawMenu901()
 }
 void DrawMenu911()
 {
-	char temp[52];
-	char buffer[32] ;
-	time_t curtime;
-	struct tm *loctime;
-	curtime = time(NULL);
-	loctime = localtime(&curtime);
+    char temp[52] = {0};
+    char buffer[32] = {0};
+    time_t curtime = core_time();
+    struct tm *loctime = localtime(&curtime);
+
 	strftime (buffer, 32, "%F %T", loctime);
 
-	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1))
-	{
+    if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1)) {
 		draw_dialog_all (DIALOG_DATE);
-	}
-	else
-	{
+    } else {
 		memcpy (temp, buffer, 11);
 		temp[10] = 0;
 		draw3_popdown (temp, 1, 0);

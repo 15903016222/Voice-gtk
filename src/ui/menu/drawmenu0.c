@@ -5,7 +5,7 @@
  *      Author: shensheng
  */
 
-
+#include "../core/core.h"
 #include "../../drawui.h"
 #include "../../file_op.h"
 #include "../../drawfb.h"
@@ -19,7 +19,6 @@
 #include <glib/gprintf.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#include <time.h>
 #include <linux/rtc.h>
 #include <string.h>
 #include <assert.h>
@@ -1081,18 +1080,16 @@ void DrawMenu900()
 }
 void DrawMenu910()
 {
-	char buffer[32] ;
-	time_t curtime;
-	struct tm *loctime;
-	curtime = time(NULL);
-	loctime = localtime(&curtime);
+    char buffer[32] = {0};
+    time_t curtime = core_time();
+    struct tm *loctime = localtime(&curtime);
 	strftime (buffer, 32, "%F %T", loctime);
-	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 0))
-	{
+
+    if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 0)) {
 		draw_dialog_all (DIALOG_TIME);
-	}
-	else
+    } else {
 		draw3_popdown (buffer + 11, 0, 0);
+    }
 }
 void DrawMenu920()
 {

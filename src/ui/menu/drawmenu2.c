@@ -17,7 +17,6 @@
 #include <glib/gprintf.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#include <time.h>
 #include <linux/rtc.h>
 #include <string.h>
 #include <assert.h>

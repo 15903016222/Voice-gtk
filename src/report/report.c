@@ -39,13 +39,9 @@ static inline void set_av(lua_State *L, gint index, const gchar *val)
 static void report_header(lua_State *L, const ReportHeader *hdr)
 {
     gchar *msg = NULL;
-    time_t t;
-    struct tm *p;
-
+    struct tm *p = localtime(&hdr->reportTime);
 
     /* report and inspection date */
-    time(&t);
-    p = localtime(&t);
     msg = g_strdup_printf("%d/%d/%d", 1900+p->tm_year, 1+p->tm_mon, p->tm_mday);
     set_kv(L, "ReportDate", msg);
     set_kv(L, "InspectionDate", msg);

@@ -23,7 +23,9 @@ struct _ReportHeader {
     gchar *setupFile;     /* setup file name */
     gchar *saveMode;      /* save mode */
     gchar *deviceType;    /* device type */
-    gchar *reportFile;          /* the name of report file */
+    gchar *reportFile;    /* the name of report file */
+    time_t reportTime;    /* report date */
+    time_t inspectionTime;/* inspection date */
 };
 
 static inline ReportHeader *report_header_new()
@@ -62,6 +64,18 @@ static inline void report_header_set_report_file(ReportHeader *h, const gchar *r
 {
     g_return_if_fail(h != NULL);
     _report_set_str(&h->reportFile, reportFile);
+}
+
+static inline void report_header_set_report_time(ReportHeader *h, time_t t)
+{
+    g_return_if_fail(h != NULL);
+    h->reportTime = t;
+}
+
+static inline void report_header_set_inspection_time(ReportHeader *h, time_t t)
+{
+    g_return_if_fail(h != NULL);
+    h->inspectionTime = t;
 }
 
 G_END_DECLS

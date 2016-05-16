@@ -12,7 +12,6 @@
 #include "ui/workpiece.h"
 #include "ui/authorization.h"
 #include "calculation/sizingcurve.h"
-#include <time.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>

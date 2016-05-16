@@ -4,13 +4,13 @@
  *  Created on: 2013-5-2
  *      Author: wolflord
  */
+#include "../core/core.h"
 #include "../drawui.h"
 #include "../file_op.h"
 #include "../callback.h"
 #include "../main.h"
 #include "../calibration.h"
 #include <stdlib.h>
-#include <time.h>
 #include <linux/rtc.h>
 #include <string.h>
 #include <assert.h>
@@ -26,17 +26,18 @@
 static gchar buffer[32];
 gboolean time_handler1 (GtkWidget *widget)
 {
-	time_t curtime;
-	struct tm *loctime;
+    time_t curtime = core_time();
+    struct tm *loctime = localtime(&curtime);
 	gchar *markup;
-	curtime = time(NULL);
-	loctime = localtime(&curtime);
+
 	strftime (buffer, 32, "%F %T", loctime);
 
 	markup = g_markup_printf_escaped ("<span foreground='white' font_desc='10'>%s</span>", buffer);
-	gdk_threads_enter();
+
+    gdk_threads_enter();
 	gtk_label_set_markup (GTK_LABEL(pp->label[4]),markup);
 	gdk_threads_leave();
+
 	g_free (markup);
 	return TRUE;
 }

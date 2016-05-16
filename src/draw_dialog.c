@@ -7,6 +7,7 @@
  *
  */
 
+#include "core/core.h"
 #include "base.h"
 #include "base_config.h"
 #include "draw_dialog.h"
@@ -2471,7 +2472,7 @@ void draw_time()
 	label[0] = gtk_label_new(char_label[0]);
 	gtk_box_pack_start(GTK_BOX(hbox3), label[0], TRUE, TRUE, 5);
 
-    time(&timep);
+    timep = core_time();
 	q = localtime(&timep);
 	time_tmp[0] = q->tm_hour;
 	time_tmp[1] = q->tm_min;
@@ -2588,7 +2589,7 @@ static void da_call_date (GtkDialog *dialog, gint response_id, gpointer user_dat
         else
             g_sprintf(command + strlen(command),"-0%d ",tmp_date.mday);
         //重读时间，得到时分秒
-        time(&timep);
+        timep = core_time();
 	    q = localtime(&timep);
         //时
         g_sprintf(command + strlen(command),"%d:",q->tm_hour);
@@ -2673,7 +2674,7 @@ void draw_date()
 	gtk_box_pack_start(GTK_BOX(vbox_first), hbox2, FALSE, FALSE, 5);
 	label[0] = gtk_label_new(char_label[0]);
 	gtk_box_pack_start(GTK_BOX(hbox3), label[0], TRUE, TRUE, 5);
-    time(&timep);
+    timep = core_time();
 	q = localtime(&timep);
 	date_tmp[0] = q->tm_year + 1900;
 	date_tmp[1] = q->tm_mon + 1;

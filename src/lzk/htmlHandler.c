@@ -7,6 +7,7 @@
 
 #include <string.h>
 #include "fileHandler.h"
+#include "../core/core.h"
 #include "../drawui.h"
 #include "../globalData.h"
 #include "../string/_string.h"
@@ -195,7 +196,6 @@ void fprintfVoid(FILE* fp)
     fprintf(fp,"<td %s>-</td>\n" ,tableTdStyle);
 }
 
-#include <time.h>
 #include "../globalData.h"
 void fprintfReportHead(reportParaStruct* pPara)
 {
@@ -232,10 +232,8 @@ void fprintfReportHead(reportParaStruct* pPara)
     }
     fprintf(fp,"</tr>\n\n");
 
-    time_t timep;
-    struct tm *p;
-    time(&timep);
-    p=localtime(&timep);
+    time_t timep = core_time();
+    struct tm *p = localtime(&timep);
     fprintf(fp,"<tr>\n");
     fprintf(fp,"<td %s>%d / %d / %d</td>\n" ,tableTdStyle ,1900 + p->tm_year ,1 + p->tm_mon ,p->tm_mday);//"Report Date"
     fprintf(fp,"<td %s>1.0</td>\n" ,tableTdStyle);//"Report Version"
