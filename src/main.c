@@ -836,7 +836,7 @@ int main (int argc, char *argv[])
 	gdk_threads_init();
 	gtk_init (&argc, &argv);
 
-    auth();
+    auth_init();
 
 	AuthorizetionWindow();
 

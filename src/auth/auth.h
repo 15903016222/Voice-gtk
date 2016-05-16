@@ -13,19 +13,19 @@
 
 G_BEGIN_DECLS
 
-enum AuthMode {
-    AUTH_MODE_NONE,
-    AUTH_MODE_CNT,
-    AUTH_MODE_RUN,
-    AUTH_MODE_VALID
-};
+typedef enum {
+    AUTH_MODE_INVALID,  /*非法模式*/
+    AUTH_MODE_NONE,     /*无认证模式*/
+    AUTH_MODE_CNT,      /*计数模式*/
+    AUTH_MODE_RUN,      /*运行时间模式*/
+    AUTH_MODE_DATE,     /*有效期模式*/
+} AuthMode;
 
-struct _Auth {
-    gint mode;
-    gint data;
-};
-
-extern int auth();
+extern void auth_init();
+extern AuthMode auth_get_mode();
+extern time_t auth_get_data();
+extern gboolean auth_is_valid();
+extern void auth_uninit();
 
 G_END_DECLS
 
