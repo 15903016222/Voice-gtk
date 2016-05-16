@@ -2541,62 +2541,24 @@ void year_mon_changed(GtkAdjustment *adjustment,gpointer user_data)
 
 static void da_call_date (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
-    _my_date_set_p entry_date_p;
-	_my_date_get tmp_date;
-	int i;
-	unsigned int *tmp;
-	char command[256] = "date -s ";
-    //char *time_cmos = "clock -w";
-	time_t timep;
-	struct tm *q;
-    int system_value;
-    entry_date_p = (struct __my_date_set *)user_data;
-    if (GTK_RESPONSE_OK == response_id)
-    {
-		tmp = (unsigned int *)&tmp_date;
+    _my_date_set_p entry_date_p = (struct __my_date_set *)user_data;
+    if (GTK_RESPONSE_OK == response_id) {
+        time_t t = core_time();
+        struct tm *tm = localtime(&t);
+
 		//读取输入框里面的数据，就是年月日
-		for(i=0;i<3;i++)
-		{  
-			*tmp = gtk_spin_button_get_value( (GtkSpinButton *)entry_date_p->entry[i] );
-			tmp++;
-		}
-        g_sprintf(command + strlen(command),"\"");
-        //年，假设是2000 ~ 2099 。设置为1900年以前的，应该会出错
-        if ( tmp_date.year >= 2000 )
-            g_sprintf(command + strlen(command),"%d",tmp_date.year);
-        else
-            g_sprintf(command + strlen(command),"%2d",tmp_date.year - 1900);
-        //月，假设为1~12
-        if ( tmp_date.mon >= 10 )
-            g_sprintf(command + strlen(command),"-%2d",tmp_date.mon);
-        else
-            g_sprintf(command + strlen(command),"-0%d",tmp_date.mon);
-        //日，假设为1~31
-        if ( tmp_date.mday >= 10 )
-            g_sprintf(command + strlen(command),"-%2d ",tmp_date.mday);
-        else
-            g_sprintf(command + strlen(command),"-0%d ",tmp_date.mday);
-        //重读时间，得到时分秒
-        timep = core_time();
-	    q = localtime(&timep);
-        //时
-        g_sprintf(command + strlen(command),"%d:",q->tm_hour);
-        //分
-        g_sprintf(command + strlen(command),"%d:",q->tm_min);
-        //秒
-        g_sprintf(command + strlen(command),"%d",q->tm_sec);
-        g_sprintf(command + strlen(command),"\"");
-        //执行命令,更改日期，不改时间
-        system_value = system(command);
-        system("hwclock -w");
+        tm->tm_year = gtk_spin_button_get_value( (GtkSpinButton *)entry_date_p->entry[0]) - 1900;
+        tm->tm_mon = gtk_spin_button_get_value( (GtkSpinButton *)entry_date_p->entry[1]) - 1;
+        tm->tm_mday = gtk_spin_button_get_value( (GtkSpinButton *)entry_date_p->entry[2] );
+
+        core_set_time(mktime(tm));
+
 	    //关闭对话框
         gtk_widget_destroy (GTK_WIDGET (dialog));
 		change_keypress_event (KEYPRESS_MAIN);
 		pp->pos_pos = MENU3_STOP  ;
 		draw_menu3(0, NULL);
-    }
-    else if (GTK_RESPONSE_CANCEL == response_id)
-    {
+    } else if (GTK_RESPONSE_CANCEL == response_id) {
         //关闭对话框
 		gtk_widget_destroy (GTK_WIDGET (dialog));
 		change_keypress_event (KEYPRESS_MAIN);
