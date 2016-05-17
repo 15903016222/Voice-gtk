@@ -28,7 +28,7 @@ struct _Auth {
 
 static Auth *auth = NULL;
 
-static gchar *auth_get_mac()
+static gchar *_get_mac()
 {
     struct ifreq ifreq;
     int sfd;
@@ -152,9 +152,10 @@ void auth_init()
     for (; curNode; curNode = curNode->next) {
         if (!xmlStrcmp(curNode->name, BAD_CAST"MAC")) {
             xmlChar *tmpStr = xmlNodeGetContent(curNode);
-            xmlChar *mac = auth_get_mac();
+            xmlChar *mac = _get_mac();
 
             if ( xmlStrcasecmp(mac, tmpStr) ) {
+                g_message("%s[%d] %s:%s", __func__, __LINE__, mac, tmpStr);
                 g_free(auth);
                 auth = NULL;
                 goto auth_end;
@@ -199,12 +200,18 @@ time_t auth_get_data()
 
 gboolean auth_is_valid()
 {
+    g_message("%s[%d]", __func__, __LINE__);
+    if (auth) {
+        g_message("%s[%d] mode(%d)", __func__, __LINE__, auth->mode);
+    }
     if (NULL == auth || AUTH_MODE_INVALID == auth->mode) {
         return FALSE;
     } else if (AUTH_MODE_NONE == auth->mode) {
         return TRUE;
     } else if (AUTH_MODE_RUN == auth->mode) {
     } else if (AUTH_MODE_DATE == auth->mode) {
+        g_message("%s[%d] data(%ld) time(%ld)", __func__, __LINE__, auth->data, time(NULL));
+        return auth->data > time(NULL);
     } else if (AUTH_MODE_CNT == auth->mode) {
     }
     return FALSE;

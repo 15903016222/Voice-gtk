@@ -4,6 +4,7 @@
  *  Created on: 2012-9-18
  *      Author: wolflord
  */
+#include "../auth/auth.h"
 #include "../drawui.h"
 #include "../base_config.h"
 #include "../base.h"
@@ -232,6 +233,10 @@ void KeyResponseForEsc(int data)
 
 void StartPause()
 {
+    if (!auth_is_valid()) {
+        return;
+    }
+
     /*encoder start or pause*/
     data_731();
 

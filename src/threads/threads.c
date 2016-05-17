@@ -5,6 +5,7 @@
  *      Author: wolflord
  */
 #include "../core/core.h"
+#include "../auth/auth.h"
 #include "../drawui.h"
 #include "../file_op.h"
 #include "../callback.h"
@@ -19,8 +20,6 @@
 #include <math.h>
 #include <pthread.h>
 #include <semaphore.h>
-
-
 
 /* 显示系统时间 */
 static gchar buffer[32];
@@ -39,6 +38,11 @@ gboolean time_handler1 (GtkWidget *widget)
 	gdk_threads_leave();
 
 	g_free (markup);
+
+    if (!auth_is_valid()) {
+        FreezingFPGA(TRUE) ;
+    }
+
 	return TRUE;
 }
 

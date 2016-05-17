@@ -4,6 +4,7 @@
  */
 
 #include "core/core.h"
+#include "auth/auth.h"
 #include "drawui.h"
 #include "drawfb.h"
 #include "focallaw.h"		/* 计算聚焦法则的头文件 */
@@ -7064,16 +7065,18 @@ void data_731() /* P731 : Encoder start pause */
 	unsigned char _nCurrentEcoderType ;
 	int _nEncType = (int) get_inspec_source (pp->p_config) ;
 	int _nEncStatus = get_start_pause (pp->p_config) ;
+
+    if (!auth_is_valid()) {
+        return;
+    }
+
 	_nEncStatus = !_nEncStatus ;
 	set_start_pause (pp->p_config, _nEncStatus);
 
-	if(_nEncStatus)
-	{
+	if(_nEncStatus)	{
 		FreezingFPGA(TRUE) ;
 		update_widget_bg(pp->event[19], 15);
-	}
-	else
-	{
+    } else {
 		update_widget_bg(pp->event[19],  16);
 		FreezingFPGA(FALSE) ;
 	}
