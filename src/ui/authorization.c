@@ -18,6 +18,8 @@
 
 #include "../main.h"
 
+#include "../dev/dev.h"
+
 #define NAND_DEVICE				 "/dev/mtd0"
 #define NAND_DEVICE_BLOCK 		 "/dev/mtdblock2"
 #define NAND_FILE_PATH1 		 "/home/tt/TT/source/user/.nand"
@@ -220,48 +222,31 @@ int time_out(void*  data)
 	return 0;
 }
 
-
-#define MTD_DEVICE "/dev/mtdblock2"
-int GetPermission(char* szPermission_)
+void SetSoftwareVersion()
 {
-	int ret = -1;
-
-	if     (!memcmp(szPermission_ , "32-128-PR-TOFD" , sizeof("32-128-PR-TOFD")-1))  ret = 0;
-	else if(!memcmp(szPermission_ , "32-128-TOFD"    , sizeof("32-128-TOFD")-1))     ret = 1;
-	else if(!memcmp(szPermission_ , "32-64-TOFD"     , sizeof("32-64-TOFD")-1))      ret = 2;
-	else if(!memcmp(szPermission_ , "16-64-TOFD"     , sizeof("16-64-TOFD")-1))      ret = 3;
-
-	printf("ComparePermissionString:  %d \n" , ret) ;
-
-	return ret ;
-}
-
-void SetSoftwareVersion(int nVersion)
-{
-	switch(nVersion)
-	{
-	case 0:
+    switch(dev_type()) {
+    case DEV_32_128_PRO_TOFD:
 		gMaxElementTriggerQty = 32  ;
 		gMaxElementRecieveQty = 128 ;
 		gPithCatchEnable      = -1  ;
 		gTofdEnable           = -1  ;
 		g_pVersion = g_szVersion[0] ;
 		break;
-	case 1:
+    case DEV_32_128_TOFD:
 		gMaxElementTriggerQty = 32  ;
 		gMaxElementRecieveQty = 128 ;
 		gPithCatchEnable      = 0   ;
 		gTofdEnable           = -1  ;
 		g_pVersion = g_szVersion[1] ;
 		break;
-	case 2:
+    case DEV_32_64_TOFD:
 		gMaxElementTriggerQty = 32  ;
 		gMaxElementRecieveQty = 64  ;
 		gPithCatchEnable      = 0   ;
 		gTofdEnable           = -1  ;
 		g_pVersion = g_szVersion[2] ;
 		break;
-	case 3:
+    case DEV_16_64_TOFD:
 		gMaxElementTriggerQty = 16  ;
 		gMaxElementRecieveQty = 64  ;
 		gPithCatchEnable      = 0   ;
@@ -275,43 +260,17 @@ void SetSoftwareVersion(int nVersion)
 		gTofdEnable           = -1  ;
 		g_pVersion = g_szVersion[3] ;
 		break;
-
 	}
-}
-
-void CheckVersion()
-{
-	char buff[100] ;
-	memset(buff , 0 , 100);
-	int ret  ;
-#if ARM
-    int mtd;
-	if ((mtd = open(MTD_DEVICE, O_RDWR | O_SYNC)) == -1)
-	{
-	    perror (MTD_DEVICE);
-		return ;
-	}
-	ret = read(mtd , buff , 30);
-	if(ret == -1)
-	{
-		printf("read count %d\n", ret);
-	}
-	printf("read mtd string --- %s  \n" , buff);
-	close(mtd);
-#endif
-	ret = GetPermission(buff) ;
-	SetSoftwareVersion(ret) ;
-
 }
 
 //不再用之前的读取NAND 工厂ID 的方案
 void AuthorizetionWindow()
 {
-	CheckVersion();
-	MainInit ();
+    SetSoftwareVersion() ;
+    MainInit ();
 }
 
-int ComparePermissionString(char* szPermission_)
+int ComparePermissionString(const gchar* szPermission_)
 {
 	int ret = -1;
 

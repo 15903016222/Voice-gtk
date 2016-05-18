@@ -112,12 +112,15 @@ static size_t _read_cert(gchar *buf, size_t s)
     return len;
 }
 
-void auth_init()
+void auth_init(const gchar *serialNo)
 {
+    g_return_if_fail( NULL != serialNo );
+
     xmlChar buf[1024*4] = {0};
     xmlDocPtr doc = NULL;
     xmlNodePtr curNode = NULL;
     size_t len = 0;
+    gboolean flag = FALSE;
 
     if (auth) {
         g_warning("Auth already init");
@@ -150,19 +153,15 @@ void auth_init()
 
     curNode = curNode->children;
     for (; curNode; curNode = curNode->next) {
-        if (!xmlStrcmp(curNode->name, BAD_CAST"MAC")) {
+        if (!xmlStrcmp(curNode->name, BAD_CAST"ID")) {
             xmlChar *tmpStr = xmlNodeGetContent(curNode);
-            xmlChar *mac = _get_mac();
 
-            if ( xmlStrcasecmp(mac, tmpStr) ) {
-                g_message("%s[%d] %s:%s", __func__, __LINE__, mac, tmpStr);
-                g_free(auth);
-                auth = NULL;
+            if ( xmlStrcasecmp(serialNo, tmpStr) ) {
                 goto auth_end;
             }
+            flag = TRUE;
 
             xmlFree(tmpStr);
-            xmlFree(mac);
         } else if (!xmlStrcmp(curNode->name, BAD_CAST"AUTH")) {
             auth->mode = _get_mode(curNode);
             auth->data = _get_time(curNode);
@@ -170,6 +169,11 @@ void auth_init()
     }
 
 auth_end:
+    if (! flag) {
+        g_free(auth);
+        auth = NULL;
+    }
+
     xmlFreeDoc(doc);
     xmlCleanupParser();
 

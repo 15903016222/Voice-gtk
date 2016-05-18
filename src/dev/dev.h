@@ -14,9 +14,18 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+    DEV_TYPE_INVAILD = -1,
+    DEV_32_128_PRO_TOFD = 0,
+    DEV_32_128_TOFD,
+    DEV_32_64_TOFD,
+    DEV_16_64_TOFD
+} DevType;
+
 extern void dev_init();
 extern void dev_uninit();
-extern const gchar *dev_type();
+extern DevType dev_type();
+extern const gchar *dev_type_str();
 extern const gchar *dev_serial_number();
 extern gint dev_fpga_version();
 

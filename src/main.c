@@ -23,6 +23,7 @@
 #include "globalData.h"
 #include "core/core.h"
 
+#include "dev/dev.h"
 #include "auth/auth.h"
 
 volatile DRAW_UI_P	pp;
@@ -835,7 +836,9 @@ int main (int argc, char *argv[])
 	gdk_threads_init();
 	gtk_init (&argc, &argv);
 
-    auth_init();
+    dev_init();
+
+    auth_init(dev_serial_number());
 
 	AuthorizetionWindow();
 

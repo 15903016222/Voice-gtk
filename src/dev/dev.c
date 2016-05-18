@@ -8,6 +8,11 @@
 
 #include "dev.h"
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+
 #ifdef ARM
 #define MTD_DEVICE "/dev/mtdblock2"
 #else
@@ -29,9 +34,10 @@ void dev_init()
     if (fd < 0) {
         g_error("Read Phascan infomation failed");
     }
-    read(fd, devInfo, sizeof(DevInfo));
-    devInfo.type[64] = 0;
-    devInfo.serialNo[128] = 0;
+    read(fd, &devInfo, sizeof(DevInfo));
+    devInfo.type[63] = 0;
+    devInfo.serialNo[127] = 0;
+
     close(fd);
 }
 
@@ -39,17 +45,32 @@ void dev_uninit()
 {
 }
 
-const gchar *dev_type()
+DevType dev_type()
 {
-    return devInfo->type;
+    if (!g_strcmp0(devInfo.type, "32-128-PR-TOFD")) {
+        return DEV_32_128_PRO_TOFD;
+    } else if(!g_strcmp0(devInfo.type, "32-128-TOFD")) {
+        return DEV_32_128_TOFD;
+    } else if(!g_strcmp0(devInfo.type, "32-64-TOFD")) {
+        return DEV_32_64_TOFD;
+    } else if (!g_strcmp0(devInfo.type, "16-64-TOFD")) {
+        return DEV_16_64_TOFD;
+    }
+
+    return DEV_TYPE_INVAILD;
+}
+
+const gchar *dev_type_str()
+{
+    return devInfo.type;
 }
 
 const gchar *dev_serial_number()
 {
-    return devInfo->serialNo;
+    return devInfo.serialNo;
 }
 
 gint dev_fpga_version()
 {
-    return devInfo->fpgaVersion;
+    return devInfo.fpgaVersion;
 }
