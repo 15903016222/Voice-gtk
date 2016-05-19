@@ -2,7 +2,7 @@
  * ui.h
  *
  *  Created on: 2012-5-3
- *      Author: lzk
+ *
  */
 
 #ifndef UI_H_
@@ -49,4 +49,39 @@ typedef enum
 }
 	RESPONSE_LABELBUTTON_ENUM;
 gboolean keyHandler_dialog(GtkWidget* widget,	GdkEventKey* event, gpointer data);
+
+
+static inline void ui_show_msg_dialog(GtkWindow *w, const gchar *msg, GtkMessageType type, GtkButtonsType btnType)
+{
+    GtkWidget *dialog = gtk_message_dialog_new(w,
+                                               GTK_DIALOG_DESTROY_WITH_PARENT,
+                                               type,
+                                               btnType,
+                                               msg, NULL);
+    gtk_window_set_decorated(GTK_WINDOW(dialog), FALSE);
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
+}
+
+static inline void ui_show_warning(GtkWindow *w, const gchar *msg)
+{
+    ui_show_msg_dialog(w, msg, GTK_MESSAGE_WARNING, GTK_BUTTONS_CLOSE);
+}
+
+static inline void ui_show_info(GtkWindow *w, const gchar *msg)
+{
+    ui_show_msg_dialog(w, msg, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE);
+}
+
+static inline void ui_show_err(GtkWindow *w, const gchar *msg)
+{
+    ui_show_msg_dialog(w, msg, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE);
+}
+
+static inline gboolean ui_show_question(GtkWindow *w, const gchar *msg)
+{
+    ui_show_msg_dialog(w, msg, GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL);
+}
+
+
 #endif /* UI_H_ */

@@ -357,7 +357,7 @@ static const gchar *content_en291[] = {
 
 static const gchar *content_en292[] = {
 	/* 二级菜单第9页下的第2页三级菜单 */
-	"  System Info  ", "  File Manager ", NULL, NULL, NULL, NULL
+    "  System Info  ", "  File Manager ", "Cert import", NULL, NULL, NULL
 };
 
 static const gchar *content_en293[] = {
@@ -568,6 +568,7 @@ const gchar *all_menu_content_en[] =
 	"Symmetric","Straight  Right","Straight  Left",
 	"English","Chinese",
 	"Setup","Data","Report","Image",
+    "U-Disk","Network",
 	""
 };
 

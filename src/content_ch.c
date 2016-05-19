@@ -358,7 +358,7 @@ static const gchar *content_ch291[] = {
 
 static const gchar *content_ch292[] = {
 	/* 二级菜单第9页下的第2页三级菜单 */
-	"系统信息", "文件管理",NULL, NULL, NULL, NULL
+    "系统信息", "文件管理", "证书导入", NULL, NULL, NULL
 };
 
 static const gchar *content_ch293[] = {
@@ -568,6 +568,7 @@ const gchar *all_menu_content_ch[] =
 	"对称","右单边坡口","左单边坡口",
 	"English","中文",
 	"配置","数据","报告","图像",
+    "U盘导入","网络导入",
 	""
 };
 

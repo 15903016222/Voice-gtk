@@ -3860,7 +3860,7 @@ void DrawMenu912()
 #if HIGH_POWER
 	draw3_popdown (menu_content[LANGUAGE+get_language (pp->p_config)], 2, 0);
 #else
-	pp->x_pos = 605, pp->y_pos = 287-26;
+    pp->x_pos = 605, pp->y_pos = 287-26;
 	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 2))
 		draw3_pop_tt (data_912, NULL,
 				menu_content[LANGUAGE+get_language (pp->p_config)],
@@ -3871,9 +3871,16 @@ void DrawMenu912()
 }
 void DrawMenu922()
 {
-	if ( !con2_p[9][2][2] )
-		gtk_widget_hide (pp->eventbox30[2]);
-	gtk_widget_hide (pp->eventbox31[2]);
+//	if ( !con2_p[9][2][2] )
+//		gtk_widget_hide (pp->eventbox30[2]);
+//	gtk_widget_hide (pp->eventbox31[2]);
+    pp->x_pos = 590, pp->y_pos = 287-26;
+    if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 2)) {
+        draw3_pop_tt(data_922, NULL, NULL, menu_content+CERT_IMPORT, 2, 2, 0, 2);
+    } else {
+        draw3_popdown(NULL, 2, 1);
+    }
+
 }
 void DrawMenu932()
 {

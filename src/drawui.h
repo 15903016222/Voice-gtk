@@ -226,7 +226,8 @@
 #define SYMMETRY	(WELD + 6)
 #define LANGUAGE	(SYMMETRY + 3)
 #define FILETYPE	(LANGUAGE + 2)
-#define LOADPART	(FILETYPE + 4)
+#define CERT_IMPORT (FILETYPE + 4)
+#define LOADPART	(CERT_IMPORT + 2)
 //#define LAW_CONFIG	(WGROUP + 3)
 //#define L_CONFIG	(LAW_CONFIG + 4)
 

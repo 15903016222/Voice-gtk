@@ -28,30 +28,6 @@ struct _Auth {
 
 static Auth *auth = NULL;
 
-static gchar *_get_mac()
-{
-    struct ifreq ifreq;
-    int sfd;
-
-    sfd=socket(AF_INET,SOCK_STREAM,0);
-    if ( sfd<0 ) {
-        return NULL;
-    }
-
-    strcpy(ifreq.ifr_name, "usb0");
-    if (ioctl(sfd,SIOCGIFHWADDR, &ifreq)<0){
-        close(sfd);
-        return NULL;
-    }
-    return g_strdup_printf("%02x%02x%02x%02x%02x%02x",
-                    (guchar)ifreq.ifr_hwaddr.sa_data[0],
-                    (guchar)ifreq.ifr_hwaddr.sa_data[1],
-                    (guchar)ifreq.ifr_hwaddr.sa_data[2],
-                    (guchar)ifreq.ifr_hwaddr.sa_data[3],
-                    (guchar)ifreq.ifr_hwaddr.sa_data[4],
-                    (guchar)ifreq.ifr_hwaddr.sa_data[5]);
-}
-
 static AuthMode _get_mode(xmlNodePtr node)
 {
     xmlChar *tmpStr = xmlGetProp(node, "mode");
@@ -204,19 +180,15 @@ time_t auth_get_data()
 
 gboolean auth_is_valid()
 {
-    g_message("%s[%d]", __func__, __LINE__);
-    if (auth) {
-        g_message("%s[%d] mode(%d)", __func__, __LINE__, auth->mode);
-    }
     if (NULL == auth || AUTH_MODE_INVALID == auth->mode) {
         return FALSE;
     } else if (AUTH_MODE_NONE == auth->mode) {
         return TRUE;
-    } else if (AUTH_MODE_RUN == auth->mode) {
+    } else if (AUTH_MODE_RUN == auth->mode
+               || AUTH_MODE_CNT == auth->mode) {
+        return auth->data > 0;
     } else if (AUTH_MODE_DATE == auth->mode) {
-        g_message("%s[%d] data(%ld) time(%ld)", __func__, __LINE__, auth->data, time(NULL));
         return auth->data > time(NULL);
-    } else if (AUTH_MODE_CNT == auth->mode) {
     }
     return FALSE;
 }

@@ -284,6 +284,7 @@ extern void data_903 (GtkMenuItem *menuitem, gpointer data);
 extern void data_912 (GtkMenuItem *menuitem, gpointer data);
 extern void data_913 (GtkMenuItem *menuitem, gpointer data);
 extern void data_9131 (GtkMenuItem *menuitem, gpointer data);
+extern void data_922(GtkMenuItem *menuitem, gpointer data);
 extern void data_930 (GtkMenuItem *menuitem, gpointer data);
 extern void b2_fun0(DRAW_UI_P p, guint pos);
 extern void b3_fun0(gpointer data);
