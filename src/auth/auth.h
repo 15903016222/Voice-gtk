@@ -21,7 +21,7 @@ typedef enum {
     AUTH_MODE_DATE,     /*有效期模式*/
 } AuthMode;
 
-extern void auth_init(const gchar *serialNo);
+extern void auth_init(const gchar *certFile, const gchar *pubPem, const gchar *serialNo);
 extern AuthMode auth_get_mode();
 extern time_t auth_get_data();
 extern gboolean auth_is_valid();

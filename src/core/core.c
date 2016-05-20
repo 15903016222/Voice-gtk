@@ -15,7 +15,7 @@
 static time_t phascanTime = 0;
 static pthread_mutex_t phascanTimeMutex = PTHREAD_MUTEX_INITIALIZER;
 
-#define PHASCAN_TIME_FILE "/home/tt/.phascan_time"
+#define PHASCAN_TIME_FILE PHASCAN_PATH"/time"
 
 static void time_init();
 

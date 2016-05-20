@@ -40,7 +40,7 @@ gboolean time_handler1 (GtkWidget *widget)
 	g_free (markup);
 
     if (!auth_is_valid()) {
-        FreezingFPGA(TRUE) ;
+        FreezingFPGA(TRUE);
     }
 
 	return TRUE;

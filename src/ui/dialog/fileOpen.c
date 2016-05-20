@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "../core/core.h"
 #include "../ui.h"
 #include "../workpiece.h"
 #include "../../globalData.h"
@@ -335,11 +336,9 @@ static void on_authOkBtn_clicked(GtkWidget *widget, gpointer data)
     if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
         gchar *filename = NULL;
         gtk_tree_model_get(model, &iter, FILELIST_COLUMN_FILENAME, &filename, -1);
-        gchar *cmd = g_strdup_printf("cp %s%s /home/tt/.Phascan.cert && sync", USB_DEV_PATH, filename);
+        gchar *cmd = g_strdup_printf("cp %s%s %s/auth.cert && sync", USB_DEV_PATH, filename, PHASCAN_PATH);
         if ( system(cmd) != 0 ) {
             ui_show_warning(GTK_WINDOW(data), "Import Failed");
-        } else {
-            ui_show_info(GTK_WINDOW(data), "Import Successful");
         }
         g_free(cmd);
         g_free(filename);

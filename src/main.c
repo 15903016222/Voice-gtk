@@ -838,7 +838,7 @@ int main (int argc, char *argv[])
 
     dev_init();
 
-    auth_init(dev_serial_number());
+    auth_init(PHASCAN_PATH"/auth.cert", PHASCAN_PATH"/pub.pem", dev_serial_number());
 
 	AuthorizetionWindow();
 

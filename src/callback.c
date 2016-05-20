@@ -38,8 +38,7 @@
 #include "globalData.h"
 #include "calculation/sizingcurve.h"
 #include "calculation/limit.h"
-
-
+#include "dev/dev.h"
 
 //void   showHelp(MENU_UNION menu_union ,int enable);
 int    menu3FuncTrans(MENU_UNION menu_union);
@@ -7260,6 +7259,15 @@ void data_922(GtkMenuItem *menuitem, gpointer data)
     } else if (1 == (gint)data) {
         /* 网络导入模式 */
         system("wget http://www.cndoppler.cn/phascan/serialNo.cert -O /home/tt/.Phascan.cert");
+    }
+
+    auth_uninit();
+    auth_init(PHASCAN_PATH"/auth.cert", PHASCAN_PATH"/pub.pem", dev_serial_number());
+
+    if (auth_is_valid()) {
+        FreezingFPGA(FALSE);
+    } else {
+        ui_show_warning(GTK_WINDOW(pp->window), "The Certification file is invalid");
     }
 }
 

@@ -78,10 +78,12 @@ static time_t _get_time(xmlNodePtr node)
     return mktime(&t);
 }
 
-static size_t _read_cert(gchar *buf, size_t s)
+static size_t _read_cert(const gchar *certFile, const gchar *pubPem, gchar *buf, size_t s)
 {
     size_t len = 0;
-    FILE *fp = popen("rsautl -verify -inkey pub.pem -pubin -in Phascan.cert", "r");
+    gchar *cmd = g_strdup_printf("rsautl -verify -inkey %s -pubin -in %s", pubPem, certFile);
+    FILE *fp = popen(cmd, "r");
+    g_free(cmd);
     if (NULL == fp) {
         return 0;
     }
@@ -90,7 +92,7 @@ static size_t _read_cert(gchar *buf, size_t s)
     return len;
 }
 
-void auth_init(const gchar *serialNo)
+void auth_init(const gchar *certFile, const gchar *pubPem, const gchar *serialNo)
 {
     g_return_if_fail( NULL != serialNo );
 
@@ -108,7 +110,7 @@ void auth_init(const gchar *serialNo)
     }
     pthread_rwlock_unlock(&rwlock);
 
-    len = _read_cert(buf, sizeof(buf));
+    len = _read_cert(certFile, pubPem, buf, sizeof(buf));
     if (len <= 0) {
         g_warning("Read cert file failed");
         goto auth_end1;

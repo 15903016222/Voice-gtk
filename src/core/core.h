@@ -11,6 +11,8 @@
 
 #include <glib.h>
 
+#define PHASCAN_PATH    "/home/tt/.phascan"
+
 G_BEGIN_DECLS
 
 #include "gpio.h"
