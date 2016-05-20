@@ -18,6 +18,7 @@
 #include <libxml/tree.h>
 
 #include <string.h>
+#include <pthread.h>
 
 typedef struct _Auth Auth;
 
@@ -27,6 +28,7 @@ struct _Auth {
 };
 
 static Auth *auth = NULL;
+pthread_rwlock_t  rwlock = PTHREAD_RWLOCK_INITIALIZER;
 
 static AuthMode _get_mode(xmlNodePtr node)
 {
@@ -98,15 +100,18 @@ void auth_init(const gchar *serialNo)
     size_t len = 0;
     gboolean flag = FALSE;
 
+    pthread_rwlock_rdlock(&rwlock);
     if (auth) {
+        pthread_rwlock_unlock(&rwlock);
         g_warning("Auth already init");
         return;
     }
+    pthread_rwlock_unlock(&rwlock);
 
     len = _read_cert(buf, sizeof(buf));
     if (len <= 0) {
         g_warning("Read cert file failed");
-        return;
+        goto auth_end1;
     }
 
     xmlKeepBlanksDefault(0);
@@ -114,16 +119,16 @@ void auth_init(const gchar *serialNo)
     doc = xmlParseMemory(buf, len);
     if (NULL == doc) {
         g_warning("Auth Parse failed");
-        return;
+        goto auth_end1;
     }
 
     curNode = xmlDocGetRootElement(doc);
     if (NULL == curNode) {
         g_warning("Auth get element failed");
-        xmlFreeDoc(doc);
-        xmlCleanupParser();
-        return;
+        goto auth_end1;
     }
+
+    pthread_rwlock_wrlock(&rwlock);
 
     auth = g_malloc0(sizeof(Auth));
 
@@ -149,7 +154,9 @@ auth_end:
         g_free(auth);
         auth = NULL;
     }
+    pthread_rwlock_unlock(&rwlock);
 
+auth_end1:
     xmlFreeDoc(doc);
     xmlCleanupParser();
 
@@ -158,37 +165,48 @@ auth_end:
 
 void auth_uninit()
 {
+    pthread_rwlock_wrlock(&rwlock);
     g_free(auth);
     auth = NULL;
+    pthread_rwlock_unlock(&rwlock);
 }
+
 
 AuthMode auth_get_mode()
 {
+    AuthMode mode = AUTH_MODE_INVALID;
+    pthread_rwlock_rdlock(&rwlock);
     if (auth) {
-        return auth->mode;
+        mode = auth->mode;
     }
-    return AUTH_MODE_INVALID;
+    pthread_rwlock_unlock(&rwlock);
+    return mode;
 }
 
 time_t auth_get_data()
 {
+    time_t t = 0;
+    pthread_rwlock_rdlock(&rwlock);
     if (auth) {
-        return auth->data;
+        t = auth->data;
     }
-    return 0;
+    pthread_rwlock_unlock(&rwlock);
+    return t;
 }
 
 gboolean auth_is_valid()
 {
+    gboolean flag = FALSE;
+    pthread_rwlock_rdlock(&rwlock);
     if (NULL == auth || AUTH_MODE_INVALID == auth->mode) {
-        return FALSE;
     } else if (AUTH_MODE_NONE == auth->mode) {
-        return TRUE;
+        flag = TRUE;
     } else if (AUTH_MODE_RUN == auth->mode
                || AUTH_MODE_CNT == auth->mode) {
-        return auth->data > 0;
+        flag = ( auth->data > 0 );
     } else if (AUTH_MODE_DATE == auth->mode) {
-        return auth->data > time(NULL);
+        flag = ( auth->data > time(NULL) );
     }
-    return FALSE;
+    pthread_rwlock_unlock(&rwlock);
+    return flag;
 }
