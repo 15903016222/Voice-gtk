@@ -18,6 +18,7 @@
 #include "../../uihandler/handler.h"
 #include "../../lzk/fileHandler.h"
 #include "dxf.h"
+#include "../file_op.h"
 
 void webkitFullScreenNew(GtkWidget* fatherWidget ,const char* url);
 
@@ -323,4 +324,69 @@ GtkWidget *report_file_dialog(GtkWidget *parent)
 
     g_object_set_data(G_OBJECT(dialog) ,"callbackRowActivated" ,openFile);
     return dialog;
+}
+
+static void on_authOkBtn_clicked(GtkWidget *widget, gpointer data)
+{
+    GtkWidget* treeview = g_object_get_data(G_OBJECT(data) ,"treeview");
+    GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+    GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeview));
+    GtkTreeIter iter;
+    if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
+        gchar *filename = NULL;
+        gtk_tree_model_get(model, &iter, FILELIST_COLUMN_FILENAME, &filename, -1);
+        gchar *cmd = g_strdup_printf("cp %s%s /home/tt/.Phascan.cert && sync", USB_DEV_PATH, filename);
+        if ( system(cmd) != 0 ) {
+            ui_show_warning(GTK_WINDOW(data), "Import Failed");
+        } else {
+            ui_show_info(GTK_WINDOW(data), "Import Successful");
+        }
+        g_free(cmd);
+        g_free(filename);
+    }
+
+    gtk_widget_destroy(GTK_WIDGET(data));
+}
+
+static void on_authCancelBtn_clicked(GtkWidget *widget, gpointer data)
+{
+    gtk_widget_destroy(GTK_WIDGET(data));
+}
+
+GtkWidget *auth_file_dialog(GtkWidget *parent)
+{
+    GtkWidget *dlg = gtk_dialog_new();
+    GtkWidget *vbox = gtk_dialog_get_content_area(GTK_DIALOG(dlg));
+    GtkWidget *scroll = filelistScrollNew();
+    GtkWidget *okBtn = gtk_button_new_with_label("OK");
+    GtkWidget *cancelBtn = gtk_button_new_with_label("Cancel");
+    GtkWidget *hbox = gtk_hbox_new(TRUE, 5);
+
+    gtk_widget_set_parent(dlg, parent);
+
+    gtk_widget_set_size_request(dlg, 350, 400);
+    gtk_window_set_position(GTK_WINDOW(dlg), GTK_WIN_POS_CENTER_ALWAYS);
+    gtk_window_set_decorated(GTK_WINDOW(dlg), FALSE);	/*设置不提供装饰*/
+
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+
+    gtk_box_pack_start(GTK_BOX(hbox), cancelBtn, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), okBtn, TRUE, TRUE, 0);
+
+    gtk_box_pack_start(GTK_BOX(vbox), scroll, TRUE, TRUE, 5);
+    gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+
+    GtkWidget* treeview = g_object_get_data(G_OBJECT(scroll) ,"treeview");
+
+    gtk_widget_show_all(gtk_dialog_get_content_area(GTK_DIALOG(dlg)));
+    gtk_widget_hide (gtk_dialog_get_action_area(GTK_DIALOG(dlg)));
+
+    filelistSetPathAndSuffix(treeview ,"/opt/usbStorage/", ".cert");
+
+    g_object_set_data(G_OBJECT(dlg), "treeview", treeview);
+
+    g_signal_connect(G_OBJECT(okBtn), "clicked", G_CALLBACK(on_authOkBtn_clicked),  dlg);
+    g_signal_connect(G_OBJECT(cancelBtn), "clicked", G_CALLBACK(on_authCancelBtn_clicked),  dlg);
+
+    return dlg;
 }

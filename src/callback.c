@@ -7243,32 +7243,23 @@ void data_9131(GtkMenuItem *menuitem, gpointer data) /* Preferences->system->ass
 {
 }
 
-//extern GtkWidget *auth_file_dialog(GtkWidget *parent);
+extern GtkWidget *auth_file_dialog(GtkWidget *parent);
 void data_922(GtkMenuItem *menuitem, gpointer data)
 {
     if (0 == (gint)data) {
+        /* U盘导入模式 */
         if (fileDetectUSB()) {
             /*没有插入U盘*/
             ui_show_warning(GTK_WINDOW(pp->window), "Please insert U-Disk");
             return;
-        } else if ( !g_file_test(USB_DEV_PATH"Phascan.cert",
-                                 G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR) ) {
-            /*没有证书文件*/
-            ui_show_warning(GTK_WINDOW(pp->window), "Can't find Certification file");
-            return;
         }
 
-//        GtkWidget *dlg = auth_file_dialog(pp->window);
-//        gtk_dialog_run(GTK_DIALOG(dlg));
+        GtkWidget *dlg = auth_file_dialog(pp->window);
+        gtk_dialog_run(GTK_DIALOG(dlg));
 
-        if ( system("cp "USB_DEV_PATH"Phascan.cert /home/tt/.Phascan.cert && sync") != 0 ) {
-            ui_show_warning(GTK_WINDOW(pp->window), "Import Failed");
-        } else {
-            ui_show_info(GTK_WINDOW(pp->window), "Import Successful");
-        }
     } else if (1 == (gint)data) {
+        /* 网络导入模式 */
         system("wget http://www.cndoppler.cn/phascan/serialNo.cert -O /home/tt/.Phascan.cert");
-        g_message("%s[%d]", __func__, __LINE__);
     }
 }
 

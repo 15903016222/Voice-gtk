@@ -39,7 +39,6 @@ void time_init()
     pthread_mutex_lock(&phascanTimeMutex);
     fscanf(fp, "%ld", &phascanTime);
     pthread_mutex_unlock(&phascanTimeMutex);
-    g_message("%s[%d] time(%ld)", __func__, __LINE__, phascanTime);
     fclose(fp);
 }
 
