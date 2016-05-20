@@ -36,6 +36,7 @@
 #include "../../lzk/fileHandler.h"
 #include "../authorization.h"
 #include "../workpiece.h"
+#include "../auth/auth.h"
 
 void DrawMenu001()
 {
@@ -2139,8 +2140,7 @@ void DrawMenu741()
 extern GtkWidget* fileOpenNew(GtkWidget* fatherWidget);
 void DrawMenu801()
 {
-	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1))
-	{
+    if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1) && auth_is_valid()) {
 //		draw_dialog_all (DIALOG_FILE_OPEN);
 		GtkWidget* w = fileOpenNew(pp->window);
 		gtk_dialog_run(GTK_DIALOG(w));
@@ -2266,14 +2266,12 @@ void DrawMenu911()
 extern GtkWidget* fileManageNew(GtkWidget* fatherWidget);
 void DrawMenu921()
 {
-	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1))
-	{
-	//	draw_dialog_all(DIALOG_FILE_MANAGE);
+    if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1) && auth_is_valid()) {
 		GtkWidget* w = fileManageNew(pp->window);
 		gtk_widget_show(w);
-	}
-	else
-		draw3_popdown(NULL,1,1);
+    } else {
+        draw3_popdown(NULL,1,1);
+    }
 }
 void DrawMenu931()
 {
