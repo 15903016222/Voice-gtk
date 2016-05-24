@@ -24,7 +24,6 @@
 #include "core/core.h"
 
 #include "dev/dev.h"
-#include "auth/auth.h"
 
 volatile DRAW_UI_P	pp;
 void init_group_spi (int group);
@@ -838,9 +837,9 @@ int main (int argc, char *argv[])
 
     dev_init();
 
-    auth_init(PHASCAN_PATH"/auth.cert", PHASCAN_PATH"/pub.pem", dev_serial_number());
+    SetSoftwareVersion();
 
-	AuthorizetionWindow();
+    MainInit();
 
 #if ARM
 	system("killall psplash");

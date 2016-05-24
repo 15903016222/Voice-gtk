@@ -11,6 +11,7 @@
 #include "menuFunc.h"
 #include "../../string/_string.h"
 #include "../../map/menuMap.h"
+#include "../../dev/dev.h"
 
 #include <math.h>
 
@@ -107,7 +108,7 @@ static void phascan_about()
 //    g_free(version);
 
     gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(dialog), "CopyRight©2010-2016 Doppler All rights reserved");
-    gchar *msg = g_strdup_printf("%d.%d.%d (%s)\nPHASCAN has a powerful detection capability, can achieve a variety of scanning mode and focus mode, which greatly improves the detection reliability.",APP_MAJOR, APP_MINOR, APP_MICRO, GIT_COMMIT);
+    gchar *msg = g_strdup_printf("%d.%d.%d (%s)\nID:%s\nPHASCAN has a powerful detection capability, can achieve a variety of scanning mode and focus mode, which greatly improves the detection reliability.",APP_MAJOR, APP_MINOR, APP_MICRO, GIT_COMMIT, dev_serial_number());
     gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(dialog), msg);
     g_free(msg);
 

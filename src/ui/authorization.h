@@ -8,7 +8,7 @@
 #ifndef AUTHORIZATION_H_
 #define AUTHORIZATION_H_
 
-extern void AuthorizetionWindow() ;
+extern void SetSoftwareVersion();
 extern void SetSoftwareVersionPermission(char* szPermission_);
 
 extern int gMaxElementTriggerQty ;

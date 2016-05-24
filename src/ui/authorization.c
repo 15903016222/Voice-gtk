@@ -263,13 +263,6 @@ void SetSoftwareVersion()
 	}
 }
 
-//不再用之前的读取NAND 工厂ID 的方案
-void AuthorizetionWindow()
-{
-    SetSoftwareVersion() ;
-    MainInit ();
-}
-
 int ComparePermissionString(const gchar* szPermission_)
 {
 	int ret = -1;

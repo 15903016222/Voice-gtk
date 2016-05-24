@@ -4,7 +4,6 @@
  */
 
 #include "core/core.h"
-#include "auth/auth.h"
 #include "drawui.h"
 #include "drawfb.h"
 #include "focallaw.h"		/* 计算聚焦法则的头文件 */
@@ -7066,7 +7065,7 @@ void data_731() /* P731 : Encoder start pause */
 	int _nEncType = (int) get_inspec_source (pp->p_config) ;
 	int _nEncStatus = get_start_pause (pp->p_config) ;
 
-    if (!auth_is_valid()) {
+    if (!dev_is_valid()) {
         return;
     }
 
@@ -7261,10 +7260,7 @@ void data_922(GtkMenuItem *menuitem, gpointer data)
         system("wget http://www.cndoppler.cn/phascan/serialNo.cert -O /home/tt/.Phascan.cert");
     }
 
-    auth_uninit();
-    auth_init(PHASCAN_PATH"/auth.cert", PHASCAN_PATH"/pub.pem", dev_serial_number());
-
-    if (auth_is_valid()) {
+    if (dev_is_valid()) {
         FreezingFPGA(FALSE);
     } else {
         ui_show_warning(GTK_WINDOW(pp->window), "The Certification file is invalid");

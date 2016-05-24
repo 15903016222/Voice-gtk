@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "../core/core.h"
+#include "../dev/dev.h"
 #include "../ui.h"
 #include "../workpiece.h"
 #include "../../globalData.h"
@@ -336,11 +337,11 @@ static void on_authOkBtn_clicked(GtkWidget *widget, gpointer data)
     if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
         gchar *filename = NULL;
         gtk_tree_model_get(model, &iter, FILELIST_COLUMN_FILENAME, &filename, -1);
-        gchar *cmd = g_strdup_printf("cp %s%s %s/auth.cert && sync", USB_DEV_PATH, filename, PHASCAN_PATH);
-        if ( system(cmd) != 0 ) {
+        gchar *certFile = g_strdup_printf("%s%s", USB_DEV_PATH, filename);
+        if ( ! dev_import_cert(certFile) ) {
             ui_show_warning(GTK_WINDOW(data), "Import Failed");
         }
-        g_free(cmd);
+        g_free(certFile);
         g_free(filename);
     }
 
@@ -361,7 +362,7 @@ GtkWidget *auth_file_dialog(GtkWidget *parent)
     GtkWidget *cancelBtn = gtk_button_new_with_label("Cancel");
     GtkWidget *hbox = gtk_hbox_new(TRUE, 5);
 
-    gtk_widget_set_parent(dlg, parent);
+//    gtk_widget_set_parent(dlg, parent);
 
     gtk_widget_set_size_request(dlg, 350, 400);
     gtk_window_set_position(GTK_WINDOW(dlg), GTK_WIN_POS_CENTER_ALWAYS);
@@ -380,7 +381,7 @@ GtkWidget *auth_file_dialog(GtkWidget *parent)
     gtk_widget_show_all(gtk_dialog_get_content_area(GTK_DIALOG(dlg)));
     gtk_widget_hide (gtk_dialog_get_action_area(GTK_DIALOG(dlg)));
 
-    filelistSetPathAndSuffix(treeview ,"/opt/usbStorage/", ".cert");
+    filelistSetPathAndSuffix(treeview, USB_DEV_PATH, ".cert");
 
     g_object_set_data(G_OBJECT(dlg), "treeview", treeview);
 

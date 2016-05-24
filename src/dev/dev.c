@@ -7,42 +7,89 @@
  */
 
 #include "dev.h"
+#include "cert.h"
+#include "../core/core.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <stdio.h>
 
-#ifdef ARM
-#define MTD_DEVICE "/dev/mtdblock2"
-#else
-#define MTD_DEVICE "/dev/zero"
-#endif
+#include <pthread.h>
+
+#define INFO_FILE PHASCAN_PATH"/dev.info"
+#define CERT_FILE PHASCAN_PATH"/auth.cert"
+#define PUBLIC_PEM "/home/tt/.secure/pub.pem"
 
 typedef struct _DevInfo DevInfo;
 struct _DevInfo {
     gchar type[64];
     gint fpgaVersion;
     gchar serialNo[128];
+    gint runCount;
+    time_t runTime;
 };
 
 static DevInfo devInfo;
+static Cert *cert = NULL;
+static pthread_rwlock_t certRWLock = PTHREAD_RWLOCK_INITIALIZER;
+static pthread_rwlock_t mountRWlock = PTHREAD_RWLOCK_INITIALIZER;
+
+#ifdef ARM
+#define MOUNT_PHASCAN() { pthread_rwlock_wrlock(&mountRWlock); system("mount /dev/mtdblock2 /home/tt/.phascan"); }
+#define UMOUNT_PHASCAN() { pthread_rwlock_unlock(&mountRWlock); system("umount /home/tt/.phascan"); }
+#else
+#define MOUNT_PHASCAN() pthread_rwlock_wrlock(&mountRWlock)
+#define UMOUNT_PHASCAN() pthread_rwlock_unlock(&mountRWlock)
+#endif
+
+/**
+ * @brief dev_reload_cert   重新载入证书
+ */
+static void dev_reload_cert();
+
+static void dev_save_info()
+{
+    MOUNT_PHASCAN();
+    FILE *fp = fopen(INFO_FILE, "w");
+    if (NULL == fp) {
+        UMOUNT_PHASCAN();
+        g_error("Read Phascan infomation failed");
+    }
+    fwrite(&devInfo, sizeof(DevInfo), 1, fp);
+    fclose(fp);
+    UMOUNT_PHASCAN();
+}
 
 void dev_init()
 {
-    int fd = open(MTD_DEVICE, O_RDONLY);
-    if (fd < 0) {
-        g_error("Read Phascan infomation failed");
+    MOUNT_PHASCAN();
+    FILE *fp = fopen(INFO_FILE, "r");
+    if (NULL == fp) {
+        UMOUNT_PHASCAN();
+        g_warning("Read Phascan infomation failed");
+        return;
     }
-    read(fd, &devInfo, sizeof(DevInfo));
-    devInfo.type[63] = 0;
-    devInfo.serialNo[127] = 0;
+    fread(&devInfo, sizeof(DevInfo), 1, fp);
+    fclose(fp);
+    UMOUNT_PHASCAN();
 
-    close(fd);
+    g_message("%s[%d] %s %s fpga(%d) cnt(%d) run(%d)", __func__, __LINE__, devInfo.type, devInfo.serialNo, devInfo.fpgaVersion, devInfo.runCount, devInfo.runTime);
+
+
+    devInfo.runCount += 1;
+    dev_save_info();
+
+    dev_reload_cert();
 }
 
 void dev_uninit()
 {
+    pthread_rwlock_wrlock(&certRWLock);
+    cert_free(cert);
+    cert = NULL;
+    pthread_rwlock_unlock(&certRWLock);
 }
 
 DevType dev_type()
@@ -73,4 +120,54 @@ const gchar *dev_serial_number()
 gint dev_fpga_version()
 {
     return devInfo.fpgaVersion;
+}
+
+gboolean dev_is_valid()
+{
+    gboolean flag = FALSE;
+    pthread_rwlock_rdlock(&certRWLock);
+    if ( cert ) {
+        switch( cert_get_mode(cert) ) {
+        case CERT_MODE_NONE:
+            flag = TRUE;
+            break;
+        case CERT_MODE_RUNTIME:
+            flag = cert_get_data(cert) > devInfo.runTime;
+            break;
+        case CERT_MODE_RUNCOUNT:
+            flag = cert_get_data(cert) >= devInfo.runCount;
+            break;
+        case CERT_MODE_DATE:
+            flag = cert_get_data(cert) > time(NULL);
+            break;
+        default:
+            break;
+        }
+    }
+    pthread_rwlock_unlock(&certRWLock);
+
+    return flag;
+}
+
+void dev_reload_cert()
+{
+    pthread_rwlock_wrlock(&certRWLock);
+    cert_free(cert);
+    MOUNT_PHASCAN();
+    cert = cert_load(CERT_FILE, PUBLIC_PEM);
+    UMOUNT_PHASCAN();
+    pthread_rwlock_unlock(&certRWLock);
+}
+
+gboolean dev_import_cert(const gchar *cert)
+{
+    MOUNT_PHASCAN();
+    gchar *cmd = g_strdup_printf("cp %s %s && sync", cert, CERT_FILE);
+    if ( system(cmd) != 0 ) {
+        UMOUNT_PHASCAN();
+        return FALSE;
+    }
+    UMOUNT_PHASCAN();
+    dev_reload_cert();
+    return TRUE;
 }

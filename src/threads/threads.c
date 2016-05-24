@@ -5,7 +5,6 @@
  *      Author: wolflord
  */
 #include "../core/core.h"
-#include "../auth/auth.h"
 #include "../drawui.h"
 #include "../file_op.h"
 #include "../callback.h"
@@ -39,7 +38,7 @@ gboolean time_handler1 (GtkWidget *widget)
 
 	g_free (markup);
 
-    if (!auth_is_valid()) {
+    if (!dev_is_valid()) {
         FreezingFPGA(TRUE);
     }
 
