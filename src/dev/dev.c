@@ -45,9 +45,9 @@ static pthread_rwlock_t mountRWlock = PTHREAD_RWLOCK_INITIALIZER;
 #endif
 
 /**
- * @brief dev_reload_cert   重新载入证书
+ * @brief dev_load_cert   重新载入证书
  */
-static void dev_reload_cert();
+static void dev_load_cert();
 
 static void dev_save_info()
 {
@@ -60,6 +60,13 @@ static void dev_save_info()
     fwrite(&devInfo, sizeof(DevInfo), 1, fp);
     fclose(fp);
     UMOUNT_PHASCAN();
+}
+
+static gboolean dev_increase_runtime(gpointer data)
+{
+    devInfo.runTime += 60;
+    dev_save_info();
+    return TRUE;
 }
 
 void dev_init()
@@ -81,7 +88,9 @@ void dev_init()
     devInfo.runCount += 1;
     dev_save_info();
 
-    dev_reload_cert();
+    g_timeout_add(60*1000, dev_increase_runtime, NULL);
+
+    dev_load_cert();
 }
 
 void dev_uninit()
@@ -132,7 +141,7 @@ gboolean dev_is_valid()
             flag = TRUE;
             break;
         case CERT_MODE_RUNTIME:
-            flag = cert_get_data(cert) > devInfo.runTime;
+            flag = cert_get_data(cert) >= devInfo.runTime;
             break;
         case CERT_MODE_RUNCOUNT:
             flag = cert_get_data(cert) >= devInfo.runCount;
@@ -149,7 +158,7 @@ gboolean dev_is_valid()
     return flag;
 }
 
-void dev_reload_cert()
+inline void dev_load_cert()
 {
     pthread_rwlock_wrlock(&certRWLock);
     cert_free(cert);
@@ -168,6 +177,6 @@ gboolean dev_import_cert(const gchar *cert)
         return FALSE;
     }
     UMOUNT_PHASCAN();
-    dev_reload_cert();
+    dev_load_cert();
     return TRUE;
 }
