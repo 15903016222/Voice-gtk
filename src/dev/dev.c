@@ -82,9 +82,6 @@ void dev_init()
     fclose(fp);
     UMOUNT_PHASCAN();
 
-    g_message("%s[%d] %s %s fpga(%d) cnt(%d) run(%d)", __func__, __LINE__, devInfo.type, devInfo.serialNo, devInfo.fpgaVersion, devInfo.runCount, devInfo.runTime);
-
-
     devInfo.runCount += 1;
     dev_save_info();
 
@@ -129,6 +126,16 @@ const gchar *dev_serial_number()
 gint dev_fpga_version()
 {
     return devInfo.fpgaVersion;
+}
+
+gint dev_run_count()
+{
+    return devInfo.runCount;
+}
+
+time_t dev_run_time()
+{
+    return devInfo.runTime;
 }
 
 gboolean dev_is_valid()
@@ -180,3 +187,4 @@ gboolean dev_import_cert(const gchar *cert)
     dev_load_cert();
     return TRUE;
 }
+

@@ -128,7 +128,6 @@ Cert *cert_load(const gchar *certFile, const gchar *pubPem)
 {
     g_return_val_if_fail( NULL != certFile
             || NULL != pubPem, NULL);
-    g_message("%s[%d] (%s, %s)", __func__, __LINE__, certFile, pubPem);
     xmlChar buf[1024*4] = {0};
     size_t len = 0;
 

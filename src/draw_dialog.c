@@ -8,6 +8,7 @@
  */
 
 #include "core/core.h"
+#include "dev/dev.h"
 #include "base.h"
 #include "base_config.h"
 #include "draw_dialog.h"
@@ -1364,15 +1365,14 @@ static void draw_system_info ()
 	gtk_widget_set_size_request(GTK_WIDGET (dialog), 800, 600);
 	gtk_widget_modify_bg(GTK_WIDGET (dialog), GTK_STATE_NORMAL, &color_black);	/*黑色背景*/
 
-	switch (get_language(pp->p_config))
-	{
+    switch (get_language(pp->p_config)) {
 		case ENGLISH_:
 			char_menu[0] = "";
 			char_menu[1] = "";
 			char_menu[2] = "";
 			char_menu[3] = "";
 			char_menu[4] = "Print";
-			char_menu[5] = "Save and close";
+            char_menu[5] = "Save";
 			char_menu[6] = "Close";
 			break;
 		case CHINESE_:
@@ -1381,7 +1381,7 @@ static void draw_system_info ()
 			char_menu[2] = "";
 			char_menu[3] = "";
 			char_menu[4] = "打印";
-			char_menu[5] = "保存并关闭";
+            char_menu[5] = "保存";
 			char_menu[6] = "关闭";
 			break;
 		default:
@@ -1390,15 +1390,14 @@ static void draw_system_info ()
 			char_menu[2] = "";
 			char_menu[3] = "";
 			char_menu[4] = "Print";
-			char_menu[5] = "Save and close";
+            char_menu[5] = "Save";
 			char_menu[6] = "Close";
 			break;
 	}
 
 	top_box = gtk_vbox_new(FALSE,0);
 	bottom_box = gtk_hbox_new(FALSE,0);
-	for(i=0;i<7;i++)
-	{
+    for ( i=0; i<7; ++i ) {
 		hbox_menu[i] = gtk_event_box_new();
 		gtk_widget_set_size_request(GTK_WIDGET(hbox_menu[i]),114,85);
 		update_widget_bg(hbox_menu[i], /*backpic[1]*/1);
@@ -1414,7 +1413,30 @@ static void draw_system_info ()
 	web_view = WEBKIT_WEB_VIEW (webkit_web_view_new());
 	//web的编码方式
 	webkit_web_view_set_custom_encoding (web_view, "UTF-8");
-	//
+
+    gchar *content = g_strdup_printf("<html>"
+                                     "<head><title>System Infomation</title></head>"
+                                     "<body>"
+                                     "<h3>Device</h3>"
+                                     "<table border=1>"
+                                     "<tr><th>Serial Number</th><th>Type</th><th>FPGA</th><th>Run Time(s)</th><th>Run Count</th></tr>"
+                                     "<tr><th>%s</th>           <th>%s</th>  <th>%d</th>  <th>%d</th>         <th>%d</th></tr>"
+                                     "</table>"
+                                     "<h3>Sofware</h3>"
+                                     "<table border=1>"
+                                     "<tr><th>Version</th> <th>Commit</th></tr>"
+                                     "<tr><th>%d.%d.%d</th><th>%s</th></tr>"
+                                     "</table>"
+                                     "</body>"
+                                     "</html>",
+                                     dev_serial_number(),
+                                     dev_type_str(),
+                                     dev_fpga_version()+1,
+                                     dev_run_time(),
+                                     dev_run_count(),
+                                     APP_MAJOR, APP_MINOR, APP_MICRO, GIT_COMMIT);
+    g_file_set_contents("/home/tt/TT/source/system_info.htm", content, strlen(content), NULL);
+
 	webkit_web_view_load_uri (web_view, file_path);
 	g_signal_connect(G_OBJECT (hbox_menu[5]), "button-press-event",G_CALLBACK(dialog_destroy), dialog);
 	g_signal_connect(G_OBJECT (hbox_menu[6]), "button-press-event",G_CALLBACK(dialog_destroy), dialog);
