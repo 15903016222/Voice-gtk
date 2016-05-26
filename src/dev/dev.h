@@ -29,6 +29,11 @@ extern const gchar *dev_type_str();
 extern const gchar *dev_serial_number();
 extern gint dev_fpga_version();
 extern gint dev_run_count();
+
+/**
+ * @brief dev_run_time  获取设备累积运行时间
+ * @return 设备运行时间，单位s
+ */
 extern time_t dev_run_time();
 
 /**
@@ -43,6 +48,9 @@ extern gboolean dev_import_cert(const gchar *cert);
  * @return 有效返回TRUE，否则返回FALSE
  */
 extern gboolean dev_is_valid();
+
+extern gchar *dev_get_cert_mode();
+extern gchar *dev_get_cert_data();
 
 G_END_DECLS
 

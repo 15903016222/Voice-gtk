@@ -188,3 +188,50 @@ gboolean dev_import_cert(const gchar *cert)
     return TRUE;
 }
 
+
+gchar *dev_get_cert_mode()
+{
+    gchar *mode = NULL;
+    pthread_rwlock_rdlock(&certRWLock);
+    switch (cert_get_mode(cert)) {
+    case CERT_MODE_NONE:
+        mode = g_strdup("None");
+        break;
+    case CERT_MODE_RUNCOUNT:
+        mode = g_strdup("Run Count");
+        break;
+    case CERT_MODE_RUNTIME:
+        mode = g_strdup("Run Time");
+        break;
+    case CERT_MODE_DATE:
+        mode = g_strdup("Date");
+        break;
+    default:
+        mode = g_strdup("Invalid");
+        break;
+    }
+    pthread_rwlock_unlock(&certRWLock);
+    return mode;
+}
+
+gchar *dev_get_cert_data()
+{
+    gchar *data = NULL;
+    pthread_rwlock_rdlock(&certRWLock);
+    switch (cert_get_mode(cert)) {
+    case CERT_MODE_RUNCOUNT:
+    case CERT_MODE_RUNTIME:
+        data = g_strdup_printf("%ld", cert_get_data(cert));
+        break;
+    case CERT_MODE_DATE: {
+        time_t t = cert_get_data(cert);
+        struct tm *tm = localtime(&t);
+        data = g_strdup_printf("%d-%d-%d %d:%d", tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday, tm->tm_hour, tm->tm_min);
+    }
+        break;
+    default:
+        break;
+    }
+    pthread_rwlock_unlock(&certRWLock);
+    return data;
+}

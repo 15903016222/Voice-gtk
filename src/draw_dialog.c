@@ -1414,6 +1414,8 @@ static void draw_system_info ()
 	//web的编码方式
 	webkit_web_view_set_custom_encoding (web_view, "UTF-8");
 
+    gchar *certMode = dev_get_cert_mode();
+    gchar *certData = dev_get_cert_data();
     gchar *content = g_strdup_printf("<html>"
                                      "<head><title>System Infomation</title></head>"
                                      "<body>"
@@ -1427,6 +1429,11 @@ static void draw_system_info ()
                                      "<tr><th>Version</th> <th>Commit</th></tr>"
                                      "<tr><th>%d.%d.%d</th><th>%s</th></tr>"
                                      "</table>"
+                                     "<h3>Certification</h3>"
+                                     "<table border=1>"
+                                     "<tr><th>Mode</th> <th>Valid Data</th></tr>"
+                                     "<tr><th>%s</th>   <th>%s</th></tr>"
+                                     "</table>"
                                      "</body>"
                                      "</html>",
                                      dev_serial_number(),
@@ -1434,8 +1441,12 @@ static void draw_system_info ()
                                      dev_fpga_version()+1,
                                      dev_run_time(),
                                      dev_run_count(),
-                                     APP_MAJOR, APP_MINOR, APP_MICRO, GIT_COMMIT);
+                                     APP_MAJOR, APP_MINOR, APP_MICRO, GIT_COMMIT,
+                                     certMode, certData);
     g_file_set_contents("/home/tt/TT/source/system_info.htm", content, strlen(content), NULL);
+    g_free(content);
+    g_free(certData);
+    g_free(certMode);
 
 	webkit_web_view_load_uri (web_view, file_path);
 	g_signal_connect(G_OBJECT (hbox_menu[5]), "button-press-event",G_CALLBACK(dialog_destroy), dialog);
