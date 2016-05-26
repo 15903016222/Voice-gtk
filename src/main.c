@@ -743,7 +743,6 @@ void MainInit ()
 
 	p_ui->fk = fakekey_init(p_ui->disp);
 
-    p_tmp_config->tmplName = g_strdup("/home/tt/TT/source/system/Template/Report/Complete.html");
 	p_ui->p_tmp_config	= p_tmp_config;
 	p_ui->window		= window;
 	pp = p_ui;

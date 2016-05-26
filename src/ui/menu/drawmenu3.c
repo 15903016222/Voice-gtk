@@ -32,6 +32,7 @@
 #include "../../string/_string.h"
 #include "menu.h"
 #include "../ui.h"
+#include "../dialog/reportPreview.h"
 #include "menuFunc.h"
 #include "../../calculation/sizingcurve.h"
 #include "../authorization.h"
@@ -3391,7 +3392,6 @@ void DrawMenu803()
 	draw3_popdown(NULL,3,1);
 }
 
-GtkWidget* reportPreviewNew(GtkWidget* fatherWidget);
 void DrawMenu813()
 {
 	draw3_popdown(NULL,3,1);
@@ -3406,7 +3406,7 @@ void DrawMenu813()
 			dialogWarning(pp->window ,getDictString(_STRING_Please_Enter_File_Name));
 			return;
 		}
-		GtkWidget* dialog = reportPreviewNew(pp->window);
+		GtkWidget* dialog = report_preview_new(pp->window);
 		gtk_widget_show(dialog);
 	}
 }

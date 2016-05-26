@@ -105,35 +105,6 @@ extern gboolean Move_File(GtkWidget *widget,	GdkEventButton *event,	gpointer    
 
 extern gboolean Delect_File(GtkWidget *widget,	GdkEventButton *event,	gpointer       data);
 
-extern int Rename_File(char *file_name);
-
-extern void report_build_start(char *file_name);
-
-extern void report_build_header(char *file_name);
-
-extern void report_build_group_start(char *file_name,int group);
-
-extern void report_build_setup(char *file_name,int group);
-
-extern void report_build_calculator(char *file_name,int group);
-
-extern void report_build_part(char *file_name,int group); 
-
-extern void report_build_scan_area(char *file_name,int group);
-
-extern void report_build_group_config(char *file_name,int group);
-
-extern void report_build_image(char *file_name);
-
-extern void report_build_end(char *file_name);
-
-extern void report_build_user_field(char *file_name);
-
-extern void report_build_note(FILE *fp);
-
-extern void report_build_signature(char *file_name);
-
-extern void SAVE_DATA();
 extern int  SaveDataAll() ;
 
 extern void Save_Report_File(char *html_file_name);

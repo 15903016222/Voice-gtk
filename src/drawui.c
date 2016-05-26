@@ -41,6 +41,7 @@
 #include "ui/menu/drawmenu.h"
 #include "ui/menu/menuFunc.h"
 #include "ui/menu/menu.h"
+#include "ui/dialog/reportPreview.h"
 #include "lzk/output_spi.h"
 #include "ui/ui.h"
 #include "globalData.h"
@@ -11122,6 +11123,9 @@ void init_ui(DRAW_UI_P p)
 
 	menuLabelInit();
 	tableInit();
+
+    /* report preview */
+    report_preview_set_tmpl(DEFAULT_REPORT_TEMPLATE);
 
     TMP(gateShow)[0] = 0xff;
     TMP(gateShow)[1] = 0;

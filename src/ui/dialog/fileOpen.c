@@ -12,6 +12,7 @@
 #include "../core/core.h"
 #include "../dev/dev.h"
 #include "../ui.h"
+#include "reportPreview.h"
 #include "../workpiece.h"
 #include "../../globalData.h"
 #include "../../string/_string.h"
@@ -135,10 +136,7 @@ static void openFile(GtkWidget* dialog ,const char* filename)
         } else if(0 == g_strcmp0(".dxf" ,str)) {
             openPartFile(dialog ,filename);
         }  else if( 0 == g_strcmp0(".html", str)) {
-            if (TMP(tmplName)) {
-                g_free(TMP(tmplName));
-            }
-            TMP(tmplName) = g_strdup(filename);
+            report_preview_set_tmpl(filename);
             gtk_widget_destroy(dialog);
         } else {
             filePreviewFullScreen(dialog ,filename);

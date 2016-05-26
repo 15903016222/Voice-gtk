@@ -12,6 +12,7 @@
 #include "../../draw_dialog.h"
 #include "../../callback.h"
 #include "../../main.h"
+#include "../dialog/reportPreview.h"
 #include <dirent.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -1015,8 +1016,8 @@ void DrawMenu810()
         gtk_dialog_run(GTK_DIALOG(w));
 
         pp->pos_pos = MENU3_STOP;
-        if (TMP(tmplName)) {
-            draw3_popdown (basename(TMP(tmplName)), 0, 0);
+        if (report_preview_get_tmpl()) {
+            draw3_popdown (basename(report_preview_get_tmpl()), 0, 0);
         } else {
             draw3_popdown (NULL, 0, 0);
         }
@@ -1025,8 +1026,8 @@ void DrawMenu810()
 //				menu_content+TEMPLA, 1, 0,get_report_template (pp->p_config), 0);
     } else {
 //        draw3_popdown (menu_content[TEMPLA_P+get_report_template (pp->p_config)], 0, 0);
-        if (TMP(tmplName)) {
-            draw3_popdown (basename(TMP(tmplName)), 0, 0);
+        if (report_preview_get_tmpl()) {
+            draw3_popdown (basename(report_preview_get_tmpl()), 0, 0);
         } else {
             draw3_popdown (NULL, 0, 0);
         }

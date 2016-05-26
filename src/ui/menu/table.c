@@ -13,6 +13,7 @@
 #include "../../lzk/fileHandler.h"
 #include "../../string/_string.h"
 #include "../ui.h"
+#include "../dialog/reportPreview.h"
 #include "../../calculation/getMeasureData.h"
 #include "../../globalData.h"
 
@@ -1300,7 +1301,7 @@ void filling_report(Report *r, const gchar *outputFile)
 {
     g_return_if_fail( r != NULL );
 
-    report_set_template(r, TMP(tmplName));
+    report_set_template(r, report_preview_get_tmpl());
 
     filling_report_header(r, outputFile);
     filling_report_users(r);

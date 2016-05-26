@@ -5,6 +5,8 @@
  *      Author: lzk
  */
 
+#include "reportPreview.h"
+
 #include <gtk/gtk.h>
 struct mmsghdr;
 #include <webkit/webkit.h>
@@ -23,6 +25,22 @@ extern void SaveReportFile(const char* filename ,int isTmp);
 #define BUTTON_SAVE 	"ButtonF1"
 //#define BUTTON_FILENAME "ButtonF2"
 #define BUTTON_CLOSE 	"ButtonF2"
+
+static gchar *reportTmpl = NULL;
+
+void report_preview_set_tmpl(const gchar *tmpl)
+{
+    g_return_if_fail( NULL != tmpl );
+    if (reportTmpl) {
+        g_free(reportTmpl);
+    }
+    reportTmpl = g_strdup(tmpl);
+}
+
+gchar *report_preview_get_tmpl()
+{
+    return reportTmpl;
+}
 
 static void responseDialog(GtkDialog *dialog, gint response_id, gpointer user_data)
 {
@@ -165,7 +183,7 @@ extern void callbackButtonClose(GtkWidget* dialog ,void* p_para);
 //extern void Save_Report_File(char *html_file_name);
 //extern void responseDialogFileName(GtkDialog *dialog, gint response_id, gpointer user_data);
 //extern void callbackFileName(GtkWidget* dialog ,void* p_para);
-GtkWidget* reportPreviewNew(GtkWidget* fatherWidget)
+GtkWidget* report_preview_new(GtkWidget* fatherWidget)
 {
 	GtkWidget* dialog = baseDialogNew(fatherWidget);
 //	void (*responseDialog)(GtkDialog *dialog, gint response_id, gpointer user_data) = g_object_get_data(G_OBJECT(dialog) ,"responseDialog");
