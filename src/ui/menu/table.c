@@ -1042,6 +1042,8 @@ static void filling_report_group_setup(ReportGroup *reportGroup, gint groupNo)
     gint velocity = get_group_val(grp, GROUP_VELOCITY);
     gdouble dbVelocity = velocity / 200000.0;
 
+    gint filter = FILTER;
+
     report_setup_set_beam_delay(setup, GROUP_VAL_POS(groupNo , beam_delay[TMP(beam_num[groupNo])]) * 0.001 );
     report_setup_set_half_path_start( setup, group_get_start (groupNo) * 0.001 * dbVelocity );
     report_setup_set_half_path_range( setup, group_get_range (groupNo) * 0.001 * dbVelocity );
@@ -1049,7 +1051,25 @@ static void filling_report_group_setup(ReportGroup *reportGroup, gint groupNo)
 
     report_setup_set_inspection_type(setup, menu_content[ GROUP_MODE_P +(GROUP_VAL_POS(groupNo, group_mode))]);
 
-    report_setup_set_averaging_factor(setup, 1 << get_group_val (get_group_by_id (pp->p_config, groupNo), GROUP_AVERAGING));
+    report_setup_set_averaging_factor(setup, 1 << get_group_val (grp, GROUP_AVERAGING));
+
+    if (get_group_val (grp, GROUP_RECTIFIER) != RF_WAVE) {
+        if ( get_group_val (grp, GROUP_VIDEO_FILTER) ) {
+            report_setup_set_video_filter(setup, "On");
+        } else {
+            report_setup_set_video_filter(setup, "Off");
+        }
+    }
+
+    if (group_get_mode(groupNo) == UT1_SCAN
+            || group_get_mode(groupNo) == UT2_SCAN) {
+        filter = UT_FILTER;
+    }
+    report_setup_set_band_pass_filter(setup, menu_content[filter + get_group_val (grp, GROUP_FILTER_POS)]);
+
+    report_setup_set_rectification(setup, menu_content[RECTIFIER + get_group_val (grp, GROUP_RECTIFIER)]);
+
+    report_setup_set_scale_factor(setup, (group_get_range(groupNo)/ 10) / GROUP_VAL_POS(groupNo , point_qty));
 
     if (PA_SCAN == group_get_mode(groupNo)
             || UT_SCAN == group_get_mode(groupNo)) {
