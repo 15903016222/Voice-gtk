@@ -4,6 +4,7 @@
  */
 
 #include "core/core.h"
+#include "dev/dev.h"
 #include "drawui.h"
 #include "drawfb.h"
 #include "focallaw.h"		/* 计算聚焦法则的头文件 */
@@ -753,8 +754,10 @@ double GetGainLimit(int nGroupId_)
     if (PA_SCAN == GROUP_VAL_POS(nGroupId_, group_mode)
                  || UT_SCAN == GROUP_VAL_POS(nGroupId_, group_mode)) {
         return PA_MAX_GAIN;
+    } else if (dev_fpga_version() == 2){
+        return UT_MAX_GAIN_2;
     } else {
-        return UT_MAX_GAIN;
+        return UT_MAX_GAIN_1;
     }
 #endif
     /*
@@ -5976,10 +5979,8 @@ void data_501 (GtkMenuItem *menuitem, gpointer data) /* Probe/Part->Select->Grou
 	char temp_value ;
 	int group = get_current_group(pp->p_config);
 
-#if FPGA_VERSION > 1
     gshort gain = group_get_gain(group);
     gshort refgain = group_get_refgain(group);
-#endif
 
 	temp_value = (char) (GPOINTER_TO_UINT (data));
 #if HIGH_POWER
@@ -5996,11 +5997,11 @@ void data_501 (GtkMenuItem *menuitem, gpointer data) /* Probe/Part->Select->Grou
 	/*group mode 选择UT,UT1,UT2时，focal law 不可用*/
 	GROUP_VAL_POS(group ,  group_mode) = temp_value;
 
-#if FPGA_VERSION > 1
-    /*更新增益值*/
-    group_set_gain(group, gain);
-    group_set_refgain(group, refgain);
-#endif
+    if (dev_fpga_version() == 2) {
+        /*更新增益值*/
+        group_set_gain(group, gain);
+        group_set_refgain(group, refgain);
+    }
 
 	UT_group_config_settting (group) ;
 	if(temp_value == PA_SCAN)

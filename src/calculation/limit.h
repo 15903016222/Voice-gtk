@@ -10,14 +10,9 @@
 
 #include "../version.h"
 
-#define PA_MAX_GAIN     (80)
-
-#if FPGA_VERSION > 1
-#define UT_MAX_GAIN     (110)
-#else
-#define UT_MAX_GAIN     PA_MAX_GAIN
-#endif
-
+#define PA_MAX_GAIN     (80)    /* PA MAX Gain */
+#define UT_MAX_GAIN_1   (80)    /* FPGA1 UT MAX Gain */
+#define UT_MAX_GAIN_2   (110)   /* FPGA2 UT MAX Gain */
 
 #define DATA_SAVE_BLOCK_SIZE    1024
 

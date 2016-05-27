@@ -29,6 +29,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#include "../../dev/dev.h"
 #include "../ui.h"
 #include "../../string/_string.h"
 
@@ -2082,8 +2083,10 @@ void DrawMenu235()
                 if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
                              || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
                     upper = PA_MAX_GAIN + lower;
+                } else if (dev_fpga_version() == 2) {
+                    upper = UT_MAX_GAIN_2 + lower;
                 } else {
-                    upper = UT_MAX_GAIN + lower;
+                    upper = UT_MAX_GAIN_1 + lower;
                 }
 				step = tmpf;
 				digit = 1;

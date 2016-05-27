@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "../dev/dev.h"
 
 void InitSizingCurveParameters(int nGroupId_)
 {
@@ -102,8 +103,10 @@ double CurrentPointTcgGainLimit(int grp)
     if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
                  || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
         ret = MIN(40 , PA_MAX_GAIN - group_get_gain(grp) / 100.0) ;
+    } else if (dev_fpga_version() == 2) {
+        ret = MIN(40 , UT_MAX_GAIN_2 - group_get_gain(grp) / 100.0) ;
     } else {
-        ret = MIN(40 , UT_MAX_GAIN - group_get_gain(grp) / 100.0) ;
+        ret = MIN(40 , UT_MAX_GAIN_1 - group_get_gain(grp) / 100.0) ;
     }
 
 	if(point_pos == 0)		ret = 0 ;
@@ -170,8 +173,10 @@ double DacAmptitudeMinimumLimit(int grp)
     if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
                  || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
         _nGainLimit = MIN(40 , PA_MAX_GAIN - group_get_gain(grp) / 100.0) ;
+    } else if (dev_fpga_version() == 2) {
+        _nGainLimit = MIN(40 , UT_MAX_GAIN_2 - group_get_gain(grp) / 100.0) ;
     } else {
-        _nGainLimit = MIN(40 , UT_MAX_GAIN - group_get_gain(grp) / 100.0) ;
+        _nGainLimit = MIN(40 , UT_MAX_GAIN_1 - group_get_gain(grp) / 100.0) ;
     }
     _nResult = GROUP_VAL_POS(grp , SizingCurves.amplitude[_nBeamNo][0]) / 1000.0 ;
 	_nResult = _nResult /(pow(10 , _nGainLimit / 20.0)) ;

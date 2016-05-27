@@ -27,14 +27,10 @@ struct _GroupDataSpi {
 #if HIGH_POWER
     guint32	compress_rato:14;		/* bit:7-20  压缩比	*/
     guint32	gain:11;				/* bit:21-31 Gain, 0.1 dB */
-#elif (FPGA_VERSION > 1)
+#else
     guint32 compress_rato:12;       /* bit:7-18 压缩比 */
     guint32 reserved0:2;            /* bit:19-20 保留位 */
     guint32 gain:11;                /* bit:21-31 Gain, 0.1 dB */
-#else
-    guint32	compress_rato:12;		/* bit:7-18  压缩比	*/
-    guint32	reserved0:3;			/* bit:19-21 保留位 */
-    guint32	gain:10;				/* bit:22-31 Gain, 0.1 dB */
 #endif
 
     /* s_group_reg (1) */

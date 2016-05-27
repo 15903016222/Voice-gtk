@@ -15,6 +15,8 @@
 #include <math.h>
 #include "../ui/authorization.h"
 #include "../calculation/limit.h"
+
+#include "../dev/dev.h"
 // adjust gain offset
 // if gain offset if changed return -1 , else return 0;
 int ConfirmGainOffsetOfAllBeamInLimit(int grp)
@@ -32,8 +34,10 @@ int ConfirmGainOffsetOfAllBeamInLimit(int grp)
         if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
                      || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
             maxGain = PA_MAX_GAIN * 100;
+        } else if (dev_fpga_version() == 2){
+            maxGain = UT_MAX_GAIN_2 * 100;
         } else {
-            maxGain = UT_MAX_GAIN * 100;
+            maxGain = UT_MAX_GAIN_1 * 100;
         }
 
         if(_nTmpValue > maxGain)

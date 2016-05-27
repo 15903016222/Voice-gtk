@@ -1530,8 +1530,10 @@ void DrawMenu521()
         if (PA_SCAN == GROUP_VAL_POS(grp, group_mode)
                      || UT_SCAN == GROUP_VAL_POS(grp, group_mode)) {
             upper = PA_MAX_GAIN - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0;
+        } else if (dev_fpga_version() == 2){
+            upper = UT_MAX_GAIN_2 - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0;
         } else {
-            upper = UT_MAX_GAIN - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0;
+            upper = UT_MAX_GAIN_1 - group_get_refgain(grp) * get_group_db_ref (pp->p_config, grp) / 100.0;
         }
 
 		step = tmpf;
