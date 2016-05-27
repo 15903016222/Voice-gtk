@@ -1431,7 +1431,7 @@ static void draw_system_info ()
                                      "</table>"
                                      "<h3>Certification</h3>"
                                      "<table border=1>"
-                                     "<tr><th>Mode</th> <th>Valid Data</th></tr>"
+                                     "<tr><th>Mode</th> <th>Expire</th></tr>"
                                      "<tr><th>%s</th>   <th>%s</th></tr>"
                                      "</table>"
                                      "</body>"
