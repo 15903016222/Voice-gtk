@@ -8,6 +8,7 @@
 #include <gtk/gtk.h>
 #include <assert.h>
 #include "../core/core.h"
+#include "../dev/dev.h"
 #include "../../drawui.h"
 #include "../../main.h"
 #include "../../lzk/fileHandler.h"
@@ -1054,7 +1055,11 @@ static void filling_report_group_setup(ReportGroup *reportGroup, gint groupNo)
             || UT_SCAN == group_get_mode(groupNo)) {
         report_setup_set_voltage(setup, menu_content[PA_VOLTAGE + 2 + get_voltage (pp->p_config, groupNo)]);
     } else {
-        report_setup_set_voltage(setup, menu_content[UT_VOLTAGE + 3 + get_voltage (pp->p_config, groupNo)]);
+        if (dev_fpga_version() == 2) {
+            report_setup_set_voltage(setup, menu_content[UT_VOLTAGE_2 + 3 + get_voltage (pp->p_config, groupNo)]);
+        } else {
+            report_setup_set_voltage(setup, menu_content[UT_VOLTAGE_1 + 3 + get_voltage (pp->p_config, groupNo)]);
+        }
     }
 
     /* Gain */

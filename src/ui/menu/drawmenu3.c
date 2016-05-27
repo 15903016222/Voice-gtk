@@ -4,6 +4,7 @@
  *  Created on: 2012-5-10
  *      Author: shensheng
  */
+#include "../../dev/dev.h"
 #include "../../drawui.h"
 #include "../../file_op.h"
 #include "../../drawfb.h"
@@ -1757,7 +1758,11 @@ void DrawMenu113()
     gint num = 2;
 
     if (UT1_SCAN == grpMode || UT2_SCAN == grpMode) {
-        offset = UT_VOLTAGE;
+        if ( dev_fpga_version() == 2) {
+            offset = UT_VOLTAGE_2;
+        } else {
+            offset = UT_VOLTAGE_1;
+        }
         num = 3;
     }
 

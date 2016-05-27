@@ -8,6 +8,7 @@
 #include <string.h>
 #include "fileHandler.h"
 #include "../core/core.h"
+#include "../dev/dev.h"
 #include "../drawui.h"
 #include "../globalData.h"
 #include "../string/_string.h"
@@ -503,7 +504,11 @@ void fprintfReportGroupSetup(FILE* fp ,int group)
             || UT_SCAN == pp->p_config->group[group].group_mode) {
         fprintf(fp,"<td %s>%s V</td>\n" ,tableTdStyle ,menu_content[PA_VOLTAGE + 2 + get_voltage (pp->p_config, group)]);//Voltage
     } else {
-        fprintf(fp,"<td %s>%s V</td>\n" ,tableTdStyle ,menu_content[UT_VOLTAGE + 3 + get_voltage (pp->p_config, group)]);//Voltage
+        if (dev_fpga_version() == 2) {
+            fprintf(fp,"<td %s>%s V</td>\n" ,tableTdStyle ,menu_content[UT_VOLTAGE_2 + 3 + get_voltage (pp->p_config, group)]);//Voltage
+        } else {
+            fprintf(fp,"<td %s>%s V</td>\n" ,tableTdStyle ,menu_content[UT_VOLTAGE_1 + 3 + get_voltage (pp->p_config, group)]);//Voltage
+        }
     }
     fprintf(fp,"<td %s>%.1f dB</td>\n" ,tableTdStyle ,group_get_gain(group) / 100.0);//Gain
     fprintf(fp,"<td %s>%s</td>\n" ,tableTdStyle ,menu_content[ TX_RX_MODE + group_get_rx_tx_mode(group)]);//Mode

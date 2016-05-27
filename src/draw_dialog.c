@@ -1438,7 +1438,7 @@ static void draw_system_info ()
                                      "</html>",
                                      dev_serial_number(),
                                      dev_type_str(),
-                                     dev_fpga_version()+1,
+                                     dev_fpga_version(),
                                      dev_run_time(),
                                      dev_run_count(),
                                      APP_MAJOR, APP_MINOR, APP_MICRO, GIT_COMMIT,

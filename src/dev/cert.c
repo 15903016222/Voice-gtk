@@ -119,7 +119,7 @@ Cert *_cert_load(const xmlChar *buf, gint len)
 
 _cert_end:
     xmlFreeDoc(doc);
-    xmlCleanupParser();
+//    xmlCleanupParser();
 
     return cert;
 }

@@ -408,18 +408,12 @@ const gchar *all_menu_content_en[] =
 	"PC Pitch-and-Catch", "PE Pulse-Echo", "TT Through-Transmission", "TOFD Time-of-Flight Diffraction",		/* 0 TX_RX_MODE*/
 	"PC", "PE", "TT", "TOFD",								/* 4 tx_rxmode */
 	"1","1.5","2","2.25","3.5","4","5","7.5","10","12","15","20","UserDef","",	/* 8 frequence */
-    "50 Low", "100 High", 						/* 22 */
-    "50", "100",								/* 25 */
-
-#if FPGA_VERSION > 1
-    "100 Low", "200 Middle", "400 High",
+    "50 Low", "100 High", 						/* PA Voltage */
+    "50", "100",
+    "100 Low", "200 Middle", "400 High",        /* FPGA2 UT Voltage */
     "100", "200", "400",
-#else
-    "50 Low", "100 Middle", "200 High",
+    "50 Low", "100 Middle", "200 High",         /* FPGA1 UT Voltage */
     "50", "100", "200",
-#endif
-
-	"50 Low", "100 High",								/* 28 Voltage  */
     "Auto", "UserDef",                                  /* 30 PW       */
     "Auto Max", "Max/2", "Optimum","UserDef",           /* 32 PRF      */
     "None", "Auto", "1-2 MHz", "2-3MHz", "3-6MHz",

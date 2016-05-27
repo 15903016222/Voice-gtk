@@ -122,8 +122,9 @@
 #define TX_RX_MODE	0
 #define FREQUENCY	(TX_RX_MODE + 8)
 #define PA_VOLTAGE	(FREQUENCY + 14)
-#define UT_VOLTAGE  (PA_VOLTAGE + 4)
-#define PULSER_WIDTH    (UT_VOLTAGE + 8)
+#define UT_VOLTAGE_1  (PA_VOLTAGE + 4)
+#define UT_VOLTAGE_2  (UT_VOLTAGE_1 + 6)
+#define PULSER_WIDTH  (UT_VOLTAGE_2 + 6)
 #define PRF         (PULSER_WIDTH + 2)
 #define UT_FILTER   (PRF + 4)
 #define FILTER		(UT_FILTER + 7)

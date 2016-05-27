@@ -5,6 +5,7 @@
  *      Author: shensheng
  */
 #include "../core/core.h"
+#include "../dev/dev.h"
 #include "../../drawui.h"
 #include "../../file_op.h"
 #include "../../drawfb.h"
@@ -714,11 +715,11 @@ void DrawMenu231()
 	{
         if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1)) {
             int status = 0;
-#if FPGA_VERSION > 1
-            if ( UT1_SCAN == GROUP_VAL_POS( grp, group_mode) || UT2_SCAN == GROUP_VAL_POS(grp, group_mode)) {
+            if ( dev_fpga_version() == 2
+                 && ( UT1_SCAN == GROUP_VAL_POS( grp, group_mode)
+                      || UT2_SCAN == GROUP_VAL_POS(grp, group_mode)) ) {
                 status = 8;
             }
-#endif
 			draw3_pop_tt (data_231, NULL,
 					menu_content[CURVE_POS+GROUP_VAL_POS( grp , SizingCurves.curve_pos)],
                     menu_content + CURVE_POS, 4, 1, GROUP_VAL_POS( grp , SizingCurves.curve_pos), status);
