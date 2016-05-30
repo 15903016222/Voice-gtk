@@ -3354,8 +3354,9 @@ void DrawMenu602()
 	}
 	//upper = (double) (128 + 1 - LAW_VAL_POS(grp , Elem_qty));
 	upper = (double)getPulserReceiverRange(grp);
-	if ((MENU_STATUS == MENU3_PRESSED) && (CUR_POS == 2))
-	{
+    if ((MENU_STATUS == MENU3_PRESSED)
+            && (CUR_POS == 2)
+            && !TMP(freeze)) {
 		cur_value = (double) (get_group_val (&pp->p_config->group[get_current_group(pp->p_config)], GROUP_RECEIVER));
 		lower = 1.0;
 		step = tmpf;
@@ -3392,8 +3393,9 @@ void DrawMenu612()
 			(get_auto_focal (pp->p_config) == AUTO_FOCAL_ON))
 		/* 角度扫查时开始自动计算聚焦法则时候可以调节 */
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 2))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 2)
+                && !TMP(freeze)) {
 			cur_value = LAW_VAL_POS(grp , Angle_step) / 100.0;
 			lower = 0.1 ;
 			upper = 10  ;
@@ -3442,8 +3444,9 @@ void DrawMenu622()
 	if(get_auto_focal (pp->p_config) == AUTO_FOCAL_ON)
 		/* 聚焦法则自动计算开启时, Max Angle 才可调节 */
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 2))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 2)
+                && !TMP(freeze)) {
 			//if((LAW_VAL_POS(grp , Focal_point_type)==HALFPATH_P)||(LAW_VAL_POS(grp , Focal_point_type)==DEPTH_P))
 			if(LAW_VAL_POS(grp , Focal_type) == 2)
 				/*law type 为 depth sector 时*/
@@ -3604,8 +3607,9 @@ void DrawMenu632()
 	if ((get_auto_focal (pp->p_config) == AUTO_FOCAL_ON) &&
 			(LAW_VAL_POS(grp , Focal_type) == LINEAR_SCAN))
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 2))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 2)
+                && !TMP(freeze)) {
 			cur_value = LAW_VAL_POS(grp , Last_tx_elem);
 			lower = LAW_VAL_POS(grp , First_tx_elem) + LAW_VAL_POS(grp , Elem_qty) - 1;
 			upper = MIN(gMaxElementRecieveQty , GROUP_VAL_POS (grp , probe.Elem_qty)) ;

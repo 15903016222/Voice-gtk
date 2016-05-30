@@ -249,7 +249,7 @@ void StartPause()
                 || 6 == pp->pos
                 || 7 == pp->pos) {
             pp->pos = 3;
-            pp->pos1[3] == 0;
+            pp->pos1[3] = 0;
             draw_menu1();
             draw_menu2(0);
             draw_menu3(0, NULL);

@@ -11281,36 +11281,32 @@ void SaveDataProcess(char* strTitle)
 }
 
 
-void setKeyInvalidateWhenDataRecalling(int bEnable_)
+void setKeyInvalidateWhenDataRecalling(gboolean enable)
 {
-	if(bEnable_)
-	{
+    if(enable) {
 		TMP(dataRecalling) = 0;
 		gtk_widget_set_sensitive(pp->menuitem[0],TRUE);
 		gtk_widget_set_sensitive(pp->menuitem[1],TRUE);
 		gtk_widget_set_sensitive(pp->menuitem[2],TRUE);
 		gtk_widget_set_sensitive(pp->menuitem[5],TRUE);
-		gtk_widget_set_sensitive(pp->menuitem[6],TRUE);
 		gtk_widget_set_sensitive(pp->menuitem[7],TRUE);
-		if(GROUP_VAL_POS(get_current_group(pp->p_config) , group_mode) == PA_SCAN) /*group mode 选择UT,UT1,UT2时，focal law 不可用*/
-		{
+        if (GROUP_VAL_POS(get_current_group(pp->p_config) , group_mode) == PA_SCAN) {
+            /*group mode 选择UT,UT1,UT2时，focal law 不可用*/
 			gtk_widget_set_sensitive(pp->menuitem[6],TRUE);
-		}
-		else
-		{
+        } else {
 			gtk_widget_set_sensitive(pp->menuitem[6],FALSE);
 		}
-	}
-	else
-	{
+    } else {
 		TMP(dataRecalling) = 1;
 		gtk_widget_set_sensitive(pp->menuitem[0],FALSE);
 		gtk_widget_set_sensitive(pp->menuitem[1],FALSE);
 		gtk_widget_set_sensitive(pp->menuitem[2],FALSE);
 		gtk_widget_set_sensitive(pp->menuitem[5],FALSE);
-		gtk_widget_set_sensitive(pp->menuitem[6],FALSE);
-		gtk_widget_set_sensitive(pp->menuitem[7],FALSE);
-
+        gtk_widget_set_sensitive(pp->menuitem[7],FALSE);
+        if (GROUP_VAL_POS(get_current_group(pp->p_config) , group_mode) != PA_SCAN) {
+            /*group mode 选择UT,UT1,UT2时，focal law 不可用*/
+            gtk_widget_set_sensitive(pp->menuitem[6],FALSE);
+        }
 	}
 }
 

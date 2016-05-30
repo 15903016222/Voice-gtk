@@ -446,7 +446,7 @@ extern void InitializeSscanMatrix();
 extern void DrawDisplayWindowFrame() ;
 extern void DrawDisplayWindowFrameCalibration() ;
 extern void SaveDataProcess(char* strTitle) ;
-extern void setKeyInvalidateWhenDataRecalling(int bEnable_);
+extern void setKeyInvalidateWhenDataRecalling(gboolean enable);
 extern void UpdateWindowTitle() ;
 extern void FreezeScreen(int enable) ;
 extern void RefreshGainMark(int grp);

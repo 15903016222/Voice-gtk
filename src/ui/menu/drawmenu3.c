@@ -2931,8 +2931,9 @@ void DrawMenu613()
 	   )
 		/* 聚焦法则自动计算开启时, Min Angle 才可调节 */
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 3))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 3)
+                && !TMP(freeze)) {
 			/* 最大不能超过最大Angle_beam_skew_max */
 			cur_value = LAW_VAL_POS(grp , Angle_beam_skew_min) / 100.0;
 			/* 计算lower为妙 */
@@ -2986,8 +2987,9 @@ void DrawMenu623()
 	if(get_auto_focal (pp->p_config) == AUTO_FOCAL_ON)
 		/* 聚焦法则自动计算开启时, Max Angle 才可调节 */
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 3))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 3)
+                && !TMP(freeze)) {
 			if(LAW_VAL_POS(grp , Focal_type) == 2)
 				/*law type 为 depth sector 时*/
 			{
@@ -3150,8 +3152,9 @@ void DrawMenu633()
 	if ((get_auto_focal (pp->p_config) == AUTO_FOCAL_ON) &&
 			(LAW_VAL_POS(grp , Focal_type) == LINEAR_SCAN))
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 3))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 3)
+                && !TMP(freeze)) {
 			cur_value = LAW_VAL_POS(grp , Elem_step);
 			lower = 1.0;
 			upper = MIN(gMaxElementRecieveQty , GROUP_VAL_POS (grp , probe.Elem_qty)) ;

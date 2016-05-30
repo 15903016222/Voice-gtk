@@ -1646,8 +1646,9 @@ void DrawMenu601()
 		default:break;
 	}
 	upper = (double)getPulserReceiverRange (grp);
-	if ((MENU_STATUS == MENU3_PRESSED) && (CUR_POS == 1))
-	{
+    if ((MENU_STATUS == MENU3_PRESSED)
+            && (CUR_POS == 1)
+            && !TMP(freeze)) {
 		cur_value = (double) (get_group_val (p_grp, GROUP_PULSER));
 		lower = 1.0;
 		step = tmpf;
@@ -1684,8 +1685,9 @@ void DrawMenu611()
 			(get_auto_focal (pp->p_config) == AUTO_FOCAL_ON))
 		/* 聚焦法则自动计算开启时并且是角度扫查, Max Angle 才可调节 */
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 1)
+                && !TMP(freeze)) {
 			/* 计算lower为妙 */
 			cur_value = LAW_VAL_POS(grp , Angle_max) / 100.0;
 			temp_beam = LAW_MAX_QTY - get_beam_qty() + TMP(beam_qty[get_current_group(pp->p_config)]);
@@ -1750,8 +1752,9 @@ void DrawMenu621()
 	if(get_auto_focal (pp->p_config) == AUTO_FOCAL_ON)
 		/* 聚焦法则自动计算开启时, Max Angle 才可调节 */
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 1)
+                && !TMP(freeze)) {
 			if((LAW_VAL_POS(grp , Focal_point_type)==HALFPATH_P)||(LAW_VAL_POS(grp , Focal_point_type)==DEPTH_P))
 				/*type为half path 或 true depth 时*/
 			{
@@ -1931,8 +1934,9 @@ void DrawMenu631()
 	}
 	if(get_auto_focal (pp->p_config) == AUTO_FOCAL_ON)/* 聚焦法则自动计算开启时, First Element才可调节 */
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 1)
+                && !TMP(freeze)) {
 			cur_value = LAW_VAL_POS(grp , First_tx_elem);
 			lower = 1.0;
 			/* 计算最大值 */

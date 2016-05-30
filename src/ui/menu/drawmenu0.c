@@ -684,7 +684,9 @@ void DrawMenu600()
 		pp->x_pos = 490 ;
 	}
 	pp->y_pos = 90;
-	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 0))
+    if ((pp->pos_pos == MENU3_PRESSED)
+            && (CUR_POS == 0)
+            && !TMP(freeze))
 		draw3_pop_tt (data_600, NULL,
 				menu_content[L_CONFIG + LAW_VAL_POS(grp , Focal_type)],
 				menu_content+LAW_CONFIG, 2, 0, LAW_VAL_POS(grp , Focal_type), 0xc);
@@ -707,8 +709,9 @@ void DrawMenu610()
 	}
 	if(get_auto_focal (pp->p_config) == AUTO_FOCAL_ON)/* 聚焦法则自动计算开启时, Min Angle 才可调节 */
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 0))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 0)
+                && !TMP(freeze)) {
 			/* 最大不能超过最大Angle_max */
 			cur_value = LAW_VAL_POS(grp , Angle_min) / 100.0;
 			/* 计算lower为妙 */
@@ -753,8 +756,9 @@ void DrawMenu620()
 	pp->x_pos = 555, pp->y_pos = 116 - 26;
 	if(get_auto_focal (pp->p_config) == AUTO_FOCAL_ON)
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 0))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 0)
+                && !TMP(freeze)) {
             if (group_get_rx_tx_mode(grp) == PITCH_CATCH )
 			{
 				menu_status = 0x0c;
@@ -804,8 +808,9 @@ void DrawMenu630()
 	}
 	if (get_auto_focal (pp->p_config) == AUTO_FOCAL_ON) /* 聚焦法则自动计算为 on 时，Element Qty 才可调节 */
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 0))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 0)
+                && !TMP(freeze)) {
 			cur_value = LAW_VAL_POS(grp , Elem_qty);
 			lower = 1.0;
 			/* 计算最大激发阵元数 */

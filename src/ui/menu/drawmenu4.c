@@ -2214,8 +2214,9 @@ void DrawMenu614()
 			(get_auto_focal (pp->p_config) == AUTO_FOCAL_ON)
 			&& (GROUP_VAL_POS( grp , probe.PA_probe_type) == 9))
 	{/* 聚焦法则自动计算开启时, Min Angle 才可调节 */
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 3))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 3)
+                && !TMP(freeze)) {
 			/* 最大不能超过最大Angle_beam_skew_max */
 			cur_value = LAW_VAL_POS(grp , Angle_beam_skew_max) / 100.0;
 			/* 计算lower为妙 */
@@ -2296,8 +2297,9 @@ void DrawMenu624()
 		}
 		if ((get_auto_focal (pp->p_config) == AUTO_FOCAL_ON)&&(LAW_VAL_POS(grp , Focal_point_type)==FOCALPLANE_P))
 		{
-			if((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 4))
-			{
+            if((pp->pos_pos == MENU3_PRESSED)
+                    && (CUR_POS == 4)
+                    && !TMP(freeze)) {
 				cur_value = LAW_VAL_POS(grp , Depth_end) / 1000.0 * multiplier;
 				lower = 0.1 * multiplier;
 				upper = 10000.0 * multiplier;
@@ -2359,8 +2361,9 @@ void DrawMenu634()
 
 	if (get_auto_focal (pp->p_config) == AUTO_FOCAL_ON)
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 4))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 4)
+                && !TMP(freeze)) {
 
 			if (get_material_sw(material) == 0)
 				menu_status = 0x02;

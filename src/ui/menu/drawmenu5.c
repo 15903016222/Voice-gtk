@@ -2537,8 +2537,9 @@ void DrawMenu615()
 			&& (GROUP_VAL_POS( grp , probe.PA_probe_type) == 9))
 		/* 聚焦法则自动计算开启时, Min Angle 才可调节 */
 	{
-		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 3))
-		{
+        if ((pp->pos_pos == MENU3_PRESSED)
+                && (CUR_POS == 3)
+                && !TMP(freeze)) {
 			/* 最大不能超过最大Angle_beam_skew_max */
 			cur_value = LAW_VAL_POS(grp , Angle_beam_skew_step) / 100.0;
 			/* 计算lower为妙 */
