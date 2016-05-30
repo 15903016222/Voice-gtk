@@ -7754,7 +7754,6 @@ void hardware_update()
 //当显示窗口被单击时，切换当前GROUP为该窗口的GROUP ID
 int DrawAreaButtonClick (GtkWidget* widget, GdkEvent* event, gpointer data)
 {
-
 	DRAW_AREA* _pDrawArea = (DRAW_AREA*)data  ;
     int _nGroupId = get_current_group(pp->p_config) ;
     int _nAreaGroupId = _pDrawArea->group  ;
@@ -7771,17 +7770,15 @@ int DrawAreaButtonClick (GtkWidget* widget, GdkEvent* event, gpointer data)
 
     RefreshGainMark(_nAreaGroupId) ;
 	pp->p_config->groupId = _nAreaGroupId ;
-	if(GROUP_VAL_POS(_nAreaGroupId , group_mode) == PA_SCAN) /*group mode 选择UT,UT1,UT2时，focal law 不可用*/
-	{
+    if(GROUP_VAL_POS(_nAreaGroupId , group_mode) == PA_SCAN) {
+         /*group mode 选择UT,UT1,UT2时，focal law 不可用*/
 		gtk_widget_set_sensitive(pp->menuitem[6],TRUE);
-	}
-	else
-	{
+    } else {
 		gtk_widget_set_sensitive(pp->menuitem[6],FALSE);
-		if(pp->pos == 6)
-		{
-			pp->pos = 1 ;
+        if(pp->pos == 6) {
+            pp->pos = 3;
 			gtk_menu_item_set_label(GTK_MENU_ITEM (pp->menuitem_main), pp->con0_p[1]);
+            draw_menu1();
 			draw_menu2(0);
 		}
 	}
