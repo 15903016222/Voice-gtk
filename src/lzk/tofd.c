@@ -303,22 +303,20 @@ int MenuHandler_TofdStraightening(void* p_para)
 int MenuHandler_TofdRemoveLateralWave(void* p_para)
 {
 	int group = get_current_group(pp->p_config);
-    if(TOFD == group_get_rx_tx_mode(group))//tofd
-	{
-        if(0 == gTofdS[group].removeLateralWaveEnable)
-		{
+
+    if(TOFD == group_get_rx_tx_mode(group)) {
+        /* TOFD */
+        if(0 == gTofdS[group].removeLateralWaveEnable) {
 			TofdGetPara(group);
             gTofdS[group].removeLateralWaveEnable = 1;
 		} else {
-            MenuHandler_TofdCancel(NULL);
+            TofdGetPara(group);
+            gTofdS[group].removeLateralWaveEnable = 0;
+//            MenuHandler_TofdCancel(NULL);
         }
-	}
-	else
-	{
+    } else {
 			int response = dialogWarning(pp->window , getDictString(_STRING_Not_Tofd));
-			if(!response)
-			{
-
+            if(!response) {
 			}
 	}
 	return TRUE;
