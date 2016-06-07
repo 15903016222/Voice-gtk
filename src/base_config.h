@@ -815,6 +815,9 @@ extern void group_set_rx_tx_mode(gint grp, gint val);
 extern gint group_get_range(gint grp);
 extern void group_set_range(gint grp, gint val);
 
+extern gint group_get_pw(gint grp);
+extern void group_set_pw(gint grp, gint val);
+
 /* Group 参数的保存读取 */
 extern int	get_group_point_qty_pos	(CONFIG *p, int group_id);
 extern void	set_group_point_qty_pos	(CONFIG *p, int group_id,	int	data);

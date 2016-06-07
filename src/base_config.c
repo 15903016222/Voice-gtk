@@ -1595,6 +1595,15 @@ void group_set_range(gint grp, gint val)
     GROUP_VAL_POS(grp, range) = val;
 }
 
+gint group_get_pw(gint grp)
+{
+    return GROUP_VAL_POS(grp, pulser_width1);
+}
+void group_set_pw(gint grp, gint val)
+{
+    GROUP_VAL_POS(grp, pulser_width1) = val;
+}
+
 /* GROUP 参数的保存读取*/
 /**
  */

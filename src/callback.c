@@ -940,6 +940,77 @@ int GetGroupVoltage(int GroupId_)
 	return _nVoltage ;
 }
 
+#define UT_MAX_POWER    (2.0)   // 单位W
+#define UT_CAP_VALUE    (4.7e-07)  // 单位F
+#define UT_E            (2.71828)   //自然常数
+
+/**
+ * @brief ut_get_bean_power 获取单条beam功耗
+ * @param group 组号
+ * @return 返回功耗
+ */
+static gdouble ut_get_bean_power(gint group)
+{
+    gdouble pw = (group_get_pw(group)/100)*1e-9;
+    gint voltage = 1 + get_voltage(pp->p_config, group);
+    gint dampingPos = 0;
+    gint rtMode = group_get_rx_tx_mode(group);
+    gdouble factor = 0.0;
+
+    const static gdouble r[2][3][4] = {
+        {
+            {18.1, 14.4, 18.1, 18.1},
+            {20, 16, 20, 20},
+            {21, 16.22, 21, 21}
+        },
+        {
+            {39.5, 19.4, 39.5, 39.5},
+            {23.2, 21.5, 23.2, 23.2},
+            {39.5, 22.7, 39.5, 39.5}
+        }
+    };
+
+    if (group_get_mode(group) == UT1_SCAN) {
+        dampingPos = pp->p_config->damping_pos_ut1;
+    } else if (group_get_mode(group) == UT2_SCAN) {
+        dampingPos = pp->p_config->damping_pos_ut2;
+    }
+
+    factor =  1- pow(UT_E, -1*pw/(r[dampingPos][voltage-1][rtMode]*UT_CAP_VALUE));
+
+    return (pow(100.0*voltage,2)*(factor*UT_CAP_VALUE + pw/500.0));
+}
+
+/**
+ * @brief ut_get_max_prf 计算通常通道的最大发射频率，FPGA版本2或以上
+ * @param group 组号
+ * @return 最大发射频率
+ */
+gint ut_get_max_prf()
+{
+    gint groupQty = get_group_qty(pp->p_config);
+    gdouble pwr = 0;
+    gint i = 0;
+    gint j = 0;
+    gint prf = 0;
+
+    for (i=0; i < groupQty; ++i) {
+        if (group_get_mode(i) != UT1_SCAN
+                && group_get_mode(i) != UT2_SCAN) {
+            continue;
+        }
+        pwr += ut_get_bean_power(i);
+    }
+    if (pwr > -0.0000001 && pwr < 0.0000001) {
+        return 0;
+    }
+
+    prf = UT_MAX_POWER/pwr;
+    if ( prf > 6000 ) {
+        prf = 6000;
+    }
+    return prf*10;
+}
 
 // Max PRF when there is a Group model PA or UT
 int MultiGroupGetMaxPrfPA()
@@ -1027,8 +1098,18 @@ int MultiGroupGetMaxPrfPA()
 
 int MultiGroupGetMaxPrf()
 {
-	int ret = MultiGroupGetMaxPrfPA() ;
-	if(ret < 10)   ret = 10 ;
+    int ret = 0;
+    int grp = get_current_group(pp->p_config);
+    if (dev_fpga_version() == 2
+            && ( group_get_mode(grp) == UT1_SCAN
+                 || group_get_mode(grp) == UT2_SCAN)) {
+        ret = ut_get_max_prf();
+    } else {
+        ret = MultiGroupGetMaxPrfPA() ;
+    }
+    if(ret < 10) {
+        ret = 10 ;
+    }
 	return  ret ;
 }
 

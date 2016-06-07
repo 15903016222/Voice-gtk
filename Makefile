@@ -83,7 +83,7 @@ endif
 
 CC=$(CROSS_COMPILE)gcc
 
-VERSION=$(shell $(TOOL_DIR)/tag.sh)
+VERSION=$(shell git describe --tags `git rev-list --tags --max-count=1`)
 
 VERSION_MAJOR=$(shell echo $(VERSION) | awk -F"." '{print $$1}')
 VERSION_MINOR=$(shell echo $(VERSION) | awk -F"." '{print $$2}')
