@@ -892,8 +892,7 @@ void send_focal_spi (int group, int reset)
 		offset += TMP(beam_qty[k]);
 	for (k = offset , kk = 0; k < offset + beam_qty; k++ , kk++)
 	{ 
-		if(GROUP_VAL_POS(group , group_mode) == 1)//PA
-		{	  
+        if(group_get_mode(group) == PA_SCAN) {
 			TMP(focal_spi[k]).group	= group;
 			TMP(focal_spi[k]).all_beam_info	= beam_sum  - 1;
 			TMP(focal_spi[k]).gain_offset	= GROUP_VAL_POS(group , gain_offset[kk]);
@@ -956,16 +955,24 @@ void send_focal_spi (int group, int reset)
 		}
 		else//UT
 		{ 
+            int tmpGate = 0;
 			TMP(focal_spi[k]).group	= group;
 			TMP(focal_spi[k]).all_beam_info	= beam_sum  - 1;
 			TMP(focal_spi[k]).gain_offset	= GROUP_VAL_POS(group , gain_offset[kk]);
 			TMP(focal_spi[k]).beam_delay	= 0;
-			TMP(focal_spi[k]).gate_a_start  = pp->gate_a_start[group][kk];
-			TMP(focal_spi[k]).gate_a_end    = pp->gate_a_end[group][kk];
-			TMP(focal_spi[k]).gate_b_start  = pp->gate_b_start[group][kk];
-			TMP(focal_spi[k]).gate_b_end    = pp->gate_b_end[group][kk];
-			TMP(focal_spi[k]).gate_i_start  = pp->gate_i_start[group][kk];
-			TMP(focal_spi[k]).gate_i_end    = pp->gate_i_end[group][kk];
+
+            if (dev_fpga_version() == 2
+                    && (group_get_mode(group) == UT1_SCAN
+                        || group_get_mode(group) == UT2_SCAN)) {
+                tmpGate = 2500;
+            }
+            TMP(focal_spi[k]).gate_a_start  = pp->gate_a_start[group][kk] + tmpGate;
+            TMP(focal_spi[k]).gate_a_end    = pp->gate_a_end[group][kk] + tmpGate;
+            TMP(focal_spi[k]).gate_b_start  = pp->gate_b_start[group][kk] + tmpGate;
+            TMP(focal_spi[k]).gate_b_end    = pp->gate_b_end[group][kk] + tmpGate;
+            TMP(focal_spi[k]).gate_i_start  = pp->gate_i_start[group][kk] + tmpGate;
+            TMP(focal_spi[k]).gate_i_end    = pp->gate_i_end[group][kk] + tmpGate;
+            g_message("%s[%d] a(%d)", __func__, __LINE__, TMP(focal_spi[k]).gate_a_start);
 			/*UT Settings->Pulser->Tx/Rx mode*/
             if (group_get_rx_tx_mode(group) == PULSE_ECHO )/*单个探头收发模式*/
 			{  
@@ -1050,7 +1057,13 @@ void init_group_spi (int group)
 	TMP(group_spi[group]).tx_start	= 2;
 	TMP(group_spi[group]).tx_end	= GROUP_VAL_POS(group , pulser_width1) / (25 * PW_DIV / 10);
 
-    TMP(group_spi[group]).sample_start	= (group_get_start(group) + GROUP_VAL_POS(group , wedge_delay)) / 10;
+    if (dev_fpga_version() == 2
+            && (group_get_mode(group) == UT1_SCAN
+                || group_get_mode(group) == UT2_SCAN)) {
+        TMP(group_spi[group]).sample_start	= (group_get_start(group) + 25*1000 + GROUP_VAL_POS(group , wedge_delay)) / 10;
+    } else {
+        TMP(group_spi[group]).sample_start	= (group_get_start(group) + GROUP_VAL_POS(group , wedge_delay)) / 10;
+    }
     TMP(group_spi[group]).sample_range	= TMP(group_spi[group]).sample_start + group_get_range(group) / 10;
 	TMP(group_spi[group]).sum_gain = GROUP_VAL_POS(group , sum_gain)  ;
 	TMP(group_spi[group]).point_qty  = GROUP_VAL_POS(group , point_qty);
@@ -1298,7 +1311,13 @@ void RefreshGroupGroupSpi (guint group)
 	TMP(group_spi[group]).tx_start	= 2;
 	TMP(group_spi[group]).tx_end	= GROUP_VAL_POS(group , pulser_width1) / (25 * PW_DIV / 10);
 
-    TMP(group_spi[group]).sample_start	= (group_get_start(group) + GROUP_VAL_POS(group , wedge_delay)) / 10;
+    if (dev_fpga_version() == 2
+            && (group_get_mode(group) == UT1_SCAN
+                || group_get_mode(group) == UT2_SCAN)) {
+        TMP(group_spi[group]).sample_start	= (group_get_start(group) + 25*1000 + GROUP_VAL_POS(group , wedge_delay)) / 10;
+    } else {
+        TMP(group_spi[group]).sample_start	= (group_get_start(group) + GROUP_VAL_POS(group , wedge_delay)) / 10;
+    }
     TMP(group_spi[group]).sample_range	= TMP(group_spi[group]).sample_start + group_get_range(group) / 10;
 	TMP(group_spi[group]).sum_gain = GROUP_VAL_POS(group , sum_gain)  ;
 	TMP(group_spi[group]).point_qty  = GROUP_VAL_POS(group , point_qty);

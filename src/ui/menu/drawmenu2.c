@@ -1958,7 +1958,8 @@ void DrawMenu202()
 	{
 		if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 2))
 		{
-			if ((UT_UNIT_TRUE_DEPTH == GROUP_VAL_POS( grp , ut_unit)) || (UT_UNIT_SOUNDPATH == GROUP_VAL_POS( grp , ut_unit)))
+            if ((UT_UNIT_TRUE_DEPTH == GROUP_VAL_POS( grp , ut_unit))
+                    || (UT_UNIT_SOUNDPATH == GROUP_VAL_POS( grp , ut_unit)))
 			{
 				switch (TMP(agate_start_reg))
 				{
@@ -1990,9 +1991,8 @@ void DrawMenu202()
 					pos = 2;
 					unit = UNIT_INCH;
 				}
-			}
-			else /*ut_unit 选择 time 时 */
-			{
+            } else {
+                /*ut_unit 选择 time 时 */
 				switch (TMP(agate_start_reg))
 				{
                     case 0:	tmpf = (group_get_range (get_current_group(pp->p_config)) / 1000.0) / (double)(GROUP_VAL_POS( grp , point_qty)); break;
