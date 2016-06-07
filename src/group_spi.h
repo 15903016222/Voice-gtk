@@ -60,31 +60,28 @@ struct _GroupDataSpi {
     guint32	reserved5:5;            /* bit:27-31 保留位 */
 
     /* s_group_reg (6) */
-    guint32	gate_a_height:12;		/* bit:0-11 闸门A 高度 */
-    guint32	gate_a_start:20;		/* bit:12-31 闸门A 开始 */
+    guint32	gate_a_height:12;		/* bit:0-11  闸门A 高度 */
+    guint32	res6:20;                /* bit:12-31 保留位 */
 
     /* s_group_reg (7) */
     guint32	gate_a_logic:8;			/* bit:0-7 闸门A 逻辑 */
-    guint32	reserved7:4;            /* bit:8-11 保留位 */
-    guint32	gate_a_end:20;			/* bit:12-31 闸门A 结束 */
+    guint32	res7:24;                /* bit:8-31 保留位 */
 
     /* s_group_reg (8) */
     guint32	gate_b_height:12;		/* bit:0-11 闸门B 高度 */
-    guint32	gate_b_start:20;		/* bit:12-31 闸门B 开始 */
+    guint32	res8:20;                /* bit:12-31 保留位 */
 
     /* s_group_reg (9) */
     guint32	gate_b_logic:8;			/* bit:0-7 闸门B 逻辑 */
-    guint32	reserved9:4;            /* bit:8-11 保留位 */
-    guint32	gate_b_end:20;			/* bit:12-31 闸门B 结束 */
+    guint32	res9:24;                /* bit:8-31 保留位 */
 
     /* s_group_reg (10) */
     guint32	gate_i_height:12;		/* bit:0-11 闸门C 高度 */
-    guint32	gate_i_start:20;		/* bit:12-31 闸门C 开始 */
+    guint32	res10:20;               /* bit:12-31 保留位 */
 
     /* s_group_reg (11) */
     guint32	gate_i_logic:8;			/* bit:0-7 闸门C 逻辑 */
-    guint32	reserved11:4;           /* bit:8-11 保留位 */
-    guint32	gate_i_end:20;			/* bit:12-31 闸门C 结束 */
+    guint32	res11:24;               /* bit:8-31 保留位 */
 
     /* s_group_reg (12) */
     guint32 thickness_min:20;       /* bit:0-19 */
