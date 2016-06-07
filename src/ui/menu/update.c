@@ -88,7 +88,7 @@ void menu942(MENU_UNION menu_union)//9 ,4 ,2 ,0
 }
 
 const static gchar *authors[] = {
-    "Jake Yang <yanghuanjie@cndoppler.cn>",
+    "Jake Yang",
     NULL
 };
 
