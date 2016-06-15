@@ -1044,7 +1044,6 @@ gint ut_get_max_prf()
         break;
     }
 
-    g_message("%s[%d] prf(%d, %d)", __func__, __LINE__, prf, prf2);
     if (prf2 < prf) {
         prf = prf2;
     }

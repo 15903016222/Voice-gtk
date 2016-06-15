@@ -1512,13 +1512,13 @@ double getMeasureData_Tofd(int fieldIndex , int grp , int _nIndex)
 		case FEILD_Depth1:
 		{
 			double u_reference = GROUP_VAL_POS(grp , u_reference)/1000.0 ;
-			_nMeasureData = GetDepth(grp ,u_reference);
+            _nMeasureData = GetDepthCal(grp ,u_reference, 1);
 		}
 		break;
 		case FEILD_Depth2:
 		{
 			double u_measure = GROUP_VAL_POS(grp , u_measure)/1000.0 ;
-			_nMeasureData = GetDepth(grp ,u_measure);
+            _nMeasureData = GetDepthCal(grp ,u_measure, 1);
 		}
 		break;
 		case FEILD_Length:

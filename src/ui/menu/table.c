@@ -45,8 +45,7 @@ typedef enum
   COLUMN_SHOW_MAX,
   COLUMN_DATA_SELF_DEFINE = COLUMN_SHOW_MAX,
   COLUMN_MAX
-}
-	COLUMN_ENUM;
+}COLUMN_ENUM;
 
 void setFieldIndex(int list ,int fieldNO ,unsigned char value)
 {
@@ -83,6 +82,7 @@ char* getTableTitle(int i)
 		const char* pSimpleStr[feildNum];
 		GetMesureFeildString(pSimpleStr ,NULL);
 		unsigned char fieldIndex = getFieldIndex((i - COLUMN_FIELD1) / 4 ,(i - COLUMN_FIELD1) % 4);
+//        g_message("%s[%d] [%d]:%s", __func__, __LINE__, fieldIndex, getMeasureUnit(pp->p_config->groupId ,fieldIndex));
 		return g_strdup_printf("%s\n(%s)" ,pSimpleStr[fieldIndex] ,getMeasureUnit(pp->p_config->groupId ,fieldIndex));
 	}
 	else
