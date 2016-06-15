@@ -736,7 +736,14 @@ int GetGroupRxTime(int GroupId_)
 	int _nSampleRange ;
 	int _nMaxBeamDelay;
 
-    _nSampleRange	= (group_get_start(GroupId_) +
+    int tmp = 0;
+
+    if (group_get_mode(GroupId_) == UT1_SCAN
+            || group_get_mode(GroupId_) == UT2_SCAN) {
+        tmp = 25*1000;
+    }
+
+    _nSampleRange	= (group_get_start(GroupId_) + tmp +
             + group_get_range(GroupId_)
 			+ GROUP_VAL_POS(GroupId_ , wedge_delay)) / 10;
 	_nMaxBeamDelay  = GetGroupMaxBeamDelay(GroupId_);
@@ -993,6 +1000,9 @@ gint ut_get_max_prf()
     gint i = 0;
     gint j = 0;
     gint prf = 0;
+    gint prf2 = 0;
+    gint grp = get_current_group(pp->p_config);
+    gdouble pw = (group_get_pw(grp)/100);
 
     for (i=0; i < groupQty; ++i) {
         if (group_get_mode(i) != UT1_SCAN
@@ -1009,6 +1019,36 @@ gint ut_get_max_prf()
     if ( prf > 6000 ) {
         prf = 6000;
     }
+
+    switch (get_voltage(pp->p_config, grp)) {
+    case 0:
+        if (pw < 150) {
+            prf2 = 6000;
+        } else if (pw < 350) {
+            prf2 = -19.2 * pw + 9040;
+        } else {
+            prf2 = -2 * pw + 3000;
+        }
+        break;
+    case 1:
+        if (pw < 100) {
+            prf2 = 6000;
+        } else {
+            prf2 =7e6 * pow(pw, -1.531);
+        }
+        break;
+    case 2:
+        prf2 = 644904 * pow(pw, -1.337);
+        break;
+    default:
+        break;
+    }
+
+    g_message("%s[%d] prf(%d, %d)", __func__, __LINE__, prf, prf2);
+    if (prf2 < prf) {
+        prf = prf2;
+    }
+
     return prf*10;
 }
 
@@ -1098,19 +1138,21 @@ int MultiGroupGetMaxPrfPA()
 
 int MultiGroupGetMaxPrf()
 {
-    int ret = 0;
+    int prf = 0;
     int grp = get_current_group(pp->p_config);
+
+    prf = MultiGroupGetMaxPrfPA();
+
     if (dev_fpga_version() == 2
             && ( group_get_mode(grp) == UT1_SCAN
                  || group_get_mode(grp) == UT2_SCAN)) {
-        ret = ut_get_max_prf();
-    } else {
-        ret = MultiGroupGetMaxPrfPA() ;
+        int utPrf = ut_get_max_prf();
+        if (utPrf < prf) {
+            prf = utPrf;
+        }
     }
-    if(ret < 10) {
-        ret = 10 ;
-    }
-	return  ret ;
+
+    return  (prf<10 ? 10: prf);
 }
 
 
