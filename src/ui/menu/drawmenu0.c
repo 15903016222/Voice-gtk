@@ -30,7 +30,7 @@
 #include <math.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-
+#include "../dev/dev.h"
 #include "../ui.h"
 #include "menu.h"
 #include "../../string/_string.h"
@@ -198,15 +198,20 @@ void DrawMenu120()
 	char* str ;
 	int grp = get_current_group(pp->p_config) ;
 
+    int offset = DAMPING;
+    if (dev_fpga_version() == 2) {
+        offset = DAMPING_2;
+    }
+
 	if((GROUP_VAL_POS(grp , group_mode)==2)||(GROUP_VAL_POS(grp , group_mode)==3))/*group_mode选择UT1 或 UT2*/
 	{
 		pp->x_pos = 600, pp->y_pos = 150;
 		if ((MENU_STATUS == MENU3_PRESSED) && (CUR_POS == 0))
 			draw3_pop_tt (data_1201, NULL,
-					menu_content[DAMPING + get_damping_pos(pp->p_config)],
-					menu_content + DAMPING, 2, 0, get_damping_pos(pp->p_config), 0);
+                    menu_content[offset + get_damping_pos(pp->p_config)],
+                    menu_content + offset, 2, 0, get_damping_pos(pp->p_config), 0);
 		else
-			draw3_popdown (menu_content[DAMPING + get_damping_pos(pp->p_config)], 0, 0);
+            draw3_popdown (menu_content[offset + get_damping_pos(pp->p_config)], 0, 0);
 		str = g_strdup_printf ("%s", con2_p[1][2][6]);
 		gtk_label_set_text (GTK_LABEL (pp->label3[0]), str);
 	}

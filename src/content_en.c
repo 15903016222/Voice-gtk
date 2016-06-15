@@ -559,6 +559,7 @@ const gchar *all_menu_content_en[] =
 	"Compressive", "Tensile",			/* Weld type */
 	"Custom", "Angle Beam", "Contact", "Immersion",	/* Probe Type */
 	"50 Ω","500 Ω",/*Damping*/
+    "50 Ω","200 Ω",/*FPGA2.0 Damping*/
 	//"None","I", "V", "V Offset", "Double V", "Double V Offset", "J", "U",	/* Weld */
 	"I","V","Double V", "U","VY","J",
 	"Symmetric","Straight  Right","Straight  Left",

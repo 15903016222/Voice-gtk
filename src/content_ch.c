@@ -561,6 +561,7 @@ const gchar *all_menu_content_ch[] =
 	"压应力", "拉应力",			/* Weld type */
 	"Custom", "Angle Beam", "Contact", "Immersion",	/* Probe Type */
 	"50 Ω","500 Ω",/*Damping*/
+    "50 Ω","200 Ω",/*FPGA2.0 Damping*/
 	//"None","I", "V", "V Offset", "Double V", "Double V Offset", "J", "U",	/* Weld */
 	"I型","V型","双V型", "U型","VY型","J型",
 	"对称","右单边坡口","左单边坡口",
