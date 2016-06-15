@@ -972,8 +972,8 @@ void send_focal_spi (int group, int reset)
             TMP(focal_spi[k]).gate_b_end    = pp->gate_b_end[group][kk] + tmpGate;
             TMP(focal_spi[k]).gate_i_start  = pp->gate_i_start[group][kk] + tmpGate;
             TMP(focal_spi[k]).gate_i_end    = pp->gate_i_end[group][kk] + tmpGate;
-            g_message("%s[%d] a(%d)", __func__, __LINE__, TMP(focal_spi[k]).gate_a_start);
-			/*UT Settings->Pulser->Tx/Rx mode*/
+
+            /*UT Settings->Pulser->Tx/Rx mode*/
             if (group_get_rx_tx_mode(group) == PULSE_ECHO )/*单个探头收发模式*/
 			{  
 				pulser   = get_group_val ( &pp->p_config->group[group], GROUP_PULSER );

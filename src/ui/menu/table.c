@@ -81,9 +81,9 @@ char* getTableTitle(int i)
 		int feildNum = GetMesureFeildNum();
 		const char* pSimpleStr[feildNum];
 		GetMesureFeildString(pSimpleStr ,NULL);
-		unsigned char fieldIndex = getFieldIndex((i - COLUMN_FIELD1) / 4 ,(i - COLUMN_FIELD1) % 4);
-//        g_message("%s[%d] [%d]:%s", __func__, __LINE__, fieldIndex, getMeasureUnit(pp->p_config->groupId ,fieldIndex));
-		return g_strdup_printf("%s\n(%s)" ,pSimpleStr[fieldIndex] ,getMeasureUnit(pp->p_config->groupId ,fieldIndex));
+        unsigned char nameIndex = getFieldIndex((i - COLUMN_FIELD1) / 4 ,(i - COLUMN_FIELD1) % 4);
+        unsigned char unitIndex = GetMesureFeildIndex(get_current_group(pp->p_config), nameIndex);
+        return g_strdup_printf("%s\n(%s)" ,pSimpleStr[nameIndex] ,getMeasureUnit(pp->p_config->groupId ,unitIndex));
 	}
 	else
 	{
