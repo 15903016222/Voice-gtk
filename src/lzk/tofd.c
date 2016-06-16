@@ -15,7 +15,7 @@
 
 double GetDepth(int grp ,double pos)
 {
-	double _fPcs  = GROUP_VAL_POS(grp , field_distance[254]) ;
+    double _fPcs  = GROUP_VAL_POS(grp , field_distance[254]) ;  // 探头中心距
 	double _fVelocity = GROUP_VAL_POS(grp , velocity) / 100000.0 ;
 	pos = pos * _fVelocity ;
 
@@ -40,12 +40,14 @@ double GetDepth(int grp ,double pos)
 
 double GetDepthCal(int grp, double pos, int flage)
 {
-	double _fPcs  = GROUP_VAL_POS(grp , field_distance[254]) ;
+    double _fPcs  = GROUP_VAL_POS(grp , field_distance[254]) ; // 探头中心距
 	double posTmp, depth;
 
     if (GROUP_VAL_POS(grp , field_distance[252]) < 0.1) {
+        /*无深度校准*/
         depth = GetDepth(grp, pos);
     } else {
+        /*尝试校准*/
         posTmp = (pos-GROUP_VAL_POS(grp , field_distance[251])) * GROUP_VAL_POS(grp , velocity)/100000.0;
     	if(GROUP_VAL_POS(grp , ut_unit) == UT_UNIT_TRUE_DEPTH) {
             posTmp = posTmp / cos(TMP(current_angle[grp])) ;
@@ -65,8 +67,8 @@ double GetDepthCal(int grp, double pos, int flage)
 //0.001mm //  /1000得到mm
 double GetHeight(int grp ,double pos1 ,double pos2)
 {
-	double depth1 = GetDepth(grp , pos1);
-	double depth2 = GetDepth(grp , pos2);
+    double depth1 = GetDepthCal(grp , pos1, 1);
+    double depth2 = GetDepthCal(grp , pos2, 1);
 	if((fabs(MEASURE_DATA_ND - depth1) < 0.001) || (fabs(MEASURE_DATA_ND - depth2) < 0.001))
 	{
 		return MEASURE_DATA_ND;
