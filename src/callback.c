@@ -6121,8 +6121,12 @@ void data_501 (GtkMenuItem *menuitem, gpointer data) /* Probe/Part->Select->Grou
 
     if (dev_fpga_version() == 2) {
         /*更新增益值*/
-        group_set_gain(group, gain);
-        group_set_refgain(group, refgain);
+        if (((gain+refgain) > PA_MAX_GAIN*100) && (temp_value == PA_SCAN) ) {
+            gain = PA_MAX_GAIN*100;
+            refgain = 0;
+            group_set_gain(group, gain);
+            group_set_refgain(group, refgain);
+        }
     }
 
 	UT_group_config_settting (group) ;
@@ -7409,10 +7413,12 @@ void RefreshFocallawParameters(int grp)
 	TMP(beam_num[grp]) 	= 0        ;
 	TMP(current_angle[grp]) = LAW_VAL_POS(grp, Angle_min) * G_PI / 18000.0 ;
 
-	if (LAW_VAL_POS(grp, Elem_qty) == 1)
+    if (LAW_VAL_POS(grp, Elem_qty) == 1) {
 		GROUP_VAL_POS(grp , sum_gain)	=  4095;
-	else
-		GROUP_VAL_POS(grp , sum_gain)	=  6400 / LAW_VAL_POS(grp, Elem_qty) ;
+    } else {
+        GROUP_VAL_POS(grp , sum_gain)	=  6400 / LAW_VAL_POS(grp, Elem_qty) ;
+    }
+
     TMP(group_spi[grp].sum_gain)  = GROUP_VAL_POS(grp , sum_gain);
 }
 

@@ -382,11 +382,15 @@ int saveConfigFile(const char* filename)
 
 int readConfigFile(const char* configFile)
 {
-	int fd;
-	int ret;
-	fd = open (configFile ,O_RDWR | O_CREAT ,0644);
-	if (fd < 0)
-	{
+    int fd = open (configFile ,O_RDWR | O_CREAT ,0644);
+    int fileSize = sizeof(fileHeadStruct) + sizeof(CONFIG) + sizeof(struct systemStruct);
+    int ret = 1;
+    int len = 0;
+    fileHeadStruct fileHead;
+    CONFIG config;
+    struct systemStruct sysCnf;
+
+	if (fd < 0)	{
 		char systemCommand[256];
 		memset(systemCommand ,0 ,256);
 		strcpy(systemCommand ,"rm \"");
@@ -394,33 +398,45 @@ int readConfigFile(const char* configFile)
 		strcat(systemCommand ,"\"");
 		system(systemCommand);
 		//g_print("error open config file:%s\n" ,configFile);
-		ret = 1;
-	}
-	else
-	{
-		int fileSize = sizeof(fileHeadStruct) + sizeof(CONFIG) + sizeof(struct systemStruct);
+        goto readConfigFile_end0;
+    }
 
-		fileHeadStruct fileHead;
-		lseek( fd,0,SEEK_SET );
-		read (fd, &fileHead, sizeof(fileHeadStruct));
 
-		if(fileVerify(&fileHead ,fileSize))
-		{
-			read (fd, pp->p_config, sizeof(CONFIG));
-			read (fd, &(gData->system), sizeof(struct systemStruct));
-			close (fd);
-			//g_print("open %s successfully\n" ,configFile);
-			ret = 0;
-		}
-		else
-		{
-			close (fd);
-			//g_print("file:%s does not match\n" ,configFile);
-			ret = 2;
-		}
-	}
-	gData->file.loadFail = ret;
-	return ret;
+    lseek(fd, 0, SEEK_SET);
+    len = read(fd, &fileHead, sizeof(fileHeadStruct));
+    if (len != sizeof(fileHeadStruct)) {
+        g_warning("Read Header failed");
+        goto readConfigFile_end1;
+    }
+
+    if (!fileVerify(&fileHead ,fileSize)) {
+        goto readConfigFile_end1;
+    }
+
+    len = read (fd, &config, sizeof(CONFIG));
+    if (len != sizeof(CONFIG)) {
+        g_warning("Read Config failed");
+        goto readConfigFile_end1;
+    }
+
+    len = read (fd, &sysCnf, sizeof(struct systemStruct));
+    if (len != sizeof(struct systemStruct)) {
+        g_warning("Read system part failed");
+        goto readConfigFile_end1;
+    }
+
+    memcpy(pp->p_config, &config, sizeof(CONFIG));
+    memcpy(&(gData->system), &sysCnf, sizeof(struct systemStruct));
+
+    check_invalid_param();
+
+    ret = 0;
+
+readConfigFile_end1:
+    close(fd);
+readConfigFile_end0:
+    gData->file.loadFail = ret;
+    return ret;
 }
 
 typedef struct _DRAW_PACK_
@@ -755,4 +771,33 @@ int ReadDataFileData(const char* dataFile)
 	}
 	return retVar;
 
+}
+
+void check_invalid_param()
+{
+    gint grpQty = get_group_qty(pp->p_config);
+    gint i = 0;
+    for (; i < grpQty; ++i) {
+        if ( 0 == LAW_VAL_POS(i, Angle_step)) {
+            LAW_VAL_POS (i , Angle_step)	=	100;
+        }
+        if ( 0 == LAW_VAL_POS(i, Elem_qty)) {
+            LAW_VAL_POS(i, Elem_qty) = 16;
+        }
+        if ( 0 == LAW_VAL_POS(i, Elem_step)) {
+            LAW_VAL_POS(i, Elem_step) = 1;
+        }
+        if (0 == get_enc_resolution(pp->p_config, ENCODER_1)) {
+            set_enc_resolution(pp->p_config, 48*1000, ENCODER_1);
+        }
+        if (0 == get_enc_resolution(pp->p_config, ENCODER_2)) {
+            set_enc_resolution(pp->p_config, 48*1000, ENCODER_2);
+        }
+        if (0 == get_area_scanresolution(pp->p_config)) {
+            set_area_scanresolution(pp->p_config, 1*100);
+        }
+        if (0 == get_area_indexresolution(pp->p_config)) {
+            set_area_indexresolution(pp->p_config, 1*100);
+        }
+    }
 }

@@ -26,6 +26,7 @@ extern char* filenameCheck(const char* filename ,const char* suffix);
 extern int readConfigFile(const char* configFile);
 extern int saveConfigFile(const char* configFile);
 extern int readInspectDataFile(const char* dataFile);
+extern void check_invalid_param();
 
 typedef struct{
 	const char* filename;

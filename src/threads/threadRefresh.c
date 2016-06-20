@@ -14,6 +14,7 @@
 #include "../calculation/sizingcurve.h"
 #include "../calculation/limit.h"
 #include "../lzk/output_spi.h"
+#include "../lzk/fileHandler.h"
 #include <gdk/gdk.h>
 #include <glib/gprintf.h>
 #include <stdlib.h>
@@ -886,18 +887,13 @@ void RefressFocalLaw()
 	REFRESH_REQUEST = 0 ;
 	static int REFRESH_MARK = 0 ;
 	static int REFRESH_RESPONSE = 0;
-	while(1)
-	{
-		if(REFRESH_REQUEST || REFRESH_RESPONSE)
-		{
-			if(REFRESH_REQUEST)
-			{
+    while(1) {
+        if(REFRESH_REQUEST || REFRESH_RESPONSE) {
+            if(REFRESH_REQUEST) {
 				REFRESH_MARK = REFRESH_REQUEST ;
 				REFRESH_RESPONSE = 1 ;
 				REFRESH_REQUEST  = 0 ;
-			}
-			else
-			{
+            } else {
 				pthread_mutex_lock(&draw_thread_mutex);
 				REFRESH_RESPONSE = 0 ;
 				Refresh_all(REFRESH_MARK);

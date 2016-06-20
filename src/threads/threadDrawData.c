@@ -13,6 +13,7 @@
 #include "../ui/ui.h"
 #include "../calculation/getMeasureData.h"
 #include "../net/DopplerNetServer.h"
+#include "../lzk/fileHandler.h"
 #include <gdk/gdk.h>
 #include <glib/gprintf.h>
 #include <stdlib.h>
@@ -344,14 +345,10 @@ void DrawFrameBuffer()
 {
 	int i =  0  ;
 	int _nCounter ;
-	if(pp->bRefreshDraw)
-	{
+    if(pp->bRefreshDraw) {
 		RedrawCalc();
-	}
-	else
-	{
-		if(*DMA_MARK)
-		{
+    } else {
+        if(*DMA_MARK) {
 			pthread_mutex_lock(&draw_thread_mutex);
 			*DMA_MARK = 0 ;
 		    _nCounter = DMA_MARK[1] ;
@@ -360,16 +357,13 @@ void DrawFrameBuffer()
 			DMA_MARK[2] = i ;
 			draw_frame_thread(i);
 		    pthread_mutex_unlock(&draw_thread_mutex);
-		}
-		else if(TMP(freeze))
-		{
+        } else if(TMP(freeze)) {
 			pthread_mutex_lock(&draw_thread_mutex);
-			if(TMP(dataRecalling))
-		    {//  记录数据重现时，重现数据全放在第一个缓冲
+            if(TMP(dataRecalling)) {
+                //  记录数据重现时，重现数据全放在第一个缓冲
 		    	i = 0 ;
-		    }
-		    else
-		    {//  显示最后一次DMA的数据缓冲
+            } else {
+                //  显示最后一次DMA的数据缓冲
 				_nCounter = DMA_MARK[1] ;
 				i = (_nCounter + 3) & 0x00000003 ;
 				DMA_MARK[2] = i ;
@@ -476,16 +470,14 @@ void signal_scan_thread(void)
 	pp->bRefreshDraw = FALSE ;
 	while(1)
 	{
-		if(pp->bSaveDataProcessing)
-		{
+        if(pp->bSaveDataProcessing) {
 			SaveDataInThread() ;
-		}
-		else
-		{
-			if(g_bNetTransferData)
+        } else {
+            if(g_bNetTransferData) {
 				TransferDataToPC();
-			else
-				DrawFrameBuffer()  ;
+            } else {
+                DrawFrameBuffer();
+            }
 		}
 #if ARM
 		usleep(1000);

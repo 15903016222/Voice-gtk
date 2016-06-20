@@ -33,8 +33,7 @@ static void openSetupFile(GtkWidget* dialog ,const char* filename)
 	char* markup ;
 	if(dialogWarning(dialog ,getDictString(_STRING_read_setup_file_)))
 	{
-		if(0 == handlerOpenSetupFile(filename))
-		{
+        if(0 == handlerOpenSetupFile(filename)) {
 
 			gtk_widget_destroy(dialog);
 
@@ -67,8 +66,9 @@ static void openSetupFile(GtkWidget* dialog ,const char* filename)
 					"<span foreground='white' font_desc='10'>V: %.2f mm/s</span>",(double)(GROUP_VAL_POS(0 , prf1)/ 10.0));
 			gtk_label_set_markup (GTK_LABEL (pp->label[5]), markup);
 			g_free(markup);
-		}
-
+        } else {
+            ui_show_warning(GTK_WINDOW(pp->window), "Read Config File Failed");
+        }
 	}
 }
 

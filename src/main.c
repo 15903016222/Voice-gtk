@@ -789,6 +789,7 @@ void MainInit ()
 		}
 #endif
 	}
+    check_invalid_param();
 	//add by lzk
 	globalDataInitAfterReadCfg();
 	set_init_para();//
