@@ -6121,7 +6121,8 @@ void data_501 (GtkMenuItem *menuitem, gpointer data) /* Probe/Part->Select->Grou
 
     if (dev_fpga_version() == 2) {
         /*更新增益值*/
-        if (((gain+refgain) > PA_MAX_GAIN*100) && (temp_value == PA_SCAN) ) {
+//        g_message("%s[%d] gain(%d) refgain(%d)", __func__, __LINE__, gain, refgain);
+        if ((gain > PA_MAX_GAIN*100) && (temp_value == PA_SCAN) ) {
             gain = PA_MAX_GAIN*100;
             refgain = 0;
             group_set_gain(group, gain);
