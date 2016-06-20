@@ -28,52 +28,10 @@ INSTALL = install
 ifndef _PC_
 CROSS_COMPILE ?= arm-angstrom-linux-gnueabi-
 CFLAG_ARM=-DARM
-INC_DIRS = -I $(SYSROOT_DIR)/usr/include/libxml2 \
-	   -I $(SYSROOT_DIR)/usr/include/webkit-1.0 \
-	   -I $(SYSROOT_DIR)/usr/include/libsoup-2.4 \
-	   -I $(SYSROOT_DIR)/usr/include/gtk-2.0	\
-	   -I $(SYSROOT_DIR)/usr/lib/gtk-2.0/include \
-	   -I $(SYSROOT_DIR)/usr/include/atk-1.0 \
-	   -I $(SYSROOT_DIR)/usr/include/cairo \
-	   -I $(SYSROOT_DIR)/usr/include/pango-1.0 \
-	   -I $(SYSROOT_DIR)/usr/include/gio-unix-2.0/ \
-	   -I $(SYSROOT_DIR)/usr/include/pixman-1 \
-	   -I $(SYSROOT_DIR)/usr/include/freetype2 \
-	   -I $(SYSROOT_DIR)/usr/include/libpng12 \
-	   -I $(SYSROOT_DIR)/usr/include/glib-2.0 \
-	   -I $(SYSROOT_DIR)/usr/lib/glib-2.0/include  \
-	   -I $(SRC_DIR)/dxflib/ \
-	   -I $(SRC_DIR)/gdxf/ \
-	   -I $(PHASCAN_DIR)/include/lua5.1/
-LDFLAGS= -lpthread \
-	 -lgdk-x11-2.0 \
-	 -lgtk-x11-2.0 \
-	 -latk-1.0 \
-	 -lpangoft2-1.0 \
-	 -lgdk_pixbuf-2.0 \
-	 -lm \
-	 -lpangocairo-1.0 \
-	 -lcairo \
-	 -lgio-2.0 \
-	 -lpango-1.0 \
-	 -lfreetype \
-	 -lfontconfig \
-	 -lgobject-2.0 \
-	 -lgmodule-2.0 \
-	 -lgthread-2.0 \
-	 -lrt \
-	 -lglib-2.0 \
-	 -lwebkitgtk-1.0 \
-	 -lsoup-2.4 \
-	 -lxml2 \
-	 -lfakekey \
-	 -rdynamic \
-	 -L$(PHASCAN_DIR)/lib -llua
-else
-
-INC_DIRS = $(shell pkg-config --cflags gtk+-2.0 webkit-1.0) -I $(SRC_DIR)/dxflib -I $(SRC_DIR)/gdxf
-LDFLAGS = $(shell pkg-config --libs gtk+-2.0 webkit-1.0) -lpthread -ljpeg -lxml2 -lpng12 -lX11 -lm -lfakekey
 endif
+
+INC_DIRS = $(shell PKG_CONFIG_PATH=$(SYSROOT_DIR)/usr/lib/pkgconfig PKG_CONFIG_SYSROOT_DIR=$(SYSROOT_DIR) pkg-config  --cflags gtk+-2.0 webkit-1.0 ) -I $(SRC_DIR)/dxflib -I $(SRC_DIR)/gdxf -I $(PHASCAN_DIR)/include/lua5.1/
+LDFLAGS = $(shell PKG_CONFIG_PATH=$(SYSROOT_DIR)/usr/lib/pkgconfig PKG_CONFIG_SYSROOT_DIR=$(SYSROOT_DIR) pkg-config --libs gtk+-2.0 webkit-1.0) -lpthread -ljpeg -lxml2 -lpng12 -lX11 -lm -lfakekey -L$(PHASCAN_DIR)/lib -llua
 
 CFLAGS = -g -D_REENTRANT $(CFLAG_ARM) $(INC_DIRS)
 
