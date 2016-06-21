@@ -49,7 +49,7 @@ static pthread_rwlock_t mountRWlock = PTHREAD_RWLOCK_INITIALIZER;
  */
 static void dev_load_cert();
 
-static void dev_save_info()
+void dev_save_info()
 {
     MOUNT_PHASCAN();
     FILE *fp = fopen(INFO_FILE, "w");
@@ -62,10 +62,16 @@ static void dev_save_info()
     UMOUNT_PHASCAN();
 }
 
-static gboolean dev_increase_runtime(gpointer data)
+static gboolean dev_increase_runtime(gpointer interval)
 {
-    devInfo.runTime += 60;
-    dev_save_info();
+    static time_t nextTime = 0;
+    devInfo.runTime += 1;
+    if (0 == nextTime) {
+        nextTime = devInfo.runTime + GPOINTER_TO_SIZE(interval);
+    } else if (nextTime < devInfo.runTime) {
+        nextTime = devInfo.runTime + GPOINTER_TO_SIZE(interval);
+        dev_save_info();
+    }
     return TRUE;
 }
 
@@ -85,7 +91,7 @@ void dev_init()
     devInfo.runCount += 1;
     dev_save_info();
 
-    g_timeout_add(60*1000, dev_increase_runtime, NULL);
+    g_timeout_add(1*1000, dev_increase_runtime, GSIZE_TO_POINTER(60*60));
 
     dev_load_cert();
 }
