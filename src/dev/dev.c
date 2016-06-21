@@ -15,6 +15,7 @@
 #include <fcntl.h>
 
 #include <stdio.h>
+#include <string.h>
 
 #include <pthread.h>
 
@@ -77,6 +78,7 @@ static gboolean dev_increase_runtime(gpointer interval)
 
 void dev_init()
 {
+    memset(&devInfo, 0, sizeof(DevInfo));
     MOUNT_PHASCAN();
     FILE *fp = fopen(INFO_FILE, "r");
     if (NULL == fp) {
