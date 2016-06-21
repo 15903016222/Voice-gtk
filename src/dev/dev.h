@@ -52,8 +52,6 @@ extern gboolean dev_is_valid();
 extern gchar *dev_get_cert_mode();
 extern gchar *dev_get_cert_data();
 
-extern void dev_save_info();
-
 G_END_DECLS
 
 #endif /* end of __DEV_H__ */

@@ -12,24 +12,30 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/mman.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 #include <stdio.h>
 #include <string.h>
 
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+
 #include <pthread.h>
 
 #define INFO_FILE PHASCAN_PATH"/dev.info"
+#define RUNCOUNT_FILE PHASCAN_PATH"runcount.info"
 #define CERT_FILE PHASCAN_PATH"/auth.cert"
 #define PUBLIC_PEM "/home/tt/.secure/pub.pem"
 
 typedef struct _DevInfo DevInfo;
 struct _DevInfo {
-    gchar type[64];
-    gint fpgaVersion;
-    gchar serialNo[128];
-    gint runCount;
-    time_t runTime;
+    gchar *type;        /*设置类型*/
+    gint fpgaVersion;   /*FPGA版本*/
+    gchar *serialNo;    /*设备序列号*/
+    gint runCount;      /*设备运行次数*/
+    time_t fstTime;     /*第一次启动的时间戳*/
 };
 
 static DevInfo devInfo;
@@ -50,50 +56,100 @@ static pthread_rwlock_t mountRWlock = PTHREAD_RWLOCK_INITIALIZER;
  */
 static void dev_load_cert();
 
-void dev_save_info()
+static gchar *_dev_serial_number()
 {
-    MOUNT_PHASCAN();
-    FILE *fp = fopen(INFO_FILE, "w");
-    if (NULL == fp) {
-        UMOUNT_PHASCAN();
-        g_error("Read Phascan infomation failed");
+    int fd = open("/dev/mem", O_RDWR | O_NDELAY);
+    unsigned char *base = NULL;
+    gchar *id = NULL;
+
+    if ( fd < 0) {
+        perror ("/dev/mem");
+        return NULL;
     }
-    fwrite(&devInfo, sizeof(DevInfo), 1, fp);
-    fclose(fp);
-    UMOUNT_PHASCAN();
+
+    base= (unsigned char *)
+        mmap (NULL,  4*1024, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0x4830a000);
+
+    id = g_strdup_printf("%08lx-%08lx-%08lx-%08lx",
+                           *(volatile long *)(base+0x224),
+                           *(volatile long *)(base+0x220),
+                           *(volatile long *)(base+0x21c),
+                           *(volatile long *)(base+0x218));
+    munmap(base, 4*1024);
+    close(fd);
+    return id;
 }
 
-static gboolean dev_increase_runtime(gpointer interval)
+static void dev_save_runcount()
 {
-    static time_t nextTime = 0;
-    devInfo.runTime += 1;
-    if (0 == nextTime) {
-        nextTime = devInfo.runTime + GPOINTER_TO_SIZE(interval);
-    } else if (nextTime < devInfo.runTime) {
-        nextTime = devInfo.runTime + GPOINTER_TO_SIZE(interval);
-        dev_save_info();
+    devInfo.runCount += 1;
+    gchar *cmd = g_strdup_printf("echo %d >> %s", devInfo.runCount, RUNCOUNT_FILE);
+    MOUNT_PHASCAN();
+    system(cmd);
+    UMOUNT_PHASCAN();
+    g_free(cmd);
+}
+
+static void dev_read_info(DevInfo *info)
+{
+    xmlDocPtr doc = NULL;
+    xmlNodePtr curNode = NULL;
+    gchar *buf = NULL;
+    gsize len = 0;
+    xmlKeepBlanksDefault(0);
+
+    MOUNT_PHASCAN();
+    if ( !g_file_get_contents(INFO_FILE, &buf, &len, NULL) ) {
+        UMOUNT_PHASCAN();
+        return;
     }
-    return TRUE;
+    UMOUNT_PHASCAN();
+
+    doc = xmlParseMemory(buf, len);
+    if (NULL == doc) {
+        g_warning("Cert Parse failed");
+        return;
+    }
+
+    curNode = xmlDocGetRootElement(doc);
+    if (NULL == curNode) {
+        g_warning("Cert get root element failed");
+        goto read_info_end0;
+    }
+
+    curNode = curNode->children;
+    for (; curNode; curNode = curNode->next) {
+        if (!xmlStrcmp(curNode->name, BAD_CAST"Type")) {
+            info->type = xmlNodeGetContent(curNode);
+        } else if (!xmlStrcmp(curNode->name, BAD_CAST"FPGA")) {
+            xmlChar *tmpStr = xmlNodeGetContent(curNode);
+            if (tmpStr) {
+                info->fpgaVersion = atol(tmpStr)-1;
+            } else {
+                info->fpgaVersion = 0;
+            }
+            xmlFree(tmpStr);
+        } else if (!xmlStrcmp(curNode->name, BAD_CAST"Time")) {
+            xmlChar *tmpStr = xmlNodeGetContent(curNode);
+            if (tmpStr) {
+                info->fstTime = atol(tmpStr);
+            } else {
+                info->fstTime = time(NULL);
+            }
+            xmlFree(tmpStr);
+        }
+    }
+read_info_end0:
+    xmlFreeDoc(doc);
 }
 
 void dev_init()
 {
     memset(&devInfo, 0, sizeof(DevInfo));
-    MOUNT_PHASCAN();
-    FILE *fp = fopen(INFO_FILE, "r");
-    if (NULL == fp) {
-        UMOUNT_PHASCAN();
-        g_warning("Read Phascan infomation failed");
-        return;
-    }
-    fread(&devInfo, sizeof(DevInfo), 1, fp);
-    fclose(fp);
-    UMOUNT_PHASCAN();
+    dev_read_info(&devInfo);
+    devInfo.serialNo = _dev_serial_number();
 
-    devInfo.runCount += 1;
-    dev_save_info();
-
-    g_timeout_add(1*1000, dev_increase_runtime, GSIZE_TO_POINTER(60*60));
+    dev_save_runcount();
 
     dev_load_cert();
 }
@@ -103,6 +159,8 @@ void dev_uninit()
     pthread_rwlock_wrlock(&certRWLock);
     cert_free(cert);
     cert = NULL;
+    g_free(devInfo.serialNo);
+    g_free(devInfo.type);
     pthread_rwlock_unlock(&certRWLock);
 }
 
@@ -143,20 +201,20 @@ gint dev_run_count()
 
 time_t dev_run_time()
 {
-    return devInfo.runTime;
+    return (time(NULL) - devInfo.fstTime);
 }
 
 gboolean dev_is_valid()
 {
     gboolean flag = FALSE;
     pthread_rwlock_rdlock(&certRWLock);
-    if ( cert ) {
+    if ( cert  && !g_strcmp0(cert_get_id(cert), devInfo.serialNo) ) {
         switch( cert_get_mode(cert) ) {
         case CERT_MODE_NONE:
             flag = TRUE;
             break;
         case CERT_MODE_RUNTIME:
-            flag = cert_get_data(cert) >= devInfo.runTime;
+            flag = cert_get_data(cert) >= (time(NULL) - devInfo.fstTime);
             break;
         case CERT_MODE_RUNCOUNT:
             flag = cert_get_data(cert) >= devInfo.runCount;

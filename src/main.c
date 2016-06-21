@@ -853,7 +853,6 @@ int main (int argc, char *argv[])
 
 void ExitApplication (GtkWidget *widget, GdkEventButton *event,	gpointer data)
 {
-    dev_save_info();
 	saveConfigFile("/home/tt/TT/source/user/setup/default.cfg");
 	g_debug ("shut down normally!\n");
 	lockf(fd_lock ,F_ULOCK , 1 );
