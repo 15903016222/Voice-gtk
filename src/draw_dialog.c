@@ -1444,24 +1444,24 @@ static void draw_system_info ()
                                      "<h3>System Infomation</h3>"
                                      "<table border=1 >"
                                      "<tr><th>Serial Number</th><td>%s</td></tr>"
-                                     "<tr><th>Type</th><td>%s</td></tr>"
-                                     "<tr><th>FPGA</th><td>%d</td></tr>"
-                                     "<tr><th>Run Time(s)</th><td>%d</td></tr>"
-                                     "<tr><th>Run Count</th><td>%d</td></tr>"
-                                     "<tr><th>Phascan Version</th><td>%d.%d.%d</td></tr>"
-                                     "<tr><th>Phascan Commit</th><td>%s</td></tr>"
+                                     "<tr><th>Device Type</th><td>%s</td></tr>"
+                                     "<tr><th>Hardware Version</th><td>%d</td></tr>"
+                                     "<tr><th>Software Version</th><td>%d.%d.%d</td></tr>"
+                                     "<tr><th>Software Commit</th><td>%s</td></tr>"
                                      "<tr><th>Authentication Mode</th><td>%s</td></tr>"
                                      "<tr><th>Authentication Expire</th><td>%s</td></tr>"
+                                     "<tr><th>Run Count</th><td>%d</td></tr>"
+                                     "<tr><th>Run Time(s)</th><td>%d</td></tr>"
                                      "</table>"
                                      "</body>"
                                      "</html>",
                                      dev_serial_number(),
                                      dev_type_str(),
                                      dev_fpga_version(),
-                                     dev_run_time(),
-                                     dev_run_count(),
                                      APP_MAJOR, APP_MINOR, APP_MICRO, GIT_COMMIT,
-                                     certMode, certData);
+                                     certMode, certData,
+                                     dev_run_count(),
+                                     dev_run_time());
     g_file_set_contents("/home/tt/TT/source/system_info.htm", content, strlen(content), NULL);
     g_free(content);
     g_free(certData);
