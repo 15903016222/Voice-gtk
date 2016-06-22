@@ -25,7 +25,7 @@
 #include <pthread.h>
 
 #define INFO_FILE PHASCAN_PATH"/dev.info"
-#define RUNCOUNT_FILE PHASCAN_PATH"runcount.info"
+#define RUNCOUNT_FILE PHASCAN_PATH"/runcount.info"
 #define CERT_FILE PHASCAN_PATH"/auth.cert"
 #define PUBLIC_PEM "/home/tt/.secure/pub.pem"
 
@@ -82,9 +82,15 @@ static gchar *_dev_serial_number()
 
 static void dev_save_runcount()
 {
-    devInfo.runCount += 1;
-    gchar *cmd = g_strdup_printf("echo %d >> %s", devInfo.runCount, RUNCOUNT_FILE);
     MOUNT_PHASCAN();
+    FILE *fp = fopen(RUNCOUNT_FILE, "r");
+    if (fp) {
+        fscanf(fp, "%d", &devInfo.runCount);
+        fclose(fp);
+    }
+
+    devInfo.runCount += 1;
+    gchar *cmd = g_strdup_printf("echo %d > %s", devInfo.runCount, RUNCOUNT_FILE);
     system(cmd);
     UMOUNT_PHASCAN();
     g_free(cmd);
