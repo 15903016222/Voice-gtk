@@ -130,7 +130,7 @@ static void dev_read_info(DevInfo *info)
         } else if (!xmlStrcmp(curNode->name, BAD_CAST"FPGA")) {
             xmlChar *tmpStr = xmlNodeGetContent(curNode);
             if (tmpStr) {
-                info->fpgaVersion = atol(tmpStr)-1;
+                info->fpgaVersion = atol(tmpStr);
             } else {
                 info->fpgaVersion = 0;
             }
