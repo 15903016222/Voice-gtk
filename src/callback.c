@@ -7453,27 +7453,34 @@ static int SetDBEightPercentThread(gpointer data)
 
     double _nGateValue ;
     short  _nTmp       ;
+    gshort maxGain = PA_MAX_GAIN;
     gshort gain = 0;
-	while(i)
-	{
-		if(GROUP_VAL_POS(grp , rectifier1))
-		{
-			_nGateValue = ((TMP(measure_data[index][1])>>20) & 0x00000fff)/20.47;//满屏时200% 4095
-		}
-		else
-		{
+
+    if (dev_fpga_version() == 2
+            && (group_get_mode(grp) == UT1_SCAN || group_get_mode(grp) == UT2_SCAN)) {
+        maxGain = UT_MAX_GAIN_2;
+    }
+
+    while(i) {
+        if(GROUP_VAL_POS(grp , rectifier1)) {
+            /* 满屏时200% 4095 */
+            _nGateValue = ((TMP(measure_data[index][1])>>20) & 0x00000fff)/20.47;
+        } else {
 			_nTmp = (signed short)(TMP(measure_data[index][1]) >> 16) ;
 			_nGateValue = fabs(_nTmp / (10.24 * 16));
 		}
 
-		if(fabs(_nGateValue - 80.0) <=1 )  break  ;
-		scale =  80.0/_nGateValue  ;
+        if(fabs(_nGateValue - maxGain) <=1 ) {
+            break;
+        }
+
+        scale =  maxGain/_nGateValue;
 
         gain = group_get_gain(grp);
         gain += (gshort)(log10(scale)*2000);
 
-        if(gain > 8000)	{
-            gain = 8000;
+        if(gain > maxGain*100)	{
+            gain = maxGain*100;
         } else if(gain < 0)	{
             gain = 0;
 		}
@@ -7498,7 +7505,7 @@ static int SetDBEightPercentThread(gpointer data)
 		gdk_threads_leave() ;
 		g_free(markup);
 
-        if( gain  >= 8000) {
+        if( gain  >= maxGain*100) {
             break;
         } else if( gain <= 0) {
             break;
