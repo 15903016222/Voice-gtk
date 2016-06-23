@@ -25,13 +25,18 @@ OBJS = $(patsubst %.c,$(BUILD_DIR)/%.o,$(C_SRCS))
 
 INSTALL = install
 
+INC_DIRS = $(shell PKG_CONFIG_PATH=$(SYSROOT_DIR)/usr/lib/pkgconfig PKG_CONFIG_SYSROOT_DIR=$(SYSROOT_DIR) pkg-config  --cflags gtk+-2.0 webkit-1.0 ) -I $(SRC_DIR)/dxflib -I $(SRC_DIR)/gdxf 
+LDFLAGS = $(shell PKG_CONFIG_PATH=$(SYSROOT_DIR)/usr/lib/pkgconfig PKG_CONFIG_SYSROOT_DIR=$(SYSROOT_DIR) pkg-config --libs gtk+-2.0 webkit-1.0) -lpthread -ljpeg -lxml2 -lpng12 -lX11 -lm -lfakekey 
+
 ifndef _PC_
 CROSS_COMPILE ?= arm-angstrom-linux-gnueabi-
 CFLAG_ARM=-DARM
+INC_DIRS := $(INC_DIRS) -I $(PHASCAN_DIR)/include/lua5.1/
+LDFLAGS := $(LDFLAGS) -L$(PHASCAN_DIR)/lib -llua
+else
+INC_DIRS := $(INC_DIRS) $(shell pkg-config --cflags lua5.1)
+LDFLAGS := $(LDFLAGS) $(shell pkg-config --libs lua5.1)
 endif
-
-INC_DIRS = $(shell PKG_CONFIG_PATH=$(SYSROOT_DIR)/usr/lib/pkgconfig PKG_CONFIG_SYSROOT_DIR=$(SYSROOT_DIR) pkg-config  --cflags gtk+-2.0 webkit-1.0 ) -I $(SRC_DIR)/dxflib -I $(SRC_DIR)/gdxf -I $(PHASCAN_DIR)/include/lua5.1/
-LDFLAGS = $(shell PKG_CONFIG_PATH=$(SYSROOT_DIR)/usr/lib/pkgconfig PKG_CONFIG_SYSROOT_DIR=$(SYSROOT_DIR) pkg-config --libs gtk+-2.0 webkit-1.0) -lpthread -ljpeg -lxml2 -lpng12 -lX11 -lm -lfakekey -L$(PHASCAN_DIR)/lib -llua
 
 CFLAGS = -g -D_REENTRANT $(CFLAG_ARM) $(INC_DIRS)
 
