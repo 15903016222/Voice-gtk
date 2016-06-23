@@ -31,32 +31,34 @@ void draw_field_value ()
 	char  *DB_mark ;
 	double cur_value;
 	double _nStepPerMM ;
-	int i ;
+    int i, j;
 
 	gint grp = get_current_group(pp->p_config);//当前group
 	GROUP *p_grp = get_group_by_id (pp->p_config, grp);
+
+    i = get_reading_list(pp->p_config);
 	/* 4个测量值显示 */
-	for(i = 0 ; i < 4 ; i++)
+    for(j = 0 ; j < 4 ; j++)
 	{
-		cur_value = TMP(field[0][i] ) ;
+        cur_value = TMP(field[i][j] ) ;
         if(cur_value >= MEASURE_DATA_BASE ) {
 			if(cur_value == MEASURE_DATA_ND )
-				markup[i] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>ND</span>");
+                markup[j] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>ND</span>");
 			else if(cur_value == MEASURE_DATA_NS )
-				markup[i] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>NS</span>");
+                markup[j] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>NS</span>");
 			else if(cur_value == MEASURE_DATA_A )
-				markup[i] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>A</span>");
+                markup[j] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>A</span>");
 			else if(cur_value == MEASURE_DATA_B )
-				markup[i] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>B</span>");
+                markup[j] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>B</span>");
 			else if(cur_value == MEASURE_DATA_C )
-				markup[i] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>C</span>");
+                markup[j] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>C</span>");
 			else if(cur_value == MEASURE_DATA_D )
-				markup[i] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>D</span>");
+                markup[j] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>D</span>");
 			else //if(cur_value == MEASURE_DATA_NULL )
-				markup[i] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>---</span>");
+                markup[j] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>---</span>");
 
         } else {
-            markup[i] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>%.1f</span>", cur_value);
+            markup[j] = g_markup_printf_escaped ("<span foreground='white' font_desc='24'>%.1f</span>", cur_value);
         }
 	}
 
@@ -169,8 +171,9 @@ void calc_measure_data()
 
 	for(k=0;k<4;k++)//4个field
 	{
-		TMP(field[0][k]) =  getMeasureData(DO_NOT_USE_CCFG(field[k]) , grp , _nIndex)  ;
-		TMP(field[1][k]) =  getMeasureData(getFieldIndex(1,k) , grp , _nIndex)  ;
+//		TMP(field[0][k]) =  getMeasureData(DO_NOT_USE_CCFG(field[k]) , grp , _nIndex)  ;
+        TMP(field[0][k]) =  getMeasureData(getFieldIndex(0,k) , grp , _nIndex);
+        TMP(field[1][k]) =  getMeasureData(getFieldIndex(1,k) , grp , _nIndex);
 	}
 
 }
