@@ -7474,7 +7474,7 @@ static int SetDBEightPercentThread(gpointer data)
             break;
         }
 
-        scale =  maxGain/_nGateValue;
+        scale =  80.0/_nGateValue;
 
         gain = group_get_gain(grp);
         gain += (gshort)(log10(scale)*2000);
