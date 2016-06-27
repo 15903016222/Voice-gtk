@@ -205,19 +205,23 @@ void TofdRemoveLateralWave(unsigned char* pData ,const unsigned char* pAverageDa
 #include "../drawui.h"
 void TofdGetPara(int grp)
 {
-	{
-		double start = get_area_scanstart (pp->p_config) / 1000.0;//mm
-		double end = get_area_scanend(pp->p_config) / 1000.0;//mm
-		double resolution = get_area_scanresolution(pp->p_config) / 1000.0;//mm
+    double start = get_area_scanstart (pp->p_config) / 1000.0;//mm
+    double end = get_area_scanend(pp->p_config) / 1000.0;//mm
+    double resolution = get_area_scanresolution(pp->p_config) / 1000.0;//mm
 
-        double tofdRefLine = gTofdS[grp].refLine ;//mm
-        double s_reference = GROUP_VAL_POS(grp , s_reference)/100.0 - GROUP_VAL_POS(grp, scan_offset)/10.0;//mm
-        double s_measure   = GROUP_VAL_POS(grp , s_measure)/100.0 - GROUP_VAL_POS(grp, scan_offset)/10.0;//mm
+    double tofdRefLine = gTofdS[grp].refLine ;//mm
+    double s_reference = GROUP_VAL_POS(grp , s_reference)/100.0 - GROUP_VAL_POS(grp, scan_offset)/10.0;//mm
+    double s_measure   = GROUP_VAL_POS(grp , s_measure)/100.0 - GROUP_VAL_POS(grp, scan_offset)/10.0;//mm
 
-        gTofdS[grp].intAveragePos = tofdRefLine > end ?0 :(int)((tofdRefLine - start) / resolution) + 1;
+    if (get_inspec_source(pp->p_config) == 0) {
+        s_reference = GROUP_VAL_POS(grp , s_reference)/100.0;//mm
+        s_measure   = GROUP_VAL_POS(grp , s_measure)/100.0;//mm
+    }
+// g_message("%s[%d]", __func__, __LINE__);
+
+		gTofdS[grp].intAveragePos = tofdRefLine > end ?0 :(int)((tofdRefLine - start) / resolution) + 1;
         gTofdS[grp].intSr = s_reference > end ?0 :(int)((s_reference - start) / resolution) + 1;
         gTofdS[grp].intSm = s_measure > end ?0 :(int)((s_measure - start) / resolution) + 1;
-
         gTofdS[grp].dataPoints = pp->nPointQty[grp];
         if(gTofdS[grp].um < 0) gTofdS[grp].um = 0 ;
         if(gTofdS[grp].um > 1) gTofdS[grp].um = 1 ;
@@ -225,8 +229,6 @@ void TofdGetPara(int grp)
         if(gTofdS[grp].ur > 1) gTofdS[grp].ur = 1 ;
         gTofdS[grp].intUm = (int)(gTofdS[grp].um * gTofdS[grp].dataPoints);
         gTofdS[grp].intUr = (int)(gTofdS[grp].ur * gTofdS[grp].dataPoints);
-
-	}
 }
 
 void TofdHandler(int i ,int grp ,int width ,int _nDataOffset ,int _nDataSize)
