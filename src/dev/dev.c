@@ -41,14 +41,13 @@ struct _DevInfo {
 static DevInfo devInfo;
 static Cert *cert = NULL;
 static pthread_rwlock_t certRWLock = PTHREAD_RWLOCK_INITIALIZER;
-static pthread_rwlock_t mountRWlock = PTHREAD_RWLOCK_INITIALIZER;
 
 #ifdef ARM
-#define MOUNT_PHASCAN() { pthread_rwlock_wrlock(&mountRWlock); system("mount /dev/mtdblock2 /home/tt/.phascan"); }
-#define UMOUNT_PHASCAN() { pthread_rwlock_unlock(&mountRWlock); system("umount /home/tt/.phascan"); }
+#define MOUNT_PHASCAN() system("mount /dev/mtdblock2 /home/tt/.phascan")
+#define UMOUNT_PHASCAN() system("umount /home/tt/.phascan")
 #else
-#define MOUNT_PHASCAN() pthread_rwlock_wrlock(&mountRWlock)
-#define UMOUNT_PHASCAN() pthread_rwlock_unlock(&mountRWlock)
+#define MOUNT_PHASCAN() do {} while(0)
+#define UMOUNT_PHASCAN() do {} while(0)
 #endif
 
 /**
@@ -98,6 +97,9 @@ static void dev_save_runcount()
 
 static void dev_read_info(DevInfo *info)
 {
+
+    pthread_rwlock_wrlock(&mount)
+
     xmlDocPtr doc = NULL;
     xmlNodePtr curNode = NULL;
     gchar *buf = NULL;
