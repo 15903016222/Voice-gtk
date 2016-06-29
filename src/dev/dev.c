@@ -42,6 +42,8 @@ static DevInfo devInfo;
 static Cert *cert = NULL;
 static pthread_rwlock_t certRWLock = PTHREAD_RWLOCK_INITIALIZER;
 
+#define MTD_DEVICE "/dev/mtdblock2"
+
 #ifdef ARM
 #define MOUNT_PHASCAN() system("mount /dev/mtdblock2 /home/tt/.phascan")
 #define UMOUNT_PHASCAN() system("umount /home/tt/.phascan")
@@ -95,23 +97,17 @@ static void dev_save_runcount()
     g_free(cmd);
 }
 
-static void dev_read_info(DevInfo *info)
+static void _dev_read_info_xml(DevInfo *info)
 {
-
-    pthread_rwlock_wrlock(&mount)
-
     xmlDocPtr doc = NULL;
     xmlNodePtr curNode = NULL;
     gchar *buf = NULL;
     gsize len = 0;
     xmlKeepBlanksDefault(0);
 
-    MOUNT_PHASCAN();
     if ( !g_file_get_contents(INFO_FILE, &buf, &len, NULL) ) {
-        UMOUNT_PHASCAN();
         return;
     }
-    UMOUNT_PHASCAN();
 
     doc = xmlParseMemory(buf, len);
     if (NULL == doc) {
@@ -134,7 +130,7 @@ static void dev_read_info(DevInfo *info)
             if (tmpStr) {
                 info->fpgaVersion = atol(tmpStr);
             } else {
-                info->fpgaVersion = 0;
+                info->fpgaVersion = 1;
             }
             xmlFree(tmpStr);
         } else if (!xmlStrcmp(curNode->name, BAD_CAST"Time")) {
@@ -151,11 +147,61 @@ read_info_end0:
     xmlFreeDoc(doc);
 }
 
+/**
+ * @brief _dev_read_info_raw  该函数用于兼容3.3.0以下版本保存数据的问题
+ * @param info 指向DevInfo设备信息
+ */
+static void _dev_read_info_raw(DevInfo *info)
+{
+    gchar buf[100] = {0};
+    gint mtd = open(MTD_DEVICE, O_RDWR | O_SYNC);
+
+    if (mtd < 0) {
+        info->type = NULL;
+    }
+
+    if ( read(mtd , buf , 30) < 0 ) {
+       info->type = NULL;
+    } else {
+       info->type = g_strdup(buf);
+    }
+    close(mtd);
+
+    info->fpgaVersion = 1;
+    info->fstTime = time(NULL);
+
+    gchar *msg = g_strdup_printf("<DevInfo><Type>%s</Type><FPGA>%d</FPGA><Time>%d</Time></DevInfo>",
+                                 info->type,
+                                 info->fpgaVersion,
+                                 info->fstTime
+                                 );
+    system("mkfs.ext2 "MTD_DEVICE);
+    MOUNT_PHASCAN();
+    g_file_set_contents(INFO_FILE, msg, strlen(msg), NULL);
+    g_free(msg);
+}
+
+static void dev_read_info(DevInfo *info)
+{
+    g_free(info->serialNo);
+    g_free(info->type);
+    info->serialNo = NULL;
+    info->type = NULL;
+
+    if (MOUNT_PHASCAN() != 0) {
+        _dev_read_info_raw(info);
+    } else {
+        _dev_read_info_xml(info);
+    }
+    devInfo.serialNo = _dev_serial_number();
+
+    UMOUNT_PHASCAN();
+}
+
+
 void dev_init()
 {
-    memset(&devInfo, 0, sizeof(DevInfo));
     dev_read_info(&devInfo);
-    devInfo.serialNo = _dev_serial_number();
 
     dev_save_runcount();
 
@@ -167,9 +213,10 @@ void dev_uninit()
     pthread_rwlock_wrlock(&certRWLock);
     cert_free(cert);
     cert = NULL;
+    pthread_rwlock_unlock(&certRWLock);
+
     g_free(devInfo.serialNo);
     g_free(devInfo.type);
-    pthread_rwlock_unlock(&certRWLock);
 }
 
 DevType dev_type()
