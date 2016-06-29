@@ -183,10 +183,7 @@ static void _dev_read_info_raw(DevInfo *info)
 
 static void dev_read_info(DevInfo *info)
 {
-    g_free(info->serialNo);
-    g_free(info->type);
-    info->serialNo = NULL;
-    info->type = NULL;
+    memset(info, 0, sizeof(DevInfo));
 
     if (MOUNT_PHASCAN() != 0) {
         _dev_read_info_raw(info);
