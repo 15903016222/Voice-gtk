@@ -494,8 +494,9 @@ static void init_file_list (GtkWidget *list,
 	{
 		name_len = strlen(enump->d_name);
 		if ((name_len == 1 && enump->d_name[0] == '.')
-				|| (name_len == 2 && !strncmp(enump->d_name, "..", 2)))
-			continue;
+                || (name_len == 2 && !strncmp(enump->d_name, "..", 2))
+                || (name_len == 10 && !strncasecmp(enump->d_name, ".gitignore", 10)))
+            continue;
 
 		if (file_type == enump->d_type)
 		{
