@@ -1056,7 +1056,8 @@ void init_group_spi (int group)
 		TMP(group_spi[group]).PA = 1 ;
 	}
 	TMP(group_spi[group]).tx_start	= 2;
-	TMP(group_spi[group]).tx_end	= GROUP_VAL_POS(group , pulser_width1) / (25 * PW_DIV / 10);
+    group_spi_set_tx_end(group, GROUP_VAL_POS(group, pulser_width1)/PW_DIV);
+//	TMP(group_spi[group]).tx_end	= GROUP_VAL_POS(group , pulser_width1) / (25 * PW_DIV / 10);
 
     if (dev_fpga_version() == 2
             && (group_get_mode(group) == UT1_SCAN
@@ -1310,7 +1311,8 @@ void RefreshGroupGroupSpi (guint group)
 	}
 
 	TMP(group_spi[group]).tx_start	= 2;
-	TMP(group_spi[group]).tx_end	= GROUP_VAL_POS(group , pulser_width1) / (25 * PW_DIV / 10);
+    group_spi_set_tx_end(group, GROUP_VAL_POS(group, pulser_width1)/PW_DIV);
+//	TMP(group_spi[group]).tx_end	= GROUP_VAL_POS(group , pulser_width1) / (25 * PW_DIV / 10);
 
     if (dev_fpga_version() == 2
             && (group_get_mode(group) == UT1_SCAN

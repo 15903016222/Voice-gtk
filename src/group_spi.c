@@ -13,17 +13,17 @@
 
 static group_data_spi *group_spi = NULL;
 
-inline void group_spi_init()
+void group_spi_init()
 {
     group_spi = TMP(group_spi);
 }
 
-inline void group_spi_send(gint grp)
+void group_spi_send(gint grp)
 {
     write_group_data(&group_spi[grp], grp);
 }
 
-inline void group_spi_set_gain(gint grp, gshort val)
+void group_spi_set_gain(gint grp, gshort val)
 {
     /* FPGA1：gain为10位； FPGA2：相控阵通道gain为10位，常规通道gain为11位 */
     if (dev_fpga_version() == 1
@@ -33,4 +33,15 @@ inline void group_spi_set_gain(gint grp, gshort val)
     } else {
         group_spi[grp].gain = val;
     }
+}
+
+void group_spi_set_tx_end(gint grp, gshort val)
+{
+    if (dev_fpga_version() == 2
+            && ( group_get_mode(grp) == UT1_SCAN
+                 || group_get_mode(grp) == UT2_SCAN )) {
+        val -= 15;
+    }
+
+    group_spi[grp].tx_end = (guint32)(val/2.5 + 0.5);
 }

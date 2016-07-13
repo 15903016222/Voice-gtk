@@ -1285,15 +1285,14 @@ double get_pw ()
 	GROUP *p_grp = get_group_by_id (pp->p_config, grp);
 	double _nResult ;
 
-	if (get_group_val (p_grp, GROUP_PW_POS))
-	{
-		_nResult = (get_group_val (p_grp, GROUP_PW_VAL)) / (double)PW_DIV;
-	}
-	else
-	{
+    if (get_group_val (p_grp, GROUP_PW_POS)) {
+        _nResult = (get_group_val (p_grp, GROUP_PW_VAL)) / (double)PW_DIV;
+    } else {
 		_nResult = ( 500000 / get_group_val (p_grp, GROUP_FREQ_VAL)) ;
 	}
+
     _nResult = (unsigned int)(_nResult / 2.5 );
+
     _nResult *= 2.5 ;
 
 	return _nResult ;
@@ -4122,7 +4121,11 @@ void data_1141 (GtkSpinButton *spinbutton, gpointer data) /* PW  P114 */
 	set_group_val (p_grp, GROUP_PW_VAL, temp);
 	MultiGroupRefreshIdelTime() ;
 	TMP(group_spi[grp]).tx_start	= 2;
-	TMP(group_spi[grp]).tx_end	= (int)(GROUP_VAL_POS(grp , pulser_width1) / div);//2 + pw
+
+    group_spi_set_tx_end(grp, GROUP_VAL_POS(grp, pulser_width1)/PW_DIV);
+
+//    TMP(group_spi[grp]).tx_end	= (int)(GROUP_VAL_POS(grp , pulser_width1) / div);//2 + pw
+
 }
 
 void data_114 (GtkMenuItem *menuitem, gpointer data) /* PW */
@@ -4141,7 +4144,8 @@ void data_114 (GtkMenuItem *menuitem, gpointer data) /* PW */
 				get_group_val (p_grp, GROUP_PW_VAL) / (double)PW_DIV);
 
 		TMP(group_spi[grp]).tx_start	= 2;
-		TMP(group_spi[grp]).tx_end	=  (int)(get_pw() / 2.5 + 0.5);
+
+        group_spi_set_tx_end(grp, get_pw());
 
 		draw_menu3(0, NULL);
 		MultiGroupRefreshIdelTime() ;

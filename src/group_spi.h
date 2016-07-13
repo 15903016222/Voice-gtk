@@ -123,4 +123,11 @@ extern void group_spi_set_video_filter(gboolean val);
 extern void group_spi_set_rectifier(guint val);
 extern void group_spi_set_gain(gint grp, gshort val);
 
+/**
+ * @brief group_spi_set_tx_end  设置发送结束时间
+ * @param grp   组号
+ * @param val   时间值，单位ns
+ */
+extern void group_spi_set_tx_end(gint grp, gshort val);
+
 #endif /* End of __GROUP_SPI_H__ */

@@ -154,9 +154,9 @@ void init_spi ()
 
 int write_group_data (group_data_spi *p, unsigned int group)
 {
-	group_data_spi new, *p1;
-	memcpy (&new, p, sizeof (group_data_spi));
-	p1 = &new;
+    group_data_spi n, *p1;
+    memcpy (&n, p, sizeof (group_data_spi));
+    p1 = &n;
 	p1->offset = 16 * group;
 	p1->addr = 0x2;
 	little_to_big ((unsigned int *)(p1), sizeof(group_data_spi) / 4);
