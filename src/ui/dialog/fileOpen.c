@@ -128,23 +128,25 @@ static void openPartFile(GtkWidget* dialog ,const char* filename)
 static void openFile(GtkWidget* dialog ,const char* filename)
 {
     const char* str = strrchr(filename ,'.');
-    if(str) {
-        if(0 == strcmp(".cfg" ,str)) {
-            openSetupFile(dialog ,filename);
-        } else if(0 == strcmp(".data" ,str)) {
-            openDataFile(dialog ,filename);
-        } else if(0 == g_strcmp0(".dxf" ,str)) {
-            openPartFile(dialog ,filename);
-        }  else if( 0 == g_strcmp0(".html", str)) {
-            report_preview_set_tmpl(filename);
-            gtk_widget_destroy(dialog);
-        } else {
-            filePreviewFullScreen(dialog ,filename);
-        }
-    } else {
-        filePreviewFullScreen(dialog ,filename);
+    if( ! str ) {
+        filePreviewFullScreen(dialog, filename);
     }
 
+    if(0 == strcmp(".cfg" ,str)) {
+        openSetupFile(dialog ,filename);
+    } else if(0 == strcmp(".data" ,str)) {
+        openDataFile(dialog ,filename);
+    } else if(0 == g_strcmp0(".dxf" ,str)) {
+        openPartFile(dialog ,filename);
+    } else if( 0 == g_strcmp0(".html", str)) {
+        gboolean flag = (gboolean)g_object_get_data(G_OBJECT(dialog) ,"FileOpenFlag");
+        if ( flag ) {
+            filePreviewFullScreen(dialog ,filename);
+        } else {
+            report_preview_set_tmpl(filename);
+            gtk_widget_destroy(dialog);
+        }
+    }
 }
 
 static void callbackOpen(GtkWidget* dialog ,void* p_para)
