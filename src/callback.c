@@ -4101,6 +4101,8 @@ void data_113 (GtkMenuItem *menuitem, gpointer data)  /* Voltage  P113 */
 	pp->pos_pos = MENU3_STOP;
 	//draw_menu3(0, NULL);
 
+    group_spi_set_tx_end(grp, GROUP_VAL_POS(grp, pulser_width1));
+
 	GROUP_VAL_POS(0 , prf1) = get_prf() ;
 	request_refresh(REFRESH_PRF_CHANGED) ;
 }
@@ -4122,7 +4124,7 @@ void data_1141 (GtkSpinButton *spinbutton, gpointer data) /* PW  P114 */
 	MultiGroupRefreshIdelTime() ;
 	TMP(group_spi[grp]).tx_start	= 2;
 
-    group_spi_set_tx_end(grp, GROUP_VAL_POS(grp, pulser_width1)/PW_DIV);
+    group_spi_set_tx_end(grp, GROUP_VAL_POS(grp, pulser_width1));
 
 //    TMP(group_spi[grp]).tx_end	= (int)(GROUP_VAL_POS(grp , pulser_width1) / div);//2 + pw
 
@@ -4145,7 +4147,8 @@ void data_114 (GtkMenuItem *menuitem, gpointer data) /* PW */
 
 		TMP(group_spi[grp]).tx_start	= 2;
 
-        group_spi_set_tx_end(grp, get_pw());
+        set_group_val (p_grp, GROUP_PW_VAL, get_pw() *PW_DIV);
+        group_spi_set_tx_end(grp, get_group_val(p_grp, GROUP_PW_VAL));
 
 		draw_menu3(0, NULL);
 		MultiGroupRefreshIdelTime() ;
@@ -4209,6 +4212,9 @@ void data_1201 (GtkMenuItem *menuitem, gpointer data) /* damping p120 */
 		return ;
 	}
 	set_damping_pos (pp->p_config, _nTmpValue);
+
+    group_spi_set_tx_end(grp, GROUP_VAL_POS(grp, pulser_width1));
+
 	if(_nTmpValue)
 	{
 		if(GROUP_VAL_POS(grp , group_mode) == UT1_SCAN)

@@ -128,6 +128,6 @@ extern void group_spi_set_gain(gint grp, gshort val);
  * @param grp   组号
  * @param val   时间值，单位ns
  */
-extern void group_spi_set_tx_end(gint grp, gshort val);
+extern void group_spi_set_tx_end(gint grp, guint32 val);
 
 #endif /* End of __GROUP_SPI_H__ */
