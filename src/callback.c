@@ -5032,7 +5032,7 @@ void data_2321 (GtkSpinButton *spinbutton, gpointer data) /* Position P2321 */
 {
 	int i ;
 	int temp_value ;
-	int      grp = get_current_group(pp->p_config);
+    int grp = get_current_group(pp->p_config);
 	int _nBeamNo = TMP(beam_num[grp]);
 	GROUP  *p_grp = get_group_by_id (pp->p_config, grp);
 	int point_pos = GROUP_VAL_POS(grp , SizingCurves.point_pos) ;
@@ -5051,9 +5051,14 @@ void data_2321 (GtkSpinButton *spinbutton, gpointer data) /* Position P2321 */
 	else /* 显示方式为时间 */
 		temp_value = (int) (gtk_spin_button_get_value (spinbutton) * 1000.0) ;
 
+
 	temp_value = ((temp_value + 5) / 10 ) * 10 ;
+    if (temp_value < 20) {
+        temp_value = 20;
+    }
 	if(temp_value == GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][point_pos])) return  ;
 	//*********************************************************************************
+
 	GROUP_VAL_POS(grp , SizingCurves.position[_nBeamNo][point_pos]) = temp_value ;
 
 	for(i = point_pos ; i< point_count ; i++)
