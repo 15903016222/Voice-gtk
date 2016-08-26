@@ -2168,9 +2168,12 @@ void DrawMenu232()
 							lower = (GROUP_VAL_POS( grp , SizingCurves.position[_nBeamNo][GROUP_VAL_POS( grp , SizingCurves.point_pos) - 1]) / 1000.0) *
 								(get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY) / 200000.0);
 							lower *= cos(TMP(current_angle[grp])) ;
-						}
-						else
-							lower = 0.0;
+                        } else {
+                            lower = 0.02;
+                        }
+                        if (cur_value < lower) {
+                            cur_value = lower;
+                        }
 						upper = get_group_val (get_group_by_id (pp->p_config, get_current_group(pp->p_config)), GROUP_VELOCITY)/100.0 * 4.95;
 						step = tmpf;
 						digit = 2;
