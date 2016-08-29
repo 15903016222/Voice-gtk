@@ -146,6 +146,8 @@ static void openFile(GtkWidget* dialog ,const char* filename)
             report_preview_set_tmpl(filename);
             gtk_widget_destroy(dialog);
         }
+    } else {
+        filePreviewFullScreen(dialog ,filename);
     }
 }
 
