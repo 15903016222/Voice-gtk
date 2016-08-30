@@ -1417,6 +1417,9 @@ static void draw_system_info ()
 
     gchar *certMode = dev_get_cert_mode();
     gchar *certData = dev_get_cert_data();
+    gchar *devVersion = NULL;
+    gsize len = 0;
+    g_file_get_contents("/etc/version", &devVersion, &len, NULL);
     gchar *content = g_strdup_printf("<html>"
                                      "<head><title>System Infomation</title>"
                                      "<style>"
@@ -1446,6 +1449,7 @@ static void draw_system_info ()
                                      "<table border=1 >"
                                      "<tr><th>Serial Number</th><td>%s</td></tr>"
                                      "<tr><th>Device Type</th><td>%s</td></tr>"
+                                     "<tr><th>Device Version</th><td>%s</td></tr>"
                                      "<tr><th>Hardware Version</th><td>%d</td></tr>"
                                      "<tr><th>Software Version</th><td>%d.%d.%d</td></tr>"
                                      "<tr><th>Software Commit</th><td>%s</td></tr>"
@@ -1458,6 +1462,7 @@ static void draw_system_info ()
                                      "</html>",
                                      dev_serial_number(),
                                      dev_type_str(),
+                                     devVersion,
                                      dev_fpga_version(),
                                      APP_MAJOR, APP_MINOR, APP_MICRO, GIT_COMMIT,
                                      certMode, certData,
@@ -1467,6 +1472,7 @@ static void draw_system_info ()
     g_free(content);
     g_free(certData);
     g_free(certMode);
+    g_free(devVersion);
 
 	webkit_web_view_load_uri (web_view, file_path);
 	g_signal_connect(G_OBJECT (hbox_menu[5]), "button-press-event",G_CALLBACK(dialog_destroy), dialog);

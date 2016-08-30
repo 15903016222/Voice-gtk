@@ -10945,9 +10945,13 @@ void init_ui(DRAW_UI_P p)
 	gtk_box_pack_start (GTK_BOX (p->vbox1111[2]), pp->event[6], FALSE, FALSE, 0);
 	gtk_widget_set_size_request (GTK_WIDGET(pp->event[6]), 172, 22);
 
-    gchar *version = g_strdup_printf("DPL PA %d.%d.%d  %s", APP_MAJOR, APP_MINOR, APP_MICRO, g_pVersion);
+    gchar *devVersion = NULL;
+    gsize len;
+    g_file_get_contents("/etc/version", &devVersion, &len, NULL);
+    gchar *version = g_strdup_printf("DPL PA %s  %s", devVersion, g_pVersion);
     markup = g_markup_printf_escaped ("<span foreground='red' font_desc='10'>%s</span>", version);
     g_free(version);
+    g_free(devVersion);
 
 	gtk_label_set_markup (GTK_LABEL (pp->label[6]), markup); 
 	g_free (markup);
