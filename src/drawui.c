@@ -10948,6 +10948,9 @@ void init_ui(DRAW_UI_P p)
     gchar *devVersion = NULL;
     gsize len;
     g_file_get_contents("/etc/version", &devVersion, &len, NULL);
+    if (len > 0) {
+        devVersion[len-1] = 0;
+    }
     gchar *version = g_strdup_printf("DPL PA %s  %s", devVersion, g_pVersion);
     markup = g_markup_printf_escaped ("<span foreground='red' font_desc='10'>%s</span>", version);
     g_free(version);
