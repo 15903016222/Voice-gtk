@@ -1610,8 +1610,8 @@ void b3_fun0(gpointer pt)
 			break;
 		case 9 :
             if(p->pos1[9] == 4) {
-			    //g_debug ("software update\n");
-			    software_update();
+			    //software_update();
+                calibrate_touch_screen();
             }
 			break;
 		default:break;
