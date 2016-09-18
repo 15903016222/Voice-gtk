@@ -167,7 +167,7 @@ static CONST_STRING_ENUM** menu8_dict[] =
 
 };
 
-static CONST_STRING_ENUM menu940_dict[] = {	_STRING_Software_Update ,_STRING_Hardware_Update ,_STRING_Reset_Config ,_STRING_ABOUT ,_STRING_NULL ,_STRING_NULL    };
+static CONST_STRING_ENUM menu940_dict[] = {	/*_STRING_Software_Update*/_STRING_Calibrate_Touch_Screen ,_STRING_Hardware_Update ,_STRING_Reset_Config ,_STRING_ABOUT ,_STRING_NULL ,_STRING_NULL    };
 
 static CONST_STRING_ENUM* menu94_dict[] = {		menu940_dict, };
 

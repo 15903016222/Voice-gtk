@@ -129,8 +129,9 @@ typedef enum
 	_STRING_Scan_Start,//{"Scan Start","扫查起点"},	//#
 	_STRING_Scan_Offset,//{"Scan Offset","扫查偏置"},	//#
 	_STRING_Scan_Resolution,//{"Scan Resolution","扫查分辨率"},	//#
-	_STRING_Software_Update,//{"SW Update","软件升级"},	//#
-	_STRING_Date,//{"Date","日期"},	//#
+//	_STRING_Software_Update,//{"SW Update","软件升级"},	//#
+    _STRING_Calibrate_Touch_Screen,//{"Calibrate Touch Screen","屏幕校准"}
+    _STRING_Date,//{"Date","日期"},	//#
 	_STRING_Focal_Plane,//{"Focal Plane","任意面"},	//#
 	_STRING_Confirm,//{"Confirm","确认"},	//#
 	_STRING_Table,//{"Table","缺陷报表"},	//#
