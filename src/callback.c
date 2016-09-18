@@ -347,6 +347,7 @@ void data_9131 (GtkMenuItem *menuitem, gpointer data);
 //void data_923 (GtkMenuItem *menuitem, gpointer data);
 void data_930 (GtkMenuItem *menuitem, gpointer data);
 
+static void calibrate_touch_screen(void);
 
 void request_refresh(int mark)
 {
@@ -7861,7 +7862,7 @@ int RefreshScanInfor()
 
 void software_update()
 {
-
+    calibrate_touch_screen();
 }
 
 void hardware_update()
@@ -7943,4 +7944,12 @@ int DrawAreaButtonClick (GtkWidget* widget, GdkEvent* event, gpointer data)
 	pp->cmode_pos = 0;
 
     return FALSE ;
+}
+
+static void calibrate_touch_screen(void)
+{
+    system("export DISPLAY=:0");
+    system("xinput_calibrator --no-timeout >/home/tt/TT/.calibrator");
+    sleep(1);
+    system("sed -n '/Section \"InputClass\"/,/EndSection/p' /home/tt/TT/.calibrator >/usr/share/X11/xorg.conf.d/99-calibration.conf");
 }
