@@ -1609,8 +1609,10 @@ void b3_fun0(gpointer pt)
 			}
 			break;
 		case 9 :
-			g_debug ("software update\n");
-			software_update();
+            if(p->pos1[9] == 4) {
+			    //g_debug ("software update\n");
+			    software_update();
+            }
 			break;
 		default:break;
 	}
