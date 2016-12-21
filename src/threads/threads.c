@@ -294,7 +294,7 @@ static void battery_information_read_thread(void)
 				read(pp->fd_key1,  (void*)(&_probe), 100) ;
 			}
 		}
-		usleep(1000000) ;
+		usleep(1000) ;
 	}
 }
 

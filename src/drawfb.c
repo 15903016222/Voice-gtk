@@ -24,9 +24,11 @@
 #define _PI        3.1415926
 
 #define MEM_DEVICE "/dev/mem"
-#define TTY_DEVICE "/dev/ttyS1"
-#define TTY_DEVICE1 "/dev/ttyS0"
+//#define TTY_DEVICE "/dev/ttyS1"
+//#define TTY_DEVICE1 "/dev/ttyS0"
 
+#define TTY_DEVICE "/dev/ttyS0"
+#define TTY_DEVICE1 "/dev/ttyS1"
 #define COLOR_STEP 32     /*    4  8  16  32  64*/
 #define COLOR_SHIFT 5     /*    2  3   4   5   6*/
 #define MIN_DRAW_FAN_ANGLE_STEP    3
