@@ -44,13 +44,8 @@ static pthread_rwlock_t certRWLock = PTHREAD_RWLOCK_INITIALIZER;
 
 #define MTD_DEVICE "/dev/mtdblock2"
 
-#ifdef ARM
-#define MOUNT_PHASCAN() system("mount /dev/mtdblock2 /home/tt/.phascan")
-#define UMOUNT_PHASCAN() system("umount /home/tt/.phascan")
-#else
-#define MOUNT_PHASCAN() do {} while(0)
-#define UMOUNT_PHASCAN() do {} while(0)
-#endif
+#define MOUNT_PHASCAN() (0)
+#define UMOUNT_PHASCAN() (0)
 
 /**
  * @brief dev_load_cert   重新载入证书
