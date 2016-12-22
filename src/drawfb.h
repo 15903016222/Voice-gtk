@@ -14,7 +14,7 @@
 #define FB_WIDTH 768
 
 #define MAX_BEAM_QTY    256
-
+pthread_mutex_t ttylock;
 typedef struct _Point
 {
 	int x;

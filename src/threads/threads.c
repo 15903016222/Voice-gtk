@@ -6,6 +6,7 @@
  */
 #include "../core/core.h"
 #include "../drawui.h"
+#include "../drawfb.h"
 #include "../file_op.h"
 #include "../callback.h"
 #include "../main.h"
@@ -19,6 +20,9 @@
 #include <math.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 /* 显示系统时间 */
 static gchar buffer[32];
@@ -226,14 +230,18 @@ static void battery_information_read_thread(void)
 	int        i;
 	PROBE _probe;
 	PROBE_P _pProbe  = (PROBE_P)(((void*)&_probe) + 4);
-
+    int fd;
+    //fd = open("./txt",O_CREAT |O_RDWR |O_APPEND);
 	while(1)
 	{
 		//将所有电池信息全部读取出来
+        char buffer[1] = { 0 };
+        char buf[515] = { 0 };
 		if(read(pp->fd_key1,  key, 1) > 0)
 		{
 			if(key[0] == 0x55 || key[0] == 0x53)
 			{
+
 				if(read(pp->fd_key1,  key, 2) > 0)
 				{
 					if(key[0] == 0x55  && key[1] == 0x55)
@@ -262,15 +270,65 @@ static void battery_information_read_thread(void)
 					}
 					else if(key[0] == 0x53 && key[1] == 0x53)
 					{
+                        //pthread_mutex_lock(&ttylock);
 						if(get_auto_detect (pp->p_config))
 						{
+ //#if 0
+                            //usleep(52000);
+                            int to = 0 , t = 0;
+
+                            while(to < 515)
+                            {
+                                int tmp;
+                                usleep(30);
+                                if(tmp = read(pp->fd_key1,buffer,1) >0)
+                                {
+                                    buf[to] = buffer[0];
+                                    to = to + tmp;
+                                }
+                                //g_print("xxxxxxxxxxxxxxx\n");
+                            }
+                            /*
+                           int l; 
+                            g_print("*****************************\n");
+                            for(l = 0;l<512;l++)
+                            {
+                                g_print("%d buf:0X%x\n",l,buf[l]);
+                            }
+                            */
+                            //write(fd,"*****",5);
+                            //write(fd,buf,515);
+                            memset(&_probe,0,sizeof(PROBE));
+                            memcpy(&_probe,buf,512);
+								if(CheckProbeFileReasonable(_pProbe , PA_SCAN))
+								{
+									if(pp->pos==0) //&&(pp->pos1[pp->pos]==1))
+									{
+										memcpy((void*)(&g_tmp_group_struct.probe ), _pProbe, sizeof(PROBE) - 4);
+										request_refresh(REFRESH_PROBE_LOAD);
+									}
+									else
+									{
+										memcpy((void*)(&GROUP_VAL_POS(get_current_group(pp->p_config ), probe)) , _pProbe , sizeof(PROBE) - 4);
+										request_refresh(REFRESH_PROBE_LOAD);
+									}
+									g_debug("auto detect: Probe Parameters Reasonable!\n");
+								}
+								else
+								{
+									g_debug("auto detect: Probe Parameters Not Reasonable!\n");
+								}
+                                //pthread_mutex_unlock(&ttylock);
+//#endif
+#if 0
+                           
 							if(read(pp->fd_key1,  (void*)(&_probe), 512) == 512)
 							{
 								if(CheckProbeFileReasonable(_pProbe , PA_SCAN))
 								{
 									if(pp->pos==0) //&&(pp->pos1[pp->pos]==1))
 									{
-										memcpy((void*)(&g_tmp_group_struct.probe ), _pProbe , sizeof(PROBE) - 4);
+										memcpy((void*)(&g_tmp_group_struct.probe ), _pProbe, sizeof(PROBE) - 4);
 										request_refresh(REFRESH_PROBE_LOAD);
 									}
 									else
@@ -285,6 +343,7 @@ static void battery_information_read_thread(void)
 									g_debug("auto detect: Probe Parameters Not Reasonable!\n");
 								}
 							}
+#endif
 						}
 					}
 				}
@@ -294,7 +353,7 @@ static void battery_information_read_thread(void)
 				read(pp->fd_key1,  (void*)(&_probe), 100) ;
 			}
 		}
-		usleep(1000) ;
+		usleep(100000) ;
 	}
 }
 

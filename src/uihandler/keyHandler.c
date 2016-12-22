@@ -414,6 +414,7 @@ static int checkKeyval(int keyval)
 }
 int handler_key(int keyval, void* data)
 {
+
 	unsigned char tmp  = pp->pos_pos;
 	unsigned char tmp1 = pp->mark_pop_change;
 	guint	data1 = (GPOINTER_TO_UINT (data));
@@ -871,5 +872,6 @@ int handler_key(int keyval, void* data)
 			break;
 		default:break;
 	}
+
 	return 0;
 }

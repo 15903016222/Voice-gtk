@@ -181,6 +181,7 @@ void init_serial ()
 		perror("tcsetattr   error");  
 		exit(1);  
 	}
+    pthread_mutex_init(&ttylock,NULL);
 	return ;
 }
 

@@ -2806,8 +2806,10 @@ void b3_fun5(gpointer p)
 		case 5:
 			switch (pp->pos1[5])
 			{
-				case 0: 
+				case 0:
+                    pthread_mutex_lock(&ttylock);
 					data_505(NULL , NULL);
+                    pthread_mutex_unlock(&ttylock);
 					break; /* p505 */
 				default:break;
 			}
