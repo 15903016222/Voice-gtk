@@ -160,6 +160,30 @@ int write_group_data (group_data_spi *p, unsigned int group)
 	p1->offset = 16 * group;
 	p1->addr = 0x2;
 	little_to_big ((unsigned int *)(p1), sizeof(group_data_spi) / 4);
+
+    g_print("/*******************start data*********************************/\n");
+    g_print("reg(-1) offset:%d reserved:%d addr:%d\n",p1->offset,p1->offset,p1->addr);
+    g_print("reg(0) freq_band:%d video_filter:%d rectifier:%d compress_rato:%d gain:%d\n",p1->freq_band,p1->video_filter,p1->rectifier,p1->compress_rato,p1->gain);
+    g_print("reg(1) thickness_factor:%d UT1:%d UT2:%d PA:%d\n",p1->thickness_factor,p1->UT1,p1->UT2,p1->PA);
+    g_print("reg(2) sum_gain:%d sample_range:%d\n",p1->sum_gain,p1->sample_range);
+    g_print("reg(3) point_qty:%d tcg_point_qty:%d tcg_en:%d\n",p1->point_qty,p1->tcg_point_qty,p1->tcg_en);
+    g_print("reg(4) rx_time:%d gain1:%d\n",p1->rx_time,p1->gain1);
+    g_print("reg(5) idel_time:%d\n",p1->idel_time);
+    
+    g_print("gate_a_height:%d\n",p1->gate_a_height);
+    g_print("gate_a_logic:%d\n",p1->gate_a_logic);
+    g_print("gate_b_height:%d\n",p1->gate_b_height);
+    g_print("gate_b_logic:%d\n",p1->gate_b_logic);
+    g_print("gate_i_height:%d\n",p1->gate_i_height);
+    g_print("gate_i_logic:%d\n",p1->gate_i_logic);
+    g_print("thickness_min:%d reject:%d\n",p1->thickness_min,p1->reject);
+    g_print("sample_start:%d average:%d\n",p1->sample_start,p1->average);
+    g_print("thickness_max:%d thickness_source:%d\n",p1->thickness_max,p1->thickness_source);
+    g_print("tx_end:%d tx_start:%d\n",p1->tx_end,p1->tx_start);
+
+    g_print("/*******************end data*********************************/\n");
+
+
 #if ARM	
 	int i;
 	i = write (fd_array, (unsigned char *)(p1), sizeof(group_data_spi));
@@ -176,6 +200,34 @@ int write_focal_data (focal_data_spi *p, unsigned int beam_num , int reset)
 	p1->offset = 80 * beam_num;    // new version protocal
 	p1->addr = 0x1;
 	little_to_big ((unsigned int *)(p1), sizeof(focal_data_spi) / 4);
+    g_print("/****************start focal********************************/\n");
+    g_print("offset:%d TT:%d addr:%d\n",p1->offset,p1->TT,p1->addr);
+    g_print("TT1:%d gain_offset:%d TT2:%d group:%d all_beam_info:%d\n",p1->TT1,p1->gain_offset,p1->TT2,p1->group,p1->all_beam_info);
+    g_print("beam_delay:%d TT3:%d\n",p1->beam_delay,p1->TT3);
+    g_print("gate_a_start:%d\n",p1->gate_a_start);
+    g_print("gate_a_end:%d\n",p1->gate_a_end);
+    g_print("gate_b_start:%d\n",p1->gate_b_start);
+    g_print("gate_b_end:%d\n",p1->gate_b_end);
+    g_print("gate_i_start:%d\n",p1->gate_i_start);
+    g_print("gate_i_end:%d\n",p1->gate_i_end);
+    g_print("tx_enable:%d rx_enable:%d\n",p1->tx_enable,p1->rx_enable);
+    g_print("RX_TX_SEL_H:%d\n",p1->rx_sel.RX_TX_SEL_H);
+    g_print("RX_TX_SEL_L:%d\n",p1->rx_sel.RX_TX_SEL_L);
+    g_print("RX_TX_SEL_H:%d\n",p1->tx_sel.RX_TX_SEL_H);
+    g_print("reg(15) RX_TX_SEL_L:%d\n",p1->tx_sel.RX_TX_SEL_L);
+    int k;
+    for(k = 0;k<32;k++)
+    {
+        g_print("reg(%d) tx_time:%d  rx_time:%d\n",16+k,p1->delay[k].tx_time,p1->delay[k].rx_time);
+    }
+    int l;
+    for(l = 0;l<16;l++)
+    {
+        g_print("reg(%d) position:%d pregain:%d\n", 48+l,p1->point_info[l].position,p1->point_info[l].pregain);
+        g_print("reg(%d) slope:%d flag:%d\n", 48+l+1,p1->point_info[l].slope,p1->point_info[l].flag);
+    }
+    g_print("/****************end focal********************************/\n");
+
 #if ARM
     if (reset) {
         FreezingFPGA(TRUE);

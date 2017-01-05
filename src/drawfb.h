@@ -12,7 +12,7 @@
 #define FB_DEVICE "/dev/fb1"
 
 #define FB_WIDTH 768
-
+#include <pthread.h>
 #define MAX_BEAM_QTY    256
 pthread_mutex_t ttylock;
 typedef struct _Point

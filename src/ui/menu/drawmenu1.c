@@ -2147,11 +2147,11 @@ extern GtkWidget* fileOpenNew(GtkWidget* fatherWidget);
 void DrawMenu801()
 {
     if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1) && dev_is_valid()) {
-//		draw_dialog_all (DIALOG_FILE_OPEN);
+		//draw_dialog_all (DIALOG_FILE_OPEN);
 		GtkWidget* w = fileOpenNew(pp->window);
         g_object_set_data(G_OBJECT(w), "FileOpenFlag", TRUE);
 		gtk_dialog_run(GTK_DIALOG(w));
-	//	gtk_widget_show(w);
+		//gtk_widget_show(w);
 		pp->pos_pos = MENU3_STOP;
 		draw3_popdown(NULL,1,1);
 	}
@@ -2162,7 +2162,7 @@ void DrawMenu811()
 {
 	if ((pp->pos_pos == MENU3_PRESSED) && (CUR_POS == 1))
 	{
-	//	draw_dialog_all (DIALOG_FILE_NAME);
+		//draw_dialog_all (DIALOG_FILE_NAME);
 		char* str = NULL;
         unsigned int len, len2;
 		str = dialogGetAString( pp->window
