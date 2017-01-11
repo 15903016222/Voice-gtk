@@ -54,7 +54,6 @@ gboolean time_handler1 (GtkWidget *widget)
 //#if ARM
 void process_key_press (char key)
 {
-	//printf("key %x\n" , key);
 	switch((int)key)
 	{
         case 0xd0:
@@ -62,7 +61,7 @@ void process_key_press (char key)
             fakekey_release(pp->fk);
             break;
         case 0xd1:
-            //fakekey_press_keysym(pp->fk,XK_KP_7, 0);
+            fakekey_press_keysym(pp->fk,XK_KP_0, 0);
             fakekey_release(pp->fk);
             break;
         case 0xd2:
@@ -70,7 +69,7 @@ void process_key_press (char key)
             fakekey_release(pp->fk);
             break;
         case 0xd6:
-            //fakekey_press_keysym(pp->fk,
+            fakekey_press_keysym(pp->fk,XK_KP_2,0);
             fakekey_release(pp->fk);
             break;
         case 0xd7:
@@ -97,6 +96,7 @@ void process_key_press (char key)
             fakekey_press_keysym(pp->fk,XK_KP_6, 0);
             fakekey_release(pp->fk);
             break;
+
 #if 0
 		case 0xd0:
 			fakekey_press_keysym(pp->fk, XK_Up, 0);
