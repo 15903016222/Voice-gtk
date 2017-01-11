@@ -57,6 +57,47 @@ void process_key_press (char key)
 	//printf("key %x\n" , key);
 	switch((int)key)
 	{
+        case 0xd0:
+            fakekey_press_keysym(pp->fk,XK_KP_3, 0);
+            fakekey_release(pp->fk);
+            break;
+        case 0xd1:
+            //fakekey_press_keysym(pp->fk,XK_KP_7, 0);
+            fakekey_release(pp->fk);
+            break;
+        case 0xd2:
+            fakekey_press_keysym(pp->fk,XK_KP_7, 0);
+            fakekey_release(pp->fk);
+            break;
+        case 0xd6:
+            //fakekey_press_keysym(pp->fk,
+            fakekey_release(pp->fk);
+            break;
+        case 0xd7:
+            fakekey_press_keysym(pp->fk,XK_KP_5, 0);
+            fakekey_release(pp->fk);
+            break;
+        case 0xd8:
+            fakekey_press_keysym(pp->fk,XK_KP_1, 0);
+            fakekey_release(pp->fk);
+            break;
+        case 0xe4:
+            fakekey_press_keysym(pp->fk,XK_Return, 0);
+            fakekey_release(pp->fk);
+            break;
+        case 0xe3:
+            fakekey_press_keysym(pp->fk,XK_Escape, 0);
+            fakekey_release(pp->fk);
+            break;
+        case 0xe2:
+            fakekey_press_keysym(pp->fk,XK_KP_Subtract, 0);
+            fakekey_release(pp->fk);
+            break;
+        case 0xde:
+            fakekey_press_keysym(pp->fk,XK_KP_6, 0);
+            fakekey_release(pp->fk);
+            break;
+#if 0
 		case 0xd0:
 			fakekey_press_keysym(pp->fk, XK_Up, 0);
 			fakekey_release(pp->fk);
@@ -201,6 +242,7 @@ void process_key_press (char key)
 			fakekey_press_keysym(pp->fk, XK_F12, 0);
 			fakekey_release(pp->fk);
 			break;
+#endif
 	}
 }
 
