@@ -96,6 +96,14 @@ void process_key_press (char key)
             fakekey_press_keysym(pp->fk,XK_KP_6, 0);
             fakekey_release(pp->fk);
             break;
+        case 0xd3:
+            fakekey_press_keysym(pp->fk,XK_Up, 0);
+            fakekey_release(pp->fk);
+            break;
+        case 0xd4:
+            fakekey_press_keysym(pp->fk,XK_Down, 0);
+            fakekey_release(pp->fk);
+            break;
 
 #if 0
 		case 0xd0:
