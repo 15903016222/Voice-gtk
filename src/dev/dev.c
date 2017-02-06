@@ -238,7 +238,7 @@ const gchar *dev_serial_number()
 
 gint dev_fpga_version()
 {
-    return devInfo.fpgaVersion;
+    return 2;//devInfo.fpgaVersion;
 }
 
 gint dev_run_count()
