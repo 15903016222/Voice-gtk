@@ -57,27 +57,27 @@ void process_key_press (char key)
 	switch((int)key)
 	{
         case 0xd0:
-            fakekey_press_keysym(pp->fk,XK_KP_3, 0);
+            fakekey_press_keysym(pp->fk,/*XK_KP_3*/XK_F1, 0);
             fakekey_release(pp->fk);
             break;
         case 0xd1:
-            fakekey_press_keysym(pp->fk,XK_KP_0, 0);
+            fakekey_press_keysym(pp->fk,/*XK_KP_0*/XK_F2, 0);
             fakekey_release(pp->fk);
             break;
         case 0xd2:
-            fakekey_press_keysym(pp->fk,XK_KP_7, 0);
+            fakekey_press_keysym(pp->fk,/*XK_KP_7*/XK_F3, 0);
             fakekey_release(pp->fk);
             break;
         case 0xd6:
-            fakekey_press_keysym(pp->fk,XK_KP_2,0);
+            fakekey_press_keysym(pp->fk,/*XK_KP_2*/XK_F4,0);
             fakekey_release(pp->fk);
             break;
         case 0xd7:
-            fakekey_press_keysym(pp->fk,XK_KP_5, 0);
+            fakekey_press_keysym(pp->fk,/*XK_KP_5*/XK_F5, 0);
             fakekey_release(pp->fk);
             break;
         case 0xd8:
-            fakekey_press_keysym(pp->fk,XK_KP_1, 0);
+            fakekey_press_keysym(pp->fk,/*XK_KP_1*/XK_F6, 0);
             fakekey_release(pp->fk);
             break;
         case 0xe4:
@@ -89,11 +89,11 @@ void process_key_press (char key)
             fakekey_release(pp->fk);
             break;
         case 0xe2:
-            fakekey_press_keysym(pp->fk,XK_KP_Subtract, 0);
+            fakekey_press_keysym(pp->fk,/*XK_KP_Subtract*/XK_F7, 0);
             fakekey_release(pp->fk);
             break;
         case 0xde:
-            fakekey_press_keysym(pp->fk,XK_KP_6, 0);
+            fakekey_press_keysym(pp->fk,/*XK_KP_6*/XK_F8, 0);
             fakekey_release(pp->fk);
             break;
         case 0xd3:

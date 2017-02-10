@@ -20,7 +20,7 @@
 extern	gboolean data_function0 (GtkWidget *widget,	GdkEventButton *event,	gpointer data);
 #define B3Fun(x) data_function0(NULL ,NULL ,x)
 void B3func(int num);
-
+static void probeWidget();
 #define menu_wizard_restart() \
 	{ \
 		wizardGroupHandler_setStep(0); \
@@ -430,6 +430,7 @@ int handler_key(int keyval, void* data)
 
 	switch (keyval)
 	{
+#if 0
 		case GDK_KP_0:	/* 选中 P310 cursors 这个位置 */
 			if(get_overlay_cursor (pp->p_config))
 			{
@@ -872,6 +873,312 @@ int handler_key(int keyval, void* data)
 			break;
 		default:break;
 	}
+#endif
+    case GDK_Escape:
+        KeyResponseForEsc(data1);
+        break;
+    case GDK_Return:
+        ReturnCallback(keyval, data) ;
+        break;
+    case GDK_F1:
+        if (MAIN_MENU_PRESS == data1)
+        {
+            main_menu_pop(MENU_HIDE);
+        }
+        else if((MENU31_PRESS ==data1)||(MENU32_PRESS == data1)||(MENU33_PRESS ==data1)||(MENU34_PRESS == data1)||(MENU35_PRESS ==data1)||(MENU36_PRESS == data1))
+        {
+            menu3_pop(MENU3_HIDE);
+        }
+        pp->pos = 1;
+        pp->pos1[pp->pos] = 0;
+        CUR_POS = 0;
+        pp->pos_pos = MENU3_PRESSED;
+        draw_menu1();
+        draw_menu2(0);
+        draw_menu3(0, NULL);
+        break;
+	case GDK_F2:
+		probeWidget();
+		break;
+	case GDK_F3:
+		SaveDataProcess("Saving Data!");
+		break;
+	case GDK_F4:
+		if(pp->switchModel == 0)
+			pp->switchModel = 1;
+		else
+			pp->switchModel = 0;
+		draw_menu1();
+		draw_menu2(0);
+		draw_menu3(0, NULL);
+		break;
+	case GDK_F5:
+		if (MAIN_MENU_PRESS == data1)
+		{
+			main_menu_pop(MENU_HIDE);
+		}
+		pp->pos = 2;
+		pp->pos1[pp->pos] = 0;
+		CUR_POS = 2;
+		pp->pos_pos = MENU3_PRESSED;
+		draw_menu1();
+		draw_menu2(0);
+		draw_menu3(0, NULL);
+		break;
+	case GDK_F6:
+		StartPause();
+		break;
+	case GDK_F7:
+        GROUP_VAL_POS(group, selection) = 3;
+        pp->pos = 3;
+        pp->pos1[pp->pos] = 1;
+        CUR_POS = 1;
+        pp->pos_pos = MENU3_PRESSED;
+        draw_menu1();
+        draw_menu2(0);
+        draw_menu3(0, NULL);
+		break;
+	case GDK_F8:
+		data_732 (NULL, NULL) ;
+		break;
+	case GDK_Up:
+		if (MAIN_MENU_PRESS == data1)/*当主菜单条处于被弹出状态时*/
+		{
+			main_menu_pop(MENU_UP);/*被选中的主菜单向上切换*/
+		}
+		else if((MENU31_PRESS == data1)||(MENU32_PRESS == data1)||(MENU33_PRESS == data1)||(MENU34_PRESS == data1)||(MENU35_PRESS == data1)||(MENU36_PRESS == data1))/*当三级菜单中有弹出菜单选项时*/
+		{
+			menu3_pop(MENU3_UP);/*被选中的三级菜单向上切换选项*/
+		}
+		else/*当主菜单条处于收回状态 且 没有三级菜单弹出选项 时*/
+		{
+			switch (pp->pos_pos)
+			{
+				case MENU2_STOP:
+					pp->pos_last1 = pp->pos1[pp->pos];
+					pp->pos1[pp->pos] > 0 ? pp->pos1[pp->pos]-- :  (pp->pos1[pp->pos] = (pp->menu2_qty - 1));
+					draw_menu2(0);
+					draw_menu3(1, NULL);
+					break;
+				case MENU2_PRESSED:
+					break;
+				case MENU3_STOP:	/*向上轮流切换三级菜单*/
+					if(pp->menu3_amount != 0)  /*当三级菜单不全为黑时*/
+					{
+						pp->menu3_start = 0;
+						while(!(gtk_widget_get_sensitive(pp->eventbox30[pp->menu3_start])))
+							pp->menu3_start++;	/*找出第一个可选的三级菜单位置*/
 
+						if(CUR_POS > pp->menu3_start)
+						{
+							CUR_POS--;
+							while(!(gtk_widget_get_sensitive(pp->eventbox30[CUR_POS])))
+								CUR_POS--;
+						}
+
+						else if(CUR_POS == pp->menu3_start)
+						{
+							CUR_POS = pp->menu3_amount-1;
+						}
+						draw_menu3(1, NULL);
+					}
+					else if(pp->menu3_amount == 0)	/*当三级菜单全部为黑掉时*/
+						break;
+					break;
+
+				case MENU3_PRESSED:
+					break;
+			}
+		}
+		break;
+	case GDK_Down:
+		if (MAIN_MENU_PRESS == data1)/*当主菜单条处于被弹出状态时*/
+		{
+			main_menu_pop(MENU_DOWN);/*被选中的主菜单向下切换*/
+		}
+		else if((MENU31_PRESS == data1)||(MENU32_PRESS == data1)||(MENU33_PRESS == data1)||(MENU34_PRESS == data1)||(MENU35_PRESS == data1)||(MENU36_PRESS == data1))/*当三级菜单中有弹出菜单选项时*/
+		{
+			menu3_pop(MENU3_TURN);/*被选中的三级菜单向下切换*/
+		}
+		else/*当主菜单条处于收回状态时*/
+		{
+			switch (pp->pos_pos)
+			{
+				case MENU2_STOP:
+					pp->pos_last1 = pp->pos1[pp->pos];
+					pp->pos1[pp->pos] < (pp->menu2_qty - 1) ? pp->pos1[pp->pos]++ :  (pp->pos1[pp->pos] = 0);
+					draw_menu2(0);
+					draw_menu3(1, NULL);
+					break;
+				case MENU2_PRESSED:
+					break;
+				case MENU3_STOP:	/*向下轮流切换三级菜单*/
+					if(pp->menu3_amount != 0)  /*当三级菜单不全为黑时*/
+					{
+						pp->menu3_start = 0;
+						while(!(gtk_widget_get_sensitive(pp->eventbox30[pp->menu3_start])))
+							pp->menu3_start++;	/*找出第一个可选的三级菜单位置*/
+
+						if(CUR_POS < pp->menu3_amount - 1)
+						{
+							CUR_POS++;
+							while(!(gtk_widget_get_sensitive(pp->eventbox30[CUR_POS])))
+								CUR_POS++;
+						}
+
+						else if(CUR_POS == pp->menu3_amount - 1)
+						{
+							CUR_POS = pp->menu3_start;
+						}
+						draw_menu3(1, NULL);
+					}
+					else if (pp->menu3_amount == 0)	/*当三级菜单全部为黑掉时*/
+						break;
+					break;
+
+				case MENU3_PRESSED:
+					break;
+			}
+		}
+		break;
+	default:break;
+	}	
 	return 0;
+}
+static gchar* radio1Label = "radio1f";
+static gchar* radio2Label = "radio2";
+static gchar* radio3Label = "radio3";
+static gchar* radio4Label = "radio4";
+static gchar* radio5Label = "radio5";
+static gchar* radio6Label = "radio6";
+volatile gint probeType = 1;
+gint tmpType;
+
+static void probeWidget()
+{   
+    GtkWidget *dialog;
+    GtkWidget *radio1;
+    GtkWidget *radio2;
+    GtkWidget *radio3;
+    GtkWidget *radio4;
+    GtkWidget *radio5;
+    GtkWidget *radio6;
+    GSList *group;
+    gint result;
+
+    GtkWidget *table;
+    GtkWidget *vbox;
+    GtkWidget *hbox1;
+    GtkWidget *hbox2;
+    GtkWidget *hbox3;
+    GtkWidget *hbox4;
+    GtkWidget *hbox5;
+    GtkWidget *hbox6;
+
+    vbox  = gtk_vbox_new(TRUE,0);
+    hbox1 = gtk_hbox_new(TRUE,0);
+    hbox2 = gtk_hbox_new(TRUE,0);
+    hbox3 = gtk_hbox_new(TRUE,0);
+
+    gtk_box_pack_start(GTK_BOX(vbox),hbox1,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(vbox),hbox2,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(vbox),hbox3,FALSE,FALSE,0);
+    
+    dialog = gtk_dialog_new_with_buttons("Probes",NULL,GTK_DIALOG_MODAL,GTK_STOCK_OK,GTK_RESPONSE_OK,
+            GTK_STOCK_CANCEL,GTK_RESPONSE_CANCEL,NULL);
+    gtk_dialog_set_default_response(GTK_DIALOG(dialog),GTK_RESPONSE_CANCEL);
+    gtk_dialog_set_default_response(GTK_DIALOG(dialog),GTK_RESPONSE_CANCEL);
+
+    gtk_window_set_default_size(GTK_WINDOW(dialog),320,240);
+    gtk_dialog_set_has_separator(GTK_DIALOG(dialog),FALSE);
+    table = gtk_table_new(4,2,TRUE);
+    //gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox),table);
+    GtkWidget *alignment;
+    alignment = gtk_alignment_new(0,0,0,0);
+    //gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox),alignment);
+    gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox),vbox);
+    //gtk_container_add(GTK_CONTAINER(alignment),vbox);
+    radio1 = gtk_radio_button_new_with_label(NULL,radio1Label);
+    group = gtk_radio_button_get_group(GTK_RADIO_BUTTON(radio1));
+
+    radio2 = gtk_radio_button_new_with_label(group,radio2Label);
+    group = gtk_radio_button_get_group(GTK_RADIO_BUTTON(radio2));
+
+    radio3 = gtk_radio_button_new_with_label(group,radio3Label);
+    group = gtk_radio_button_get_group(GTK_RADIO_BUTTON(radio3));
+
+    radio4 = gtk_radio_button_new_with_label(group,radio4Label);
+    group = gtk_radio_button_get_group(GTK_RADIO_BUTTON(radio4));
+
+    radio5 = gtk_radio_button_new_with_label(group,radio5Label);
+    group = gtk_radio_button_get_group(GTK_RADIO_BUTTON(radio5));
+    radio6 = gtk_radio_button_new_with_label(group,radio6Label);
+    
+    switch(probeType){
+        case 1:
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio1),TRUE);
+            break;
+        case 2:
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio2),TRUE);
+            break;
+        case 3:
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio3),TRUE);
+            break;
+        case 4:
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio4),TRUE);
+            break;
+        case 5:
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio5),TRUE);
+            break;
+        case 6:
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(radio6),TRUE);
+            break;
+        default:
+            break;
+    }
+    gtk_box_pack_start(GTK_BOX(hbox1),radio1,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(hbox1),radio2,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(hbox2),radio3,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(hbox2),radio4,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(hbox3),radio5,FALSE,FALSE,0);
+    gtk_box_pack_start(GTK_BOX(hbox3),radio6,FALSE,FALSE,0);
+
+    gtk_widget_show_all(dialog);
+    result = gtk_dialog_run(GTK_DIALOG(dialog));
+    switch(result){
+        case GTK_RESPONSE_OK:
+            if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(radio1)))
+            {
+                probeType = 1;
+            }else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(radio2)))
+            {
+                probeType = 2;
+            }else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(radio3)))
+            {
+                probeType = 3;
+            }else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(radio4)))
+            {
+               probeType = 4; 
+            }else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(radio5)))
+            {
+                probeType = 5;
+            }else{
+                probeType = 6;
+            }
+            g_print("GTK_RESPONSE_OK\n");
+            break;
+        case GTK_RESPONSE_CANCEL:
+            g_print("GTK_RESPONSE_CANCEL\n");
+            break;
+        case GTK_RESPONSE_CLOSE:
+            g_print("GTK_RESPONSE_CLOSE\n");
+            break;
+        case GTK_RESPONSE_YES:
+            g_print("GTK_RESPONSE_YES\n");
+            break;
+        default:
+            g_print("default\n");
+            break;
+    }
+    gtk_widget_destroy(dialog);
 }
