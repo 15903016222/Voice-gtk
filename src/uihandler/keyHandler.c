@@ -904,6 +904,7 @@ int handler_key(int keyval, void* data)
 		SaveDataProcess("Saving Data!");
 		break;
 	case GDK_F4:
+        /*
 		if(pp->switchModel == 0)
 			pp->switchModel = 1;
 		else
@@ -911,6 +912,7 @@ int handler_key(int keyval, void* data)
 		draw_menu1();
 		draw_menu2(0);
 		draw_menu3(0, NULL);
+        */
 		break;
 	case GDK_F5:
 		if (MAIN_MENU_PRESS == data1)
