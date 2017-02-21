@@ -3865,9 +3865,21 @@ void DrawMenu842()
 
 void DrawMenu902()
 {
-	if ( !con2_p[9][0][2] )
-		gtk_widget_hide (pp->eventbox30[2]);
-	gtk_widget_hide (pp->eventbox31[2]);
+    static gchar *menuContent[3] = {
+        "1~6 MHz",
+        "3~12 MHz",
+        "0.5~15 MHz"
+    };
+
+    pp->x_pos = 470;
+    pp->y_pos = 288-26;
+    if (pp->pos_pos == MENU3_PRESSED && CUR_POS == 2) {
+        draw3_pop_tt( data_902, NULL,
+                      menuContent[0],
+                      menuContent+0, 3, 2, 0, 0);
+    } else {
+        draw3_popdown(menuContent[0], 2, 0);
+    }
 }
 void DrawMenu912()
 {

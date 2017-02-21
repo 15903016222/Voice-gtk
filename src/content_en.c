@@ -347,7 +347,7 @@ static const gchar *content_en284[] = {
 
 static const gchar *content_en290[] = {
 	/* 二级菜单第9页下的第0页三级菜单 */
-	"Units", "Bright", NULL, NULL, NULL, NULL
+    "Units", "Bright", "Frequency Band", NULL, NULL, NULL
 };
 
 static const gchar *content_en291[] = {

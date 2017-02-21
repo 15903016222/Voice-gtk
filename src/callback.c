@@ -7424,7 +7424,10 @@ void data_901 (GtkSpinButton *spinbutton, gpointer data) /*scan_resolution*/
 	set_bright (pp->p_config, (unsigned char) (gtk_spin_button_get_value (spinbutton)));
 }
 
+void data_902(GtkMenuItem *menuItem, gpointer data)
+{
 
+}
 
 
 void RefreshFocallawParameters(int grp)
