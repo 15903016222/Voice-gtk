@@ -756,6 +756,7 @@ void MainInit ()
     group_spi_init();
 	p_ui->p_beam_data = TMP(dma_data_add); // beam data from FPGA
 	p_config = (CONFIG*)(TMP(dma_data_add) + 8 *1024 * 1024);
+    set_band(p_config, 0);
 #else
 	p_config = (CONFIG *)malloc(sizeof(CONFIG));
 	if (!p_config)	return ;

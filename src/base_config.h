@@ -519,6 +519,7 @@ struct _Config
 	char    szPalettePathTofd[52];
 	char    szPalettePathCorrosion[52];
 	GROUP	group[setup_MAX_GROUP_QTY];			/* */
+    char    band;
 	char    cfg_end[8];//结构体尾
 };
 
@@ -630,6 +631,10 @@ extern void		set_reading_field4 (CONFIG *p, unsigned char data);
 /* 单位 */
 extern unsigned char	get_unit (CONFIG *p);			
 extern void		set_unit (CONFIG *p, unsigned char data);
+/* 频带 */
+extern unsigned char get_band(CONFIG *p);
+extern void set_band(CONFIG *p, unsigned char index);
+
 /*  */
 extern unsigned char	get_display_table (CONFIG *p);			
 extern void		set_display_table (CONFIG *p, unsigned char data);

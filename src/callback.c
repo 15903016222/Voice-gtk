@@ -7426,7 +7426,9 @@ void data_901 (GtkSpinButton *spinbutton, gpointer data) /*scan_resolution*/
 
 void data_902(GtkMenuItem *menuItem, gpointer data)
 {
-
+    set_band(pp->p_config, (unsigned char)(GPOINTER_TO_UINT(data)));
+    pp->pos_pos = MENU3_STOP;
+    draw_menu3(0, NULL);
 }
 
 

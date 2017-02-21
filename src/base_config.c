@@ -1703,3 +1703,13 @@ void set_file_type (CONFIG *p, char data)
 {
 	p->file_type = data;
 }
+
+unsigned char get_band(CONFIG *p)
+{
+    return p->band;
+}
+
+void set_band(CONFIG *p, unsigned char index)
+{
+    p->band = index;
+}

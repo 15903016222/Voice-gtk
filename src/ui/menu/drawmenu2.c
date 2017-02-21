@@ -3875,10 +3875,10 @@ void DrawMenu902()
     pp->y_pos = 288-26;
     if (pp->pos_pos == MENU3_PRESSED && CUR_POS == 2) {
         draw3_pop_tt( data_902, NULL,
-                      menuContent[0],
-                      menuContent+0, 3, 2, 0, 0);
+                      menuContent[get_band(pp->p_config)],
+                      menuContent, 3, 2, get_band(pp->p_config), 0);
     } else {
-        draw3_popdown(menuContent[0], 2, 0);
+        draw3_popdown(menuContent[get_band(pp->p_config)], 2, 0);
     }
 }
 void DrawMenu912()
