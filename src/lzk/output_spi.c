@@ -282,6 +282,9 @@ void output_set_parameter(OUTPUT_ENUM output ,OUTPUT_COMMAND_ENUM command ,unsig
 		output_data.fpga_freeze   = value;
 		break ;
 
+    case OUTPUT_OTHER_COMMAND_BAND:
+        output_data.band = value;
+        break;
 	default:
 		break;
 	}
@@ -334,6 +337,9 @@ void output_write_one_reg_to_spi(OUTPUT_ENUM output ,OUTPUT_COMMAND_ENUM command
 	case OUTPUT_OTHER_COMMAND_FPGA_FROZEN:
 		start = 3 ;
 		break ;
+    case OUTPUT_OTHER_COMMAND_BAND:
+        start = 15;
+        break;
 	default:
 		return;
 	}

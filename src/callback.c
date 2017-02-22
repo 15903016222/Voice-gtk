@@ -7429,6 +7429,9 @@ void data_902(GtkMenuItem *menuItem, gpointer data)
     set_band(pp->p_config, (unsigned char)(GPOINTER_TO_UINT(data)));
     pp->pos_pos = MENU3_STOP;
     draw_menu3(0, NULL);
+
+    output_set_parameter(0, OUTPUT_OTHER_COMMAND_BAND, (unsigned char )(GPOINTER_TO_UINT(data)), 0);
+    output_write_one_reg_to_spi(0, OUTPUT_OTHER_COMMAND_BAND);
 }
 
 

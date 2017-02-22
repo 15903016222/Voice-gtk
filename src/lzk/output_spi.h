@@ -74,7 +74,10 @@ typedef struct{
 	unsigned int reserved3:31   ;
 	unsigned int fpga_freeze:1  ;
 	// s_group_reg (4-15) 地址
-    unsigned int reserved4[12];  	//4-15寄存器
+    unsigned int reserved4[11];  	//4-15寄存器
+    /* reg(15) 地址 */
+    unsigned int band:3;            //0-2
+    unsigned int res15:29;             //3-31
 	// s_group_reg (16) 地址
     unsigned int freqency:3; 		//0-2
     unsigned int output_switch:5; 	//3-7
@@ -154,6 +157,8 @@ typedef enum{//命令
 
 	OUTPUT_OTHER_COMMAND_CHANNEL_ENABLE ,
 	OUTPUT_OTHER_COMMAND_FPGA_FROZEN ,
+
+    OUTPUT_OTHER_COMMAND_BAND,
 
 	OUTPUT_COMMAND_MAX
 }
